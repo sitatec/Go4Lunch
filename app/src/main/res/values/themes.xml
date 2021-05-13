@@ -1,9 +1,9 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
-    <style name="Theme.Go4Lunch" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
+    <style name="Theme.Go4Lunch" parent="Theme.MaterialComponents.Light.DarkActionBar">
         <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/ic_launcher_background</item>
-        <item name="colorPrimaryVariant">#E85003</item>
+        <item name="colorPrimary">@color/orange_500</item>
+        <item name="colorPrimaryVariant">@color/orange_700</item>
         <item name="colorOnPrimary">@color/white</item>
         <!-- Secondary brand color. -->
         <item name="colorSecondary">@color/teal_200</item>
@@ -14,9 +14,20 @@
         <!-- Customize your theme here. -->
     </style>
 
-    <style name="LoginTheme" parent="Theme.MaterialComponents.DayNight.NoActionBar">
-        <item name="colorPrimary">@color/ic_launcher_background</item>
-        <item name="colorPrimaryVariant">#F1834C</item>
+    <style name="NoActionBarTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
+        <item name="android:windowTranslucentStatus">true</item>
+        <item name="android:windowTranslucentNavigation">true</item>
+        <item name="colorPrimary">@color/orange_500</item>
+        <item name="colorPrimaryVariant">@color/orange_700</item>
+        <item name="android:statusBarColor" tools:targetApi="l">@android:color/transparent</item>
+    </style>
+
+    <style name="RetryBtnStyle" parent="Widget.MaterialComponents.Button.Icon">
+        <item name="iconTint">@color/black</item>
+        <item name="backgroundTint">@color/white</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="icon">@drawable/ic_retry</item>
+        <item name="android:text">@string/retry_login_btn_txt</item>
     </style>
 
 </resources>

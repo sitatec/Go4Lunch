@@ -2,4 +2,12 @@
     <string name="app_name">Go4Lunch</string>
     <string name="facebook_application_id" translatable="false">2955815731344333</string>
     <string name="facebook_login_protocol_scheme" translatable="false">fb2955815731344333</string>
+
+    <string name="login_canceled">Login Canceled \n\n You must sign in to access the app content</string>
+    <string name="login_failed_network_error">Login Failed \n\n Your device is not connected to internet, please connect it and retry.</string>
+    <string name="login_failed_unknown_error">Login Failed \n\n An error occurred while authentication process, please retry.</string>
+
+    <string name="retry_login_btn_txt">Retry</string>
+    <string name="facebook_login_btn_txt">Sign in with Facebook</string>
+    <string name="google_login_btn_txt">Sign in with Google</string>
 </resources>
