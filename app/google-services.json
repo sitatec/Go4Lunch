@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "130927866854",
+    "project_id": "go4lunch-73099",
+    "storage_bucket": "go4lunch-73099.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:130927866854:android:980b925fd3931284b15c27",
+        "android_client_info": {
+          "package_name": "com.berete.go4lunch"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "130927866854-diu25aabgddntu3dq6e74opop3at65tg.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.berete.go4lunch",
+            "certificate_hash": "0ab9c251591ec9285919b86d2764c3def637768b"
+          }
+        },
+        {
+          "client_id": "130927866854-fd92gb5n9cd5a305poadokqij4o17b2m.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBtI4LPGCVeyrLifa5z6IeZS3vx8fAK9uI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "130927866854-fd92gb5n9cd5a305poadokqij4o17b2m.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
