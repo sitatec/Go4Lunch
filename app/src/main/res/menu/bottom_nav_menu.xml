@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/mapFragment"
+        android:icon="@drawable/ic_map_24"
+        android:title="@string/map_string" />
+    <item
+        android:id="@+id/restaurantListFragment"
+        android:icon="@drawable/ic_list_24"
+        android:title="@string/restaurants_list" />
+    <item
+        android:id="@+id/workmatesListFragment"
+        android:icon="@drawable/ic_workmates_24"
+        android:title="@string/workmates_string" />
+    <item
+        android:id="@+id/conversationsListFragment"
+        android:icon="@drawable/ic_baseline_chat_24"
+        android:title="@string/chat_string" />
+</menu>

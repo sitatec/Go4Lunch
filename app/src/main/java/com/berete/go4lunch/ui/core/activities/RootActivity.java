@@ -1,4 +1,4 @@
-package com.berete.go4lunch.ui.activities;
+package com.berete.go4lunch.ui.core.activities;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -48,7 +48,7 @@ public class RootActivity extends AppCompatActivity {
                 .createSignInIntentBuilder()
                 .setAvailableProviders(getAuthProviders())
                 .setAuthMethodPickerLayout(getCustomAuthLayout())
-                .setTheme(R.style.NoActionBarTheme)
+                .setTheme(R.style.NoActionBarSysUITransparentTheme)
                 .build(), AUTH_RESULT_CODE);
     }
 
@@ -61,7 +61,7 @@ public class RootActivity extends AppCompatActivity {
 
     private AuthMethodPickerLayout getCustomAuthLayout(){
         return new AuthMethodPickerLayout
-                .Builder(R.layout.auth_method_picker_layout)
+                .Builder(R.layout.activity_auth_method_picker)
                 .setGoogleButtonId(R.id.google_login_btn)
                 .setFacebookButtonId(R.id.fb_login_btn)
                 .build();

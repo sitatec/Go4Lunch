@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/go4lunch_navigation"
+    app:startDestination="@id/mapFragment">
+
+    <fragment
+        android:id="@+id/mapFragment"
+        android:name="com.berete.go4lunch.ui.map.MapFragment"
+        android:label="@string/find_a_restaurant_title"
+        tools:layout="@layout/fragment_map" />
+    <fragment
+        android:id="@+id/restaurantListFragment"
+        android:name="com.berete.go4lunch.ui.restaurantsList.RestaurantListFragment"
+        android:label="@string/find_a_restaurant_title"
+        tools:layout="@layout/fragment_restaurants_list" />
+    <fragment
+        android:id="@+id/workmatesListFragment"
+        android:name="com.berete.go4lunch.ui.workmates.workmatesListFragment"
+        android:label="@string/available_workmates_title"
+        tools:layout="@layout/fragment_workmates" />
+    <fragment
+        android:id="@+id/conversationsListFragment"
+        android:name="com.berete.go4lunch.ui.chat.conversationsListFragment"
+        android:label="@string/my_conversations_title"
+        tools:layout="@layout/fragment_conversations" >
+        <action
+            android:id="@+id/navigateToChatFragment"
+            app:destination="@id/chatFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/chatFragment"
+        android:name="com.berete.go4lunch.ui.chat.ChatFragment"
+        android:label="@string/chat_title"
+        tools:layout="@layout/fragment_chat" />
+</navigation>

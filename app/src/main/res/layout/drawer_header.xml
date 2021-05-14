@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/nav_drawer_header_height"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tool="http://schemas.android.com/tools"
+    android:background="@drawable/drawer_header_bg">
+
+    <ImageView
+        android:id="@+id/user_photo"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_margin="20dp"
+        tool:src="@drawable/jobs_face"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"/>
+
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        app:layout_constraintLeft_toRightOf="@id/user_photo"
+        app:layout_constraintTop_toTopOf="@id/user_photo"
+        app:layout_constraintBottom_toBottomOf="@id/user_photo"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/username"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tool:text="Steeve Jobs"
+            android:textColor="@color/white"
+            android:textStyle="bold"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            />
+
+        <TextView
+            android:id="@+id/user_email"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/white"
+            tool:text="steeve.jobs@apple.com" />
+    </LinearLayout>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
