@@ -19,6 +19,8 @@ import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 public class RootActivity extends AppCompatActivity {
 
@@ -69,6 +71,7 @@ public class RootActivity extends AppCompatActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        binding.getRoot().setVisibility(View.VISIBLE);
         super.onActivityResult(requestCode, resultCode, data);
         if(requestCode == AUTH_RESULT_CODE){
             if(resultCode == Activity.RESULT_OK) {
