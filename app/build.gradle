@@ -1,8 +1,8 @@
 plugins {
     id 'com.android.application'
+    id 'com.google.gms.google-services'
+    id 'dagger.hilt.android.plugin'
 }
-
-apply plugin: 'com.google.gms.google-services'
 
 android {
     compileSdkVersion 30
@@ -20,7 +20,9 @@ android {
 
         resConfigs "en", "fr"
 
-        buildConfigField "String", "GOOGLE_CLOUD_API_KEY", "\"${GOOGLE_CLOUD_API_KEY}\""
+        manifestPlaceholders = [GOOGLE_MAP_API_KEY: "${GOOGLE_MAP_API_KEY}"]
+        buildConfigField "String", "GOOGLE_PLACES_API_KEY", "\"${GOOGLE_PLACES_API_KEY}\""
+//        buildConfigField "String", "GOOGLE_MAP_API_KEY", "\"${GOOGLE_MAP_API_KEY}\""
     }
 
     buildTypes {
@@ -30,6 +32,7 @@ android {
         }
     }
     compileOptions {
+        coreLibraryDesugaringEnabled true
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
@@ -45,9 +48,8 @@ dependencies {
     implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'androidx.recyclerview:recyclerview:1.2.0'
-
-    implementation 'com.google.android.libraries.places:places:2.4.0'
-    implementation 'com.google.android.gms:play-services-maps:17.0.1'
+    implementation 'pub.devrel:easypermissions:3.0.0'
+    coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:1.1.5'
 
     //TESTING
     testImplementation 'junit:junit:4.13.2'
@@ -68,5 +70,18 @@ dependencies {
     implementation 'com.github.bumptech.glide:glide:4.12.0'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.12.0'
 
-    implementation 'pub.devrel:easypermissions:3.0.0'
+    // HILT
+    implementation "com.google.dagger:hilt-android:$hilt_version"
+    annotationProcessor "com.google.dagger:hilt-compiler:$hilt_version"
+    implementation "androidx.hilt:hilt-navigation-fragment:1.0.0"
+
+    // GOOGLE SERVICES
+    implementation 'com.google.android.gms:play-services-maps:17.0.1'
+    implementation 'com.google.android.gms:play-services-location:18.0.0'
+
+    // HTTP RELATED
+    implementation 'com.google.code.gson:gson:2.8.6'
+    implementation 'com.squareup.retrofit2:retrofit:2.9.0'
+    implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
+
 }
