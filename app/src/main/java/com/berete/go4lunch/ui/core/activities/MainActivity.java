@@ -1,5 +1,7 @@
 package com.berete.go4lunch.ui.core.activities;
 
+import android.os.Bundle;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -8,30 +10,32 @@ import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
-import android.os.Bundle;
-
 import com.berete.go4lunch.R;
 import com.berete.go4lunch.databinding.ActivityMainBinding;
-import com.berete.go4lunch.ui.core.utils.LocationPermissionHandler;
+import com.berete.go4lunch.ui.core.services.location.LocationPermissionHandler;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 
 import org.jetbrains.annotations.NotNull;
 
+import javax.inject.Inject;
 
+import dagger.hilt.android.AndroidEntryPoint;
+
+@AndroidEntryPoint
 public class MainActivity extends AppCompatActivity{
 
-    private LocationPermissionHandler locationPermissionHandler;
+    @Inject
+    public LocationPermissionHandler locationPermissionHandler;
     private ActivityMainBinding binding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = ActivityMainBinding.inflate(getLayoutInflater());
-        locationPermissionHandler = new LocationPermissionHandler(this);
-        locationPermissionHandler.requirePermission();
         setContentView(binding.getRoot());
         setupNavigation();
+        requestLocationPermission();
     }
 
     private void setupNavigation(){
@@ -53,6 +57,11 @@ public class MainActivity extends AppCompatActivity{
                 R.id.workmatesListFragment, R.id.conversationsListFragment)
                 .setOpenableLayout(binding.getRoot())
                 .build();
+    }
+
+    private void requestLocationPermission(){
+        if(!locationPermissionHandler.hasPermission())
+            locationPermissionHandler.requestPermission();
     }
 
     @Override
