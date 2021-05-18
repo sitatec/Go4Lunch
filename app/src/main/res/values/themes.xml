@@ -6,13 +6,19 @@
         <item name="colorPrimaryVariant">@color/orange_700</item>
         <item name="colorOnPrimary">@color/white</item>
         <item name="colorPrimaryDark">?attr/colorPrimary</item>
-        <!-- Secondary brand color. -->
-        <item name="colorSecondary">@color/teal_200</item>
-        <item name="colorSecondaryVariant">@color/teal_700</item>
-        <item name="colorOnSecondary">@color/black</item>
-        <!-- Status bar color. -->
-        <item name="android:statusBarColor" tools:targetApi="l">#20000000</item>
+
+<!--        <item name="colorSecondary">@color/teal_200</item>-->
+<!--        <item name="colorSecondaryVariant">@color/teal_700</item>-->
+<!--        <item name="colorOnSecondary">@color/black</item>-->
+        <item name="android:windowLightNavigationBar" tools:targetApi="o_mr1">true</item>
+        <item name="android:navigationBarColor" tools:targetApi="o_mr1">@color/white</item>
+        <item name="android:statusBarColor" tools:targetApi="l">@android:color/transparent</item>
         <!-- Customize your theme here. -->
+    </style>
+
+    <style name="RootActivityTheme" parent="Theme.Go4Lunch">
+        <item name="android:windowBackground">@drawable/splash_screen_bg</item>
+        <item name="android:navigationBarColor" tools:targetApi="o_mr1">@android:color/transparent</item>
     </style>
 
     <style name="NoActionBarSysUITransparentTheme" parent="Theme.Go4Lunch">
