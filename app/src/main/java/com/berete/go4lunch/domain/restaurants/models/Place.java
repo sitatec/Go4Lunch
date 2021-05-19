@@ -2,14 +2,14 @@ package com.berete.go4lunch.domain.restaurants.models;
 
 public class Place {
 
-  private String id;
-  private String name;
-  private double stars;
-  private String photoUrl;
-  private String address;
-  private boolean isOpen;
-  private GeoCoordinates coordinates;
-  private String[] photoHtmlAttribution;
+  private final String id;
+  private final String name;
+  private final double stars;
+  private final String photoUrl;
+  private final String address;
+  private final boolean isOpen;
+  private final GeoCoordinates coordinates;
+  private final String[] photoHtmlAttribution;
 
   public Place(
       String id,
@@ -60,10 +60,6 @@ public class Place {
 
   public String getAddress() {
     return address;
-  }
-
-  public boolean getIsOpen() {
-    return isOpen;
   }
 
   ////////////////// --- INNERS ---///////////////////////

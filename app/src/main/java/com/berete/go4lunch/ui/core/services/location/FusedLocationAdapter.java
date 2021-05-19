@@ -1,7 +1,7 @@
 package com.berete.go4lunch.ui.core.services.location;
 
 import android.annotation.SuppressLint;
-import android.content.Context;
+import android.app.Activity;
 import android.location.Location;
 
 import com.berete.go4lunch.domain.restaurants.models.GeoCoordinates;
@@ -11,8 +11,6 @@ import com.google.android.gms.location.LocationServices;
 
 import javax.inject.Inject;
 
-import dagger.hilt.android.qualifiers.ActivityContext;
-
 public class FusedLocationAdapter implements CurrentLocationProvider {
 
   private final FusedLocationProviderClient fusedLocationProviderClient;
@@ -20,8 +18,8 @@ public class FusedLocationAdapter implements CurrentLocationProvider {
 
   @Inject
   public FusedLocationAdapter(
-      @ActivityContext Context context, LocationPermissionHandler locationPermissionHandler) {
-    fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(context);
+      Activity activity, LocationPermissionHandler locationPermissionHandler) {
+    fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(activity);
     this.locationPermissionHandler = locationPermissionHandler;
   }
 

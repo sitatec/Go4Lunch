@@ -23,8 +23,6 @@ import java.util.List;
 
 public class EntryPointActivity extends AppCompatActivity {
 
-  private static final int AUTH_RESULT_CODE = 4;
-
   private ActivityEntryPointBinding binding;
 
   @Override

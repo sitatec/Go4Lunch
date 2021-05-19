@@ -16,6 +16,7 @@ import androidx.navigation.Navigation;
 import com.berete.go4lunch.R;
 import com.berete.go4lunch.domain.restaurants.models.GeoCoordinates;
 import com.berete.go4lunch.domain.restaurants.models.Place;
+import com.berete.go4lunch.domain.restaurants.models.Restaurant;
 import com.berete.go4lunch.domain.restaurants.services.CurrentLocationProvider;
 import com.berete.go4lunch.domain.restaurants.services.PlaceDataProvider;
 import com.berete.go4lunch.ui.core.shared_view_models.RestaurantViewModel;
@@ -74,7 +75,7 @@ public class MapFragment extends Fragment {
     if (currentLocation != null) {
       map.setMyLocationEnabled(true);
       map.getUiSettings().setMyLocationButtonEnabled(true);
-      map.animateCamera(CameraUpdateFactory.newLatLngZoom(coordToLatLog(currentLocation), 20));
+      map.animateCamera(CameraUpdateFactory.newLatLngZoom(coordToLatLog(currentLocation), 15));
       showNearbyRestaurants(currentLocation);
     } else {
       map.getUiSettings().setMyLocationButtonEnabled(false);
@@ -92,19 +93,17 @@ public class MapFragment extends Fragment {
     viewModel.getNearbyRestaurants(
         currentLocation,
         new PlaceDataProvider.Callback() {
-          @Override
-          public void onSuccess(Place[] restaurants) {
+          @Override public void onSuccess(Place[] places) {
             map.clear();
-            for (Place restaurant : restaurants) {
-              map.addMarker(
-                  new MarkerOptions()
+            final Restaurant[] restaurants = (Restaurant[]) places;
+            for (Restaurant restaurant : restaurants) {
+              map.addMarker(new MarkerOptions()
                       .position(coordToLatLog(restaurant.getCoordinates()))
                       .title(restaurant.getName()));
             }
           }
 
-          @Override
-          public void onFailure() {}
+          @Override public void onFailure() {}
         });
   }
 

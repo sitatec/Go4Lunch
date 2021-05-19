@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tool="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:cardCornerRadius="@dimen/default_radius"
+    app:cardElevation="0dp"
+    android:layout_marginHorizontal="8dp"
+    android:layout_marginVertical="4dp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal"
+        android:padding="6dp">
+
+        <TextView
+            android:id="@+id/restaurantName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constrainedWidth="true"
+            android:maxLines="1"
+            android:ellipsize="end"
+            android:layout_marginEnd="2dp"
+            android:textAppearance="?attr/textAppearanceListItem"
+            app:layout_constraintHorizontal_bias="0"
+            app:layout_constraintRight_toLeftOf="@id/distanceFromCurrentLoc"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/restaurantAddress"
+            tool:text="The Names" />
+
+        <TextView
+            android:id="@+id/restaurantAddress"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constrainedWidth="true"
+            android:maxLines="2"
+            android:ellipsize="end"
+            android:layout_marginEnd="2dp"
+            app:layout_constraintHorizontal_bias="0"
+            app:layout_constraintTop_toBottomOf="@id/restaurantName"
+            app:layout_constraintLeft_toLeftOf="@id/restaurantName"
+            app:layout_constraintRight_toLeftOf="@id/numberOfFriendsThere"
+            app:layout_constraintBottom_toTopOf="@id/restaurantOpeningHours"
+            tool:text="264 Rue The Restaurant address" />
+
+        <TextView
+            android:id="@+id/restaurantOpeningHours"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textStyle="italic"
+            app:layout_constraintLeft_toLeftOf="@id/restaurantName"
+            app:layout_constraintTop_toBottomOf="@id/restaurantAddress"
+            app:layout_constraintBottom_toBottomOf="parent"
+            tool:text="Open" />
+
+
+        <TextView
+            android:id="@+id/distanceFromCurrentLoc"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="9dp"
+            app:layout_constraintRight_toLeftOf="@id/restaurantPhotoRoot"
+            app:layout_constraintTop_toTopOf="parent"
+            tool:text="160m" />
+
+        <TextView
+            android:id="@+id/numberOfFriendsThere"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:drawableLeftCompat="@drawable/ic_person_24"
+            android:textAppearance="?attr/textAppearanceListItem"
+            app:layout_constraintRight_toRightOf="@id/distanceFromCurrentLoc"
+            app:layout_constraintTop_toBottomOf="@id/distanceFromCurrentLoc"
+            app:layout_constraintBottom_toTopOf="@id/restaurantStars"
+            tool:text="(3)" />
+
+        <LinearLayout
+            android:id="@+id/restaurantStars"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="end"
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintRight_toRightOf="@id/distanceFromCurrentLoc"
+            app:layout_constraintTop_toBottomOf="@id/numberOfFriendsThere" />
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/restaurantPhotoRoot"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="1dp"
+            app:cardCornerRadius="@dimen/default_radius"
+            app:cardElevation="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageView
+                android:id="@+id/restaurantPhoto"
+                android:layout_width="80dp"
+                android:layout_height="75dp"
+                android:contentDescription="@string/restaurant_photo_description"
+                tool:src="@drawable/restaurant_img" />
+
+        </androidx.cardview.widget.CardView>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+<!--    <androidx.constraintlayout.widget.Guideline-->
+<!--        android:id="@+id/guideline"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:orientation="horizontal"-->
+<!--        app:layout_constraintGuide_percent="0.5" />-->
+
+</androidx.cardview.widget.CardView>

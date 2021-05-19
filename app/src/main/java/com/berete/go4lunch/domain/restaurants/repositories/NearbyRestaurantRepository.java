@@ -1,8 +1,11 @@
-package com.berete.go4lunch.domain.restaurants;
+package com.berete.go4lunch.domain.restaurants.repositories;
 
 import com.berete.go4lunch.domain.restaurants.models.GeoCoordinates;
 import com.berete.go4lunch.domain.restaurants.models.Place;
+import com.berete.go4lunch.domain.restaurants.models.Restaurant;
 import com.berete.go4lunch.domain.restaurants.services.PlaceDataProvider;
+
+import java.util.Arrays;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 import javax.inject.Inject;
@@ -23,7 +26,16 @@ public class NearbyRestaurantRepository {
       GeoCoordinates currentLocation) {
     final Place.Type[] types = {Place.Type.RESTAURANT};
     placeDataProvider.setQueryParameters(types, getFields(), currentLocation, langCode);
-    placeDataProvider.getPlaceData(callback);
+
+    placeDataProvider.getPlaceData(new PlaceDataProvider.Callback() {
+          @Override public void onSuccess(Place[] places) {
+            callback.onSuccess(Arrays.stream(places).map(Restaurant::new).toArray(Restaurant[]::new));
+          }
+
+          @Override public void onFailure() {
+            callback.onFailure();
+          }
+        });
   }
 
   private Place.Field[] getFields() {

@@ -1,70 +1,74 @@
 package com.berete.go4lunch.ui.restaurantsList;
 
-import android.content.Context;
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.berete.go4lunch.R;
+import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.NavBackStackEntry;
+import androidx.navigation.Navigation;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
-/**
- * A fragment representing a list of Items.
- */
+import com.berete.go4lunch.R;
+import com.berete.go4lunch.databinding.FragmentRestaurantsListBinding;
+import com.berete.go4lunch.domain.restaurants.models.Place;
+import com.berete.go4lunch.domain.restaurants.models.Restaurant;
+import com.berete.go4lunch.domain.restaurants.services.CurrentLocationProvider;
+import com.berete.go4lunch.domain.restaurants.services.PlaceDataProvider;
+import com.berete.go4lunch.ui.core.shared_view_models.RestaurantViewModel;
+
+import javax.inject.Inject;
+
+import dagger.hilt.android.AndroidEntryPoint;
+import dagger.hilt.android.internal.lifecycle.HiltViewModelFactory;
+
+@AndroidEntryPoint
 public class RestaurantListFragment extends Fragment {
 
-    // TODO: Customize parameter argument names
-    private static final String ARG_COLUMN_COUNT = "column-count";
-    // TODO: Customize parameters
-    private int mColumnCount = 1;
+  @Inject public CurrentLocationProvider currentLocationProvider;
+  public RestaurantViewModel restaurantViewModel;
+  private FragmentRestaurantsListBinding binding;
 
-    /**
-     * Mandatory empty constructor for the fragment manager to instantiate the
-     * fragment (e.g. upon screen orientation changes).
-     */
-    public RestaurantListFragment() {
-    }
+  public RestaurantListFragment() {}
 
-    // TODO: Customize parameter initialization
-    @SuppressWarnings("unused")
-    public static RestaurantListFragment newInstance(int columnCount) {
-        RestaurantListFragment fragment = new RestaurantListFragment();
-        Bundle args = new Bundle();
-        args.putInt(ARG_COLUMN_COUNT, columnCount);
-        fragment.setArguments(args);
-        return fragment;
-    }
+  @Override
+  public View onCreateView(
+      LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    binding = FragmentRestaurantsListBinding.inflate(inflater, container, false);
+    final RecyclerView recyclerView = binding.restaurantsList;
+    initializeViewModel(container);
+    currentLocationProvider.getCurrentCoordinates(
+        currentLocation -> {
+          restaurantViewModel.getNearbyRestaurants(
+              currentLocation,
+              new PlaceDataProvider.Callback() {
+                @Override
+                public void onSuccess(Place[] places) {
+                  recyclerView.setAdapter(new RestaurantListAdapter((Restaurant[]) places, currentLocation));
+                  recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+                  binding.restaurantListShimmer.stopShimmer();
+                  binding.restaurantListShimmer.setVisibility(View.GONE);
+                }
 
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+                @Override
+                public void onFailure() {}
+              });
+        });
+    return binding.getRoot();
+  }
 
-        if (getArguments() != null) {
-            mColumnCount = getArguments().getInt(ARG_COLUMN_COUNT);
-        }
-    }
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_restaurants_list, container, false);
-
-        // Set the adapter
-        if (view instanceof RecyclerView) {
-            Context context = view.getContext();
-            RecyclerView recyclerView = (RecyclerView) view;
-            if (mColumnCount <= 1) {
-                recyclerView.setLayoutManager(new LinearLayoutManager(context));
-            } else {
-                recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
-            }
-        }
-        return view;
-    }
+  private void initializeViewModel(View fragmentViewContainer) {
+    final NavBackStackEntry backStackEntry =
+        Navigation.findNavController(fragmentViewContainer)
+            .getBackStackEntry(R.id.navigation_graph);
+    restaurantViewModel =
+        new ViewModelProvider(
+                backStackEntry,
+                HiltViewModelFactory.createInternal(getActivity(), backStackEntry, null, null))
+            .get(RestaurantViewModel.class);
+  }
 }

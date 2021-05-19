@@ -137,7 +137,7 @@ public class PlacesHttpResponseImpl implements PlacesHttpResponse {
     }
 
     private String getPhotoUrl() {
-      return "https://maps.googleapis.com/maps/api/place/photo?maxheight=700&photoreference="
+      return "https://maps.googleapis.com/maps/api/place/photo?maxwidth=500&photoreference="
           + photos.get(0).photo_reference
           + "&key="
           + BuildConfig.GOOGLE_PLACES_API_KEY;

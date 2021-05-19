@@ -2,4 +2,5 @@
 <resources>
     <dimen name="text_margin">16dp</dimen>
     <dimen name="nav_drawer_header_height">176dp</dimen>
+    <dimen name="default_radius">4dp</dimen>
 </resources>

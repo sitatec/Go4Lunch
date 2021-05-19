@@ -34,5 +34,6 @@
     <string name="deni_location_permission">not now</string>
     <string name="continue_without_permission">continue without permission</string>
     <string name="allow_location_permission_1">allow</string>
+    <string name="restaurant_photo_description">The restaurant photo</string>
 
 </resources>
