@@ -20,8 +20,11 @@ android {
 
         resConfigs "en", "fr"
 
+        Properties properties = new Properties();
+        properties.load(project.rootProject.file('local.properties').newDataInputStream())
+
         manifestPlaceholders = [GOOGLE_MAP_API_KEY: "${GOOGLE_MAP_API_KEY}"]
-        buildConfigField "String", "GOOGLE_PLACE_API_KEY", "\"${GOOGLE_PLACE_API_KEY}\""
+        buildConfigField "String", "GOOGLE_PLACE_API_KEY", properties.getProperty('GOOGLE_PLACE_API_KEY')
 //        buildConfigField "String", "GOOGLE_MAP_API_KEY", "\"${GOOGLE_MAP_API_KEY}\""
     }
 
@@ -43,7 +46,7 @@ android {
 }
 
 dependencies {
-    implementation 'androidx.appcompat:appcompat:1.2.0'
+    implementation 'androidx.appcompat:appcompat:1.3.0'
     implementation 'com.google.android.material:material:1.3.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'

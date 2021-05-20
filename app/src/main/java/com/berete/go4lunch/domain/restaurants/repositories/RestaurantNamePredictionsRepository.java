@@ -1,20 +1,21 @@
-package com.berete.go4lunch.domain.restaurants.services;
+package com.berete.go4lunch.domain.restaurants.repositories;
 
 import com.berete.go4lunch.domain.restaurants.models.GeoCoordinates;
 import com.berete.go4lunch.domain.restaurants.models.Place;
+import com.berete.go4lunch.domain.restaurants.services.AutocompleteService;
 
 import javax.inject.Inject;
 
 import dagger.hilt.android.scopes.ViewModelScoped;
 
 @ViewModelScoped
-public class RestaurantsAutocomplete {
+public class RestaurantNamePredictionsRepository {
 
   private final AutocompleteService autocompleteService;
   private AutocompleteService.ResultListener autocompleteResultListener;
 
   @Inject
-  public RestaurantsAutocomplete(AutocompleteService autocompleteService) {
+  public RestaurantNamePredictionsRepository(AutocompleteService autocompleteService) {
     this.autocompleteService = autocompleteService;
   }
 

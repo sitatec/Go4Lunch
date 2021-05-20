@@ -2,6 +2,7 @@ package com.berete.go4lunch.data_souces.restaurants.remote_source;
 
 import com.berete.go4lunch.data_souces.restaurants.data_objects.AutocompleteHttpResponse;
 import com.berete.go4lunch.data_souces.restaurants.data_objects.NearbySearchHttpResponse;
+import com.berete.go4lunch.data_souces.restaurants.data_objects.PlaceDetailsHttpResponse;
 
 import java.util.Map;
 
@@ -15,4 +16,7 @@ public interface PlaceHttpClient {
 
     @GET("autocomplete/json?strictbounds")
     Call<AutocompleteHttpResponse> getPredictions(@QueryMap Map<String, String> params);
+
+    @GET("details/json")
+    Call<PlaceDetailsHttpResponse> getPlaceDetails(@QueryMap Map<String, String> params);
 }

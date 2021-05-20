@@ -3,10 +3,12 @@ package com.berete.go4lunch.data_souces.restaurants.remote_source;
 import com.berete.go4lunch.BuildConfig;
 import com.berete.go4lunch.data_souces.restaurants.data_objects.AutocompleteHttpResponse;
 import com.berete.go4lunch.data_souces.restaurants.data_objects.NearbySearchHttpResponse;
+import com.berete.go4lunch.data_souces.restaurants.data_objects.PlaceDetailsHttpResponse;
 import com.berete.go4lunch.domain.restaurants.models.GeoCoordinates;
 import com.berete.go4lunch.domain.restaurants.models.Place;
 import com.berete.go4lunch.domain.restaurants.services.AutocompleteService;
 import com.berete.go4lunch.domain.restaurants.services.NearbyPlaceProvider;
+import com.berete.go4lunch.domain.restaurants.services.PlaceDetailsProvider;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -19,7 +21,8 @@ import javax.inject.Inject;
 import retrofit2.Call;
 import retrofit2.Response;
 
-public class GoogleNearbyPlaceAPIClient implements NearbyPlaceProvider, AutocompleteService {
+public class GoogleNearbyPlaceAPIClient
+    implements NearbyPlaceProvider, AutocompleteService, PlaceDetailsProvider {
 
   public static final String BASE_URL = "https://maps.googleapis.com/maps/api/place/";
 
@@ -29,13 +32,16 @@ public class GoogleNearbyPlaceAPIClient implements NearbyPlaceProvider, Autocomp
   private final AutocompleteSessionTokenHandler autocompleteSessionTokenHandler;
 
   @Inject
-  public GoogleNearbyPlaceAPIClient(PlaceHttpClient placeHttpClient, AutocompleteSessionTokenHandler autocompleteSessionTokenHandler) {
+  public GoogleNearbyPlaceAPIClient(
+      PlaceHttpClient placeHttpClient,
+      AutocompleteSessionTokenHandler autocompleteSessionTokenHandler) {
     this.placeHttpClient = placeHttpClient;
     this.autocompleteSessionTokenHandler = autocompleteSessionTokenHandler;
   }
 
-
-  //  ################ ----  NEARBY_SEARCH  ----- ################ //
+  // ############################################################ //
+  // ################ ----  NEARBY_SEARCH  ----- ################ //
+  // ############################################################ //
 
   @Override
   public void setQueryParameters(
@@ -70,7 +76,8 @@ public class GoogleNearbyPlaceAPIClient implements NearbyPlaceProvider, Autocomp
   private retrofit2.Callback<NearbySearchHttpResponse> getPlaceResponseCallback(Callback callback) {
     return new retrofit2.Callback<NearbySearchHttpResponse>() {
       @Override
-      public void onResponse(Call<NearbySearchHttpResponse> call, Response<NearbySearchHttpResponse> response) {
+      public void onResponse(
+          Call<NearbySearchHttpResponse> call, Response<NearbySearchHttpResponse> response) {
         final NearbySearchHttpResponse body = response.body();
         if (body == null) callback.onFailure();
         else callback.onSuccess(body.getPlaces());
@@ -83,7 +90,9 @@ public class GoogleNearbyPlaceAPIClient implements NearbyPlaceProvider, Autocomp
     };
   }
 
-  //  ################ ----  AUTOCOMPLETE  ----- ################ //
+  // ############################################################ //
+  // ################ ----  AUTOCOMPLETE  ----- ################# //
+  // ############################################################ //
 
   @Override
   public void predict(
@@ -141,22 +150,73 @@ public class GoogleNearbyPlaceAPIClient implements NearbyPlaceProvider, Autocomp
     };
   }
 
-  public static class AutocompleteSessionTokenHandler{
+  // ############################################################ //
+  // ################ ----  PLACE_DETAIL  ----- ################# //
+  // ############################################################ //
+
+  @Override
+  public void getPlaceDetail(
+      String placeId,
+      Place.Field[] fieldsToReturn,
+      Place.LangCode langCode,
+      ResponseListener listener) {
+    final Map<String, String> placeDetailsQueryParams = new HashMap<>();
+    placeDetailsQueryParams.put("key", BuildConfig.GOOGLE_PLACE_API_KEY);
+    placeDetailsQueryParams.put("place_id", placeId);
+    placeDetailsQueryParams.put("language", langCode.name());
+    placeDetailsQueryParams.put("fields", joinAndSeparatesByComma(fieldsToReturn));
+    placeHttpClient
+        .getPlaceDetails(placeDetailsQueryParams)
+        .enqueue(getDetailsResponseCallback(listener));
+  }
+
+  private retrofit2.Callback<PlaceDetailsHttpResponse> getDetailsResponseCallback(
+      ResponseListener listener) {
+    return new retrofit2.Callback<PlaceDetailsHttpResponse>() {
+      @Override
+      public void onResponse(
+          Call<PlaceDetailsHttpResponse> call, Response<PlaceDetailsHttpResponse> response) {
+        final PlaceDetailsHttpResponse responseBody = response.body();
+        if(responseBody == null) listener.onFailure();
+        listener.onSuccess(responseBody.getPlaceDetails());
+      }
+
+      @Override
+      public void onFailure(Call<PlaceDetailsHttpResponse> call, Throwable t) {
+        listener.onFailure();
+      }
+    };
+  }
+
+  private String joinAndSeparatesByComma(Object[] entries) {
+    final StringBuilder stringBuilder = new StringBuilder();
+    for (int i = 0; i < entries.length; i++) {
+      stringBuilder.append(entries[i].toString());
+      if (i < entries.length - 1) stringBuilder.append(",");
+    }
+    return stringBuilder.toString();
+  }
+
+  // ############################################################ //
+  // ################ ----  INNER_CLASSES  ----- ################ //
+  // ############################################################ //
+
+  public static class AutocompleteSessionTokenHandler {
     private static String token;
 
     @Inject
-    public AutocompleteSessionTokenHandler(){}
+    public AutocompleteSessionTokenHandler() {}
 
-    private void renewToken(){
+    private void renewToken() {
       token = UUID.randomUUID().toString();
       postponeTokenExpiration();
     }
 
-    private void postponeTokenExpiration(){
+    private void postponeTokenExpiration() {
       Executors.newSingleThreadScheduledExecutor().schedule(this::resetToken, 2, TimeUnit.MINUTES);
     }
 
-    private void resetToken(){
+    private void resetToken() {
       token = null;
     }
 
@@ -166,5 +226,16 @@ public class GoogleNearbyPlaceAPIClient implements NearbyPlaceProvider, Autocomp
       return token;
     }
   }
-}
 
+
+  public interface Utils {
+     static String photoReferenceToUrl(String reference) {
+      return "https://maps.googleapis.com/maps/api/place/photo?maxwidth=500&photoreference="
+          + reference
+          + "&key="
+          + BuildConfig.GOOGLE_PLACE_API_KEY;
+    }
+  }
+
+
+}

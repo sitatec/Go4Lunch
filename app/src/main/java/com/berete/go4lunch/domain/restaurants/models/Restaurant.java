@@ -6,24 +6,15 @@ public class Restaurant extends Place {
       String id,
       String name,
       Double stars,
-      String photoUrl,
+      String mainPhotoUrl,
       String address,
       boolean isOpen,
-      String[] photoHtmlAttribution,
       GeoCoordinates coordinates) {
-    super(id, name, stars, photoUrl, address, isOpen, photoHtmlAttribution, coordinates);
+    super(id, name, stars, mainPhotoUrl, address, isOpen,coordinates);
   }
 
   public Restaurant(Place place) {
-    super(
-        place.getId(),
-        place.getName(),
-        place.getStars(),
-        place.getPhotoUrl(),
-        place.getAddress(),
-        place.isOpen(),
-        place.getPhotoHtmlAttribution(),
-        place.getCoordinates());
+    super(place);
   }
 
 }

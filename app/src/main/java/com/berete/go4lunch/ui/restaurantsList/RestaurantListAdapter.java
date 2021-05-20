@@ -102,7 +102,7 @@ public class RestaurantListAdapter
 
     private void loadRestaurantPhoto(Restaurant restaurant) {
       Glide.with(binding.getRoot().getContext())
-          .load(restaurant.getPhotoUrl())
+          .load(restaurant.getMainPhotoUrl())
           .centerCrop()
           .listener(getPhotoLoadedListener())
           .into(binding.restaurantPhoto);

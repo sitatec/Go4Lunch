@@ -5,7 +5,7 @@ import androidx.lifecycle.ViewModel;
 import com.berete.go4lunch.domain.restaurants.models.GeoCoordinates;
 import com.berete.go4lunch.domain.restaurants.models.Place;
 import com.berete.go4lunch.domain.restaurants.services.AutocompleteService;
-import com.berete.go4lunch.domain.restaurants.services.RestaurantsAutocomplete;
+import com.berete.go4lunch.domain.restaurants.repositories.RestaurantNamePredictionsRepository;
 
 import javax.inject.Inject;
 
@@ -13,18 +13,18 @@ import dagger.hilt.android.lifecycle.HiltViewModel;
 
 @HiltViewModel
 public class MainActivityViewModel extends ViewModel {
-    final RestaurantsAutocomplete restaurantsAutocomplete;
+    final RestaurantNamePredictionsRepository restaurantNamePredictionsRepository;
 
     @Inject
-    public MainActivityViewModel(RestaurantsAutocomplete restaurantsAutocomplete){
-      this.restaurantsAutocomplete = restaurantsAutocomplete;
+    public MainActivityViewModel(RestaurantNamePredictionsRepository restaurantNamePredictionsRepository){
+      this.restaurantNamePredictionsRepository = restaurantNamePredictionsRepository;
     }
 
     public void getPredictions(String input, GeoCoordinates currentLocation){
-      restaurantsAutocomplete.predict(input, currentLocation, Place.LangCode.getSystemLanguage());
+      restaurantNamePredictionsRepository.predict(input, currentLocation, Place.LangCode.getSystemLanguage());
     }
 
     public void setPredictionResultListener(AutocompleteService.ResultListener listener){
-      restaurantsAutocomplete.subscribeForResults(listener);
+      restaurantNamePredictionsRepository.subscribeForResults(listener);
     }
 }
