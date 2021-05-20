@@ -3,7 +3,7 @@ package com.berete.go4lunch.domain.restaurants.repositories;
 import com.berete.go4lunch.domain.restaurants.models.GeoCoordinates;
 import com.berete.go4lunch.domain.restaurants.models.Place;
 import com.berete.go4lunch.domain.restaurants.models.Restaurant;
-import com.berete.go4lunch.domain.restaurants.services.PlaceDataProvider;
+import com.berete.go4lunch.domain.restaurants.services.NearbyPlaceProvider;
 
 import java.util.Arrays;
 
@@ -13,26 +13,30 @@ import javax.inject.Inject;
 @ParametersAreNonnullByDefault
 public class NearbyRestaurantRepository {
 
-  private final PlaceDataProvider placeDataProvider;
+  private final NearbyPlaceProvider nearbyPlaceProvider;
 
   @Inject
-  public NearbyRestaurantRepository(PlaceDataProvider placeDataProvider) {
-    this.placeDataProvider = placeDataProvider;
+  public NearbyRestaurantRepository(NearbyPlaceProvider nearbyPlaceProvider) {
+    this.nearbyPlaceProvider = nearbyPlaceProvider;
   }
 
   public void getNearbyRestaurants(
-      PlaceDataProvider.Callback callback,
+      NearbyPlaceProvider.Callback callback,
       Place.LangCode langCode,
       GeoCoordinates currentLocation) {
     final Place.Type[] types = {Place.Type.RESTAURANT};
-    placeDataProvider.setQueryParameters(types, getFields(), currentLocation, langCode);
-
-    placeDataProvider.getPlaceData(new PlaceDataProvider.Callback() {
-          @Override public void onSuccess(Place[] places) {
-            callback.onSuccess(Arrays.stream(places).map(Restaurant::new).toArray(Restaurant[]::new));
+    nearbyPlaceProvider.setQueryParameters(
+        types, getFields(), currentLocation, langCode, NearbyPlaceProvider.DEFAULT_SEARCH_RADIUS);
+    nearbyPlaceProvider.getPlaceData(
+        new NearbyPlaceProvider.Callback() {
+          @Override
+          public void onSuccess(Place[] places) {
+            callback.onSuccess(
+                Arrays.stream(places).map(Restaurant::new).toArray(Restaurant[]::new));
           }
 
-          @Override public void onFailure() {
+          @Override
+          public void onFailure() {
             callback.onFailure();
           }
         });

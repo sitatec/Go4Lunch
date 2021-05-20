@@ -17,8 +17,8 @@ import com.berete.go4lunch.databinding.FragmentRestaurantsListBinding;
 import com.berete.go4lunch.domain.restaurants.models.Place;
 import com.berete.go4lunch.domain.restaurants.models.Restaurant;
 import com.berete.go4lunch.domain.restaurants.services.CurrentLocationProvider;
-import com.berete.go4lunch.domain.restaurants.services.PlaceDataProvider;
-import com.berete.go4lunch.ui.core.shared_view_models.RestaurantViewModel;
+import com.berete.go4lunch.domain.restaurants.services.NearbyPlaceProvider;
+import com.berete.go4lunch.ui.core.view_models.shared.RestaurantViewModel;
 
 import javax.inject.Inject;
 
@@ -44,7 +44,7 @@ public class RestaurantListFragment extends Fragment {
         currentLocation -> {
           restaurantViewModel.getNearbyRestaurants(
               currentLocation,
-              new PlaceDataProvider.Callback() {
+              new NearbyPlaceProvider.Callback() {
                 @Override
                 public void onSuccess(Place[] places) {
                   recyclerView.setAdapter(new RestaurantListAdapter((Restaurant[]) places, currentLocation));

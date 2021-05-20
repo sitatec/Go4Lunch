@@ -18,8 +18,8 @@ import com.berete.go4lunch.domain.restaurants.models.GeoCoordinates;
 import com.berete.go4lunch.domain.restaurants.models.Place;
 import com.berete.go4lunch.domain.restaurants.models.Restaurant;
 import com.berete.go4lunch.domain.restaurants.services.CurrentLocationProvider;
-import com.berete.go4lunch.domain.restaurants.services.PlaceDataProvider;
-import com.berete.go4lunch.ui.core.shared_view_models.RestaurantViewModel;
+import com.berete.go4lunch.domain.restaurants.services.NearbyPlaceProvider;
+import com.berete.go4lunch.ui.core.view_models.shared.RestaurantViewModel;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
@@ -92,7 +92,7 @@ public class MapFragment extends Fragment {
   private void showNearbyRestaurants(GeoCoordinates currentLocation) {
     viewModel.getNearbyRestaurants(
         currentLocation,
-        new PlaceDataProvider.Callback() {
+        new NearbyPlaceProvider.Callback() {
           @Override public void onSuccess(Place[] places) {
             map.clear();
             final Restaurant[] restaurants = (Restaurant[]) places;

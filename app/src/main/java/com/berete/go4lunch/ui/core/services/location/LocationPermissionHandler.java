@@ -81,4 +81,9 @@ public class LocationPermissionHandler implements EasyPermissions.PermissionCall
       int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
     EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults, this);
   }
+
+//  public static void onLocationPermissionResult(
+//      int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults){
+//
+//  }
 }

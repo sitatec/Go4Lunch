@@ -18,6 +18,7 @@
 
     <style name="RootActivityTheme" parent="Theme.Go4Lunch">
         <item name="android:windowBackground">@drawable/splash_screen_bg</item>
+        <item name="android:windowTranslucentNavigation">true</item>
         <item name="android:navigationBarColor" tools:targetApi="o_mr1">@android:color/transparent</item>
     </style>
 

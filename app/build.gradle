@@ -21,7 +21,7 @@ android {
         resConfigs "en", "fr"
 
         manifestPlaceholders = [GOOGLE_MAP_API_KEY: "${GOOGLE_MAP_API_KEY}"]
-        buildConfigField "String", "GOOGLE_PLACES_API_KEY", "\"${GOOGLE_PLACES_API_KEY}\""
+        buildConfigField "String", "GOOGLE_PLACE_API_KEY", "\"${GOOGLE_PLACE_API_KEY}\""
 //        buildConfigField "String", "GOOGLE_MAP_API_KEY", "\"${GOOGLE_MAP_API_KEY}\""
     }
 

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <!--#### CHANGE THE ROOT LAYOUT TO VISIBLE TO SEE IT IN THE PREVIEW WINDOW ####-->
+    <!--#### DON'T FORGET TO CHANGE IT TO "GONE" WHEN YOU HAVE FINISHED ####-->
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
@@ -33,7 +34,7 @@
             android:paddingHorizontal="10dp"
             android:paddingVertical="35dp"
             android:orientation="vertical"
-            android:background="@color/red">
+            android:background="@color/red_bg">
 
             <TextView
                 android:id="@+id/login_error_text"

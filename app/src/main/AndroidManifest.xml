@@ -35,7 +35,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ui.core.activities.MainActivity" />
+
+        <activity android:name=".ui.core.activities.MainActivity"
+            tools:ignore="LockedOrientationActivity"
+            android:screenOrientation="portrait"/>
     </application>
 
 </manifest>

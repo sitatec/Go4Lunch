@@ -11,7 +11,7 @@
         android:title="@string/settings_txt"/>
 
     <item
-        android:id="@+id/logout"
+        android:id="@+id/searchFragment"
         android:icon="@drawable/ic_logout_24"
         android:title="@string/logout_txt"/>
 </menu>

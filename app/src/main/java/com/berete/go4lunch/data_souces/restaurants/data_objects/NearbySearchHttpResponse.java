@@ -6,27 +6,28 @@ import com.berete.go4lunch.domain.restaurants.models.Place;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
-public class PlacesHttpResponseImpl implements PlacesHttpResponse {
+public class NearbySearchHttpResponse {
   @SerializedName("results")
   @Expose
   public List<PlaceDataObject> result;
 
+  @SerializedName("status")
+  @Expose
+  public String status;
+
   public Place[] getPlaces() {
-    final List<Place> placeList = new ArrayList<>();
-    Place place;
-    for (int i = 0; i < result.size(); i++){
-      place = result.get(i).toPlace();
-      if(place != null) placeList.add(place);
-    }
-    return placeList.toArray(new Place[0]);
+    if(!status.equals("OK")) return new Place[0];
+    return result.stream()
+        .map(PlaceDataObject::toPlace)
+        .filter(Objects::nonNull)
+        .toArray(Place[]::new);
   }
 
   public static class PlaceDataObject {
     @SerializedName("business_status")
-    @Expose
     public String business_status;
 
     @SerializedName("geometry")
@@ -34,7 +35,6 @@ public class PlacesHttpResponseImpl implements PlacesHttpResponse {
     public Geometry geometry;
 
     @SerializedName("icon")
-    @Expose
     public String icon;
 
     @SerializedName("name")
@@ -58,7 +58,6 @@ public class PlacesHttpResponseImpl implements PlacesHttpResponse {
     public Plus_code plus_code;
 
     @SerializedName("price_level")
-    @Expose
     public Integer price_level;
 
     @SerializedName("rating")
@@ -66,19 +65,15 @@ public class PlacesHttpResponseImpl implements PlacesHttpResponse {
     public Double rating;
 
     @SerializedName("reference")
-    @Expose
     public String reference;
 
     @SerializedName("scope")
-    @Expose
     public String scope;
 
     @SerializedName("types")
-    @Expose
     public List<String> types;
 
     @SerializedName("user_ratings_total")
-    @Expose
     public Integer user_ratings_total;
 
     @SerializedName("vicinity")
@@ -121,16 +116,17 @@ public class PlacesHttpResponseImpl implements PlacesHttpResponse {
     public Place toPlace() {
       Place place;
       try {
-        place = new Place(
-            place_id,
-            name,
-            rating,
-            getPhotoUrl(),
-            vicinity,
-            opening_hours.open_now,
-            photos.get(0).html_attributions.toArray(new String[0]),
-            geometry.location.toGeoCoordinates());
-      } catch (Exception e){
+        place =
+            new Place(
+                place_id,
+                name,
+                rating,
+                getPhotoUrl(),
+                vicinity,
+                opening_hours.open_now,
+                photos.get(0).html_attributions.toArray(new String[0]),
+                geometry.location.toGeoCoordinates());
+      } catch (Exception e) {
         place = null;
       }
       return place;
@@ -140,7 +136,7 @@ public class PlacesHttpResponseImpl implements PlacesHttpResponse {
       return "https://maps.googleapis.com/maps/api/place/photo?maxwidth=500&photoreference="
           + photos.get(0).photo_reference
           + "&key="
-          + BuildConfig.GOOGLE_PLACES_API_KEY;
+          + BuildConfig.GOOGLE_PLACE_API_KEY;
     }
   }
 

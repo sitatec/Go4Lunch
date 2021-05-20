@@ -1,5 +1,7 @@
 package com.berete.go4lunch.domain.restaurants.models;
 
+import java.util.Locale;
+
 public class Place {
 
   private final String id;
@@ -81,6 +83,12 @@ public class Place {
 
   public enum LangCode {
     fr,
-    en
+    en;
+
+    public static LangCode getSystemLanguage(){
+      if(Locale.getDefault().getLanguage().equals("fr"))
+        return fr;
+      return en;
+    }
   }
 }

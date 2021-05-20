@@ -16,5 +16,4 @@ public abstract class ActivityModuleForInterfaces {
     public abstract CurrentLocationProvider bindCurrentLocationProvider(
             FusedLocationAdapter fusedLocationAdapter
     );
-
 }

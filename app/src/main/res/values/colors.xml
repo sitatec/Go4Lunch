@@ -3,7 +3,9 @@
     <color name="orange_500">#FF9800</color>
     <color name="orange_700">#F57C00</color>
     <color name="blue">#006ECD</color>
-    <color name="red">#F44336</color>
+    <color name="red_bg">#F44336</color>
+    <color name="light_red">#B2FF4C3F</color>
+    <color name="light_green">#E14CAF50</color>
     <color name="purple_200">#FFBB86FC</color>
     <color name="purple_500">#FF6200EE</color>
     <color name="purple_700">#FF3700B3</color>

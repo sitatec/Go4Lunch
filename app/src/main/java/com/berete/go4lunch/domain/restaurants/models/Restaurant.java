@@ -25,4 +25,5 @@ public class Restaurant extends Place {
         place.getPhotoHtmlAttribution(),
         place.getCoordinates());
   }
+
 }
