@@ -78,7 +78,7 @@
             app:layout_constraintBottom_toTopOf="@id/restaurantStars"
             tool:text="(3)" />
 
-        <LinearLayout
+        <ImageView
             android:id="@+id/restaurantStars"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

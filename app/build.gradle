@@ -24,7 +24,7 @@ android {
         properties.load(project.rootProject.file('local.properties').newDataInputStream())
 
         manifestPlaceholders = [GOOGLE_MAP_API_KEY: "${GOOGLE_MAP_API_KEY}"]
-        buildConfigField "String", "GOOGLE_PLACE_API_KEY", properties.getProperty('GOOGLE_PLACE_API_KEY')
+        buildConfigField "String", "GOOGLE_PLACE_API_KEY", "\"${properties.getProperty('GOOGLE_PLACE_API_KEY')}\""
 //        buildConfigField "String", "GOOGLE_MAP_API_KEY", "\"${GOOGLE_MAP_API_KEY}\""
     }
 
@@ -53,6 +53,7 @@ dependencies {
     implementation 'androidx.recyclerview:recyclerview:1.2.0'
     implementation 'pub.devrel:easypermissions:3.0.0'
     implementation 'com.facebook.shimmer:shimmer:0.5.0'
+    implementation "androidx.multidex:multidex:2.0.1"
     coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:1.1.5'
 
     //TESTING

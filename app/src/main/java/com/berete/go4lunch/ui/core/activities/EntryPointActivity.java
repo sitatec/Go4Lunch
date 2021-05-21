@@ -3,6 +3,7 @@ package com.berete.go4lunch.ui.core.activities;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 
 import androidx.activity.result.ActivityResult;
@@ -43,6 +44,7 @@ public class EntryPointActivity extends AppCompatActivity {
   }
 
   private void startLoginActivity() {
+    Log.i("LOGING", "____ON_REQUEST_LOGIN______");
     registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(), this::onActivityResult)
         .launch(
@@ -68,6 +70,7 @@ public class EntryPointActivity extends AppCompatActivity {
   }
 
   private void onActivityResult(ActivityResult result) {
+    Log.i("LOGING", "____ON_RESULT_LOGIN______");
     binding.getRoot().setVisibility(View.VISIBLE);
     if (result.getResultCode() == Activity.RESULT_OK) {
       startMainActivity();

@@ -1,6 +1,6 @@
 package com.berete.go4lunch.di;
 
-import com.berete.go4lunch.data_souces.restaurants.remote_source.GoogleNearbyPlaceAPIClient;
+import com.berete.go4lunch.data_souces.restaurants.remote_source.GooglePlacesAPIClient;
 import com.berete.go4lunch.data_souces.restaurants.remote_source.PlaceHttpClient;
 
 
@@ -20,7 +20,7 @@ public class ViewModelModule {
     @ViewModelScoped
     public PlaceHttpClient providePlacesHttpClient(){
         return new Retrofit.Builder()
-                .baseUrl(GoogleNearbyPlaceAPIClient.BASE_URL)
+                .baseUrl(GooglePlacesAPIClient.BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build()
                 .create(PlaceHttpClient.class);

@@ -1,6 +1,6 @@
 package com.berete.go4lunch.data_souces.restaurants.data_objects;
 
-import com.berete.go4lunch.data_souces.restaurants.remote_source.GoogleNearbyPlaceAPIClient;
+import com.berete.go4lunch.data_souces.restaurants.remote_source.GooglePlacesAPIClient;
 import com.berete.go4lunch.domain.restaurants.models.GeoCoordinates;
 import com.berete.go4lunch.domain.restaurants.models.Place;
 import com.google.gson.annotations.Expose;
@@ -122,10 +122,10 @@ class PlaceDataObject {
               place_id,
               name,
               rating,
-              GoogleNearbyPlaceAPIClient.Utils.photoReferenceToUrl(photos.get(0).photo_reference),
+              GooglePlacesAPIClient.Utils.photoReferenceToUrl(photos.get(0).photo_reference),
               vicinity,
               opening_hours.open_now,
-              geometry.location.toGeoCoordinates());
+              geometry.location.toGeoCoordinates(), icon);
     } catch (Exception e) {
       place = null;
     }

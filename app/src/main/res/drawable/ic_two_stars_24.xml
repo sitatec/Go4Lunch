@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:drawable="@drawable/ic_one_star_24" android:left="18dp"/>
+    <item android:drawable="@drawable/ic_one_star_24" android:right="18dp"/>
+</layer-list>

@@ -9,7 +9,7 @@
     xmlns:shimmer="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:android="http://schemas.android.com/apk/res/android"
-    tools:context=".ui.restaurantsList.RestaurantListFragment"
+    tools:context=".ui.restaurant.list.RestaurantListFragment"
     android:name="com.berete.go4lunch.RestaurantListFragment">
 
     <androidx.recyclerview.widget.RecyclerView
@@ -17,7 +17,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:listitem="@layout/restaurant_list_item"
-        android:background="#F7F9F9"
+        android:background="@color/light_grey"
         />
 
     <ImageView
