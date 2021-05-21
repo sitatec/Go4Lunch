@@ -26,8 +26,8 @@ public class DistanceUtils {
   public static String convertToDisplayableDistance(Float distanceInMeter){
     if(distanceInMeter < 100) return Math.round(distanceInMeter) + " m";
     if(distanceInMeter < 1000) return Math.round(distanceInMeter) + "m";
-    if((distanceInMeter % 1000) < 100 ) return Math.round(distanceInMeter / 1000) + "km";
-    return String.format("%.1f km", distanceInMeter / 1000);
+    if((distanceInMeter % 1000) < 100 ) return Math.round(distanceInMeter / 1000) + " km";
+    return String.format("%.1fkm", distanceInMeter / 1000);
   }
 
 }

@@ -23,6 +23,7 @@ import com.berete.go4lunch.domain.restaurants.services.AutocompleteService;
 import com.berete.go4lunch.domain.restaurants.services.CurrentLocationProvider;
 import com.berete.go4lunch.ui.core.adapters.PredictionListAdapter;
 import com.berete.go4lunch.ui.core.view_models.MainActivityViewModel;
+import com.berete.go4lunch.ui.restaurant.details.RestaurantDetailsActivity;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 
@@ -75,11 +76,14 @@ public class MainActivity extends AppCompatActivity {
 
   @Override
   public boolean onSupportNavigateUp() {
-    NavController navController = Navigation.findNavController(this, R.id.fragmentContainerView);
-    return NavigationUI.navigateUp(navController, getAppBarConfig()) || super.onSupportNavigateUp();
+    final NavController navController = Navigation.findNavController(this, R.id.fragmentContainerView);;
+    return NavigationUI.navigateUp(navController, getAppBarConfig())
+        || super.onSupportNavigateUp();
   }
 
-  private void displayRestaurantDetail(String restaurantId) {}
+  private void displayRestaurantDetail(String restaurantId) {
+    RestaurantDetailsActivity.start(restaurantId, this);
+  }
 
   @Override
   public boolean onCreateOptionsMenu(Menu menu) {
@@ -100,10 +104,6 @@ public class MainActivity extends AppCompatActivity {
   }
 
   private void startSearchSession() {
-    binding.predictionList.setLayoutManager(new LinearLayoutManager(this));
-    binding.predictionList.setAdapter(predictionListAdapter);
-    binding.searchView.setVisibility(View.VISIBLE);
-    initViewModel();
     currentLocationProvider.getCurrentCoordinates(
         new CurrentLocationProvider.OnCoordinatesResultListener() {
           @Override
@@ -111,6 +111,10 @@ public class MainActivity extends AppCompatActivity {
             currentLocation = geoCoordinates;
           }
         });
+    binding.predictionList.setLayoutManager(new LinearLayoutManager(this));
+    binding.predictionList.setAdapter(predictionListAdapter);
+    binding.searchView.setVisibility(View.VISIBLE);
+    initViewModel();
   }
 
   private void endSearchSession() {
@@ -140,13 +144,13 @@ public class MainActivity extends AppCompatActivity {
     return new SearchView.OnQueryTextListener() {
       @Override
       public boolean onQueryTextSubmit(String query) {
-        if (!isStringLengthPair(query)) viewModel.getPredictions(query, currentLocation);
+        if (!isStringLengthPair(query) && currentLocation != null) viewModel.getPredictions(query, currentLocation);
         return false;
       }
 
       @Override
       public boolean onQueryTextChange(String newText) {
-        if (isStringLengthPair(newText)) viewModel.getPredictions(newText, currentLocation);
+        if (isStringLengthPair(newText) && currentLocation != null) viewModel.getPredictions(newText, currentLocation);
         return false;
       }
     };

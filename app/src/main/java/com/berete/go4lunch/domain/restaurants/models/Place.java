@@ -1,5 +1,7 @@
 package com.berete.go4lunch.domain.restaurants.models;
 
+import androidx.annotation.NonNull;
+
 import java.util.Locale;
 
 public class Place {
@@ -14,6 +16,7 @@ public class Place {
   private String websiteUrl;
   private String phoneNumber;
   private Photo[] allPhotos;
+  private String icon;
 
   public Place(
       String id,
@@ -22,7 +25,7 @@ public class Place {
       String mainPhotoUrl,
       String address,
       boolean isOpen,
-      GeoCoordinates coordinates) {
+      GeoCoordinates coordinates, String icon) {
     this.id = id;
     this.name = name;
     this.stars = stars;
@@ -30,6 +33,7 @@ public class Place {
     this.address = address;
     this.isOpen = isOpen;
     this.coordinates = coordinates;
+    this.icon = icon;
   }
   public Place(
       String id,
@@ -46,10 +50,11 @@ public class Place {
     this.address = address;
     this.websiteUrl = websiteUrl;
     this.phoneNumber = phoneNumber;
+    mainPhotoUrl = allPhotos[0].getUrl();
   }
 
   // To make casting to a child easy.
-  public Place(Place copy){
+  public Place(@NonNull Place copy){
     this(
         copy.getId(),
         copy.getName(),
@@ -57,7 +62,8 @@ public class Place {
         copy.getMainPhotoUrl(),
         copy.getAddress(),
         copy.isOpen(),
-        copy.getCoordinates());
+        copy.getCoordinates(),
+        copy.getIcon());
     allPhotos = copy.getAllPhotos();
     websiteUrl = copy.getWebsiteUrl();
     phoneNumber = copy.getPhoneNumber();
@@ -65,6 +71,10 @@ public class Place {
 
   public String getWebsiteUrl() {
     return websiteUrl;
+  }
+
+  public String getIcon() {
+    return icon;
   }
 
   public String getPhoneNumber() {
@@ -100,6 +110,11 @@ public class Place {
 
   public Photo[] getAllPhotos() {
     return allPhotos;
+  }
+
+  public int getStarsBoundedTo3(){
+    // TODO refactor (take into account the users likes)
+    return stars < 1.5 ? 1 : stars < 3.5 ? 2 : 3;
   }
 
   ////////////////// --- INNERS ---///////////////////////

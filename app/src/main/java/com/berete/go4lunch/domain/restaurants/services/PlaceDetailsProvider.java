@@ -1,7 +1,5 @@
 package com.berete.go4lunch.domain.restaurants.services;
 
-import androidx.annotation.Nullable;
-
 import com.berete.go4lunch.domain.restaurants.models.Place;
 
 public interface PlaceDetailsProvider {
@@ -12,7 +10,7 @@ public interface PlaceDetailsProvider {
       ResponseListener listener);
 
   interface ResponseListener {
-    void onSuccess(@Nullable Place place);
+    void onSuccess(Place place);
 
     void onFailure();
   }

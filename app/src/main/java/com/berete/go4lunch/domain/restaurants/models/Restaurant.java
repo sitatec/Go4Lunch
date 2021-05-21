@@ -10,7 +10,7 @@ public class Restaurant extends Place {
       String address,
       boolean isOpen,
       GeoCoordinates coordinates) {
-    super(id, name, stars, mainPhotoUrl, address, isOpen,coordinates);
+    super(id, name, stars, mainPhotoUrl, address, isOpen,coordinates, null);
   }
 
   public Restaurant(Place place) {

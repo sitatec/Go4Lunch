@@ -1,4 +1,4 @@
-package com.berete.go4lunch.ui.restaurantsList;
+package com.berete.go4lunch.ui.restaurant.list;
 
 import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
@@ -17,6 +17,7 @@ import com.berete.go4lunch.databinding.RestaurantListItemBinding;
 import com.berete.go4lunch.domain.restaurants.models.GeoCoordinates;
 import com.berete.go4lunch.domain.restaurants.models.Restaurant;
 import com.berete.go4lunch.domain.utils.DistanceUtils;
+import com.berete.go4lunch.ui.restaurant.RestaurantUtils;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.DataSource;
 import com.bumptech.glide.load.engine.GlideException;
@@ -28,10 +29,12 @@ public class RestaurantListAdapter
 
   private Restaurant[] restaurants;
   private GeoCoordinates currentLocation;
+  private final OnItemClicked onItemClicked;
 
-  public RestaurantListAdapter(Restaurant[] restaurants, @Nullable GeoCoordinates currentLocation) {
+  public RestaurantListAdapter(Restaurant[] restaurants, @Nullable GeoCoordinates currentLocation, OnItemClicked onItemClicked) {
     this.restaurants = restaurants;
     this.currentLocation = currentLocation;
+    this.onItemClicked = onItemClicked;
   }
 
   @NonNull
@@ -75,6 +78,8 @@ public class RestaurantListAdapter
       binding.distanceFromCurrentLoc.setText(getDistanceAsString(restaurant));
       setRestaurantStatus(restaurant);
       loadRestaurantPhoto(restaurant);
+      binding.restaurantStars.setImageResource(RestaurantUtils.getStarsDrawableId(restaurant.getStarsBoundedTo3()));
+      binding.getRoot().setOnClickListener(v -> onItemClicked.onClicked(restaurant.getId()));
     }
 
     private String getDistanceAsString(Restaurant restaurant) {
@@ -94,10 +99,10 @@ public class RestaurantListAdapter
 
     private int getSupportColor(@ColorRes int colorId) {
       final Resources resources = binding.getRoot().getResources();
-      if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-        return resources.getColor(colorId, null);
+      if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
+        return resources.getColor(colorId);
       }
-      return resources.getColor(colorId);
+      return resources.getColor(colorId, null);
     }
 
     private void loadRestaurantPhoto(Restaurant restaurant) {
@@ -132,5 +137,8 @@ public class RestaurantListAdapter
         }
       };
     }
+  }
+  public interface OnItemClicked {
+    void onClicked(String selectedRestaurantId);
   }
 }

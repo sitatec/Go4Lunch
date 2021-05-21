@@ -21,7 +21,7 @@ import javax.inject.Inject;
 import retrofit2.Call;
 import retrofit2.Response;
 
-public class GoogleNearbyPlaceAPIClient
+public class GooglePlacesAPIClient
     implements NearbyPlaceProvider, AutocompleteService, PlaceDetailsProvider {
 
   public static final String BASE_URL = "https://maps.googleapis.com/maps/api/place/";
@@ -32,7 +32,7 @@ public class GoogleNearbyPlaceAPIClient
   private final AutocompleteSessionTokenHandler autocompleteSessionTokenHandler;
 
   @Inject
-  public GoogleNearbyPlaceAPIClient(
+  public GooglePlacesAPIClient(
       PlaceHttpClient placeHttpClient,
       AutocompleteSessionTokenHandler autocompleteSessionTokenHandler) {
     this.placeHttpClient = placeHttpClient;
@@ -177,8 +177,14 @@ public class GoogleNearbyPlaceAPIClient
       public void onResponse(
           Call<PlaceDetailsHttpResponse> call, Response<PlaceDetailsHttpResponse> response) {
         final PlaceDetailsHttpResponse responseBody = response.body();
-        if(responseBody == null) listener.onFailure();
-        listener.onSuccess(responseBody.getPlaceDetails());
+        if(responseBody != null){
+          final Place placeResult = responseBody.getPlaceDetails();
+          if(placeResult != null) {
+            listener.onSuccess(placeResult);
+          }else
+            listener.onFailure();
+        }else
+          listener.onFailure();
       }
 
       @Override
@@ -188,13 +194,30 @@ public class GoogleNearbyPlaceAPIClient
     };
   }
 
-  private String joinAndSeparatesByComma(Object[] entries) {
+  private String joinAndSeparatesByComma(Place.Field[] entries) {
     final StringBuilder stringBuilder = new StringBuilder();
+    String currentField;
     for (int i = 0; i < entries.length; i++) {
-      stringBuilder.append(entries[i].toString());
-      if (i < entries.length - 1) stringBuilder.append(",");
+      currentField = convertToGoogleApiField(entries[i]);
+      if(currentField != null) {
+        stringBuilder.append(currentField);
+        if (i < entries.length - 1) stringBuilder.append(",");
+      }
     }
     return stringBuilder.toString();
+  }
+
+  private String convertToGoogleApiField(Place.Field input){
+    switch (input){
+      case NAME: return "name";
+      case ADDRESS: return "formatted_address";
+      case PHONE_NUMBER: return "formatted_phone_number";
+      case WEBSITE_URL: return "website";
+      case RATE: return "rating";
+      case OPENING_HOURS: return "opening_hours";
+      case PHOTO_URL: return "photo";
+      default: return null;
+    }
   }
 
   // ############################################################ //

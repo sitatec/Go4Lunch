@@ -13,12 +13,12 @@
         <item name="android:windowLightNavigationBar" tools:targetApi="o_mr1">true</item>
         <item name="android:navigationBarColor" tools:targetApi="o_mr1">@color/white</item>
         <item name="android:statusBarColor" tools:targetApi="l">@android:color/transparent</item>
-        <!-- Customize your theme here. -->
     </style>
 
     <style name="RootActivityTheme" parent="Theme.Go4Lunch">
+        <item name="android:fitsSystemWindows">true</item>
         <item name="android:windowBackground">@drawable/splash_screen_bg</item>
-        <item name="android:windowTranslucentNavigation">true</item>
+        <!--<item name="android:windowTranslucentNavigation">true</item> -->
         <item name="android:navigationBarColor" tools:targetApi="o_mr1">@android:color/transparent</item>
     </style>
 
@@ -26,6 +26,11 @@
         <item name="android:windowTranslucentStatus">true</item>
         <item name="android:windowTranslucentNavigation">true</item>
 <!--        <item name="android:statusBarColor" tools:targetApi="l">@android:color/transparent</item>-->
+    </style>
+
+    <style name="RestaurantDetailsTheme" parent="Theme.Go4Lunch">
+        <item name="android:windowTranslucentStatus">true</item>
+        <item name="android:navigationBarColor" tools:targetApi="o_mr1">@android:color/transparent</item>
     </style>
 
     <style name="RetryBtnStyle" parent="Widget.MaterialComponents.Button.Icon">
@@ -38,6 +43,21 @@
 
     <style name="ToolbarTheme" parent="ThemeOverlay.AppCompat.Dark">
         <item name="colorControlNormal">@color/white</item>
+        <item name="titleTextColor">@color/white</item>
+    </style>
+
+    <style name="RestaurantDetailsAction">
+        <item name="android:background">@android:color/transparent</item>
+        <item name="android:textAlignment">center</item>
+        <item name="android:drawablePadding">5dp</item>
+        <item name="android:textColor">?attr/colorPrimary</item>
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="drawableTint">?attr/colorPrimary</item>
+    </style>
+
+    <style name="Base.TextAppearance.Widget.AppCompat.Toolbar.Title.Invisible">
+        <item name="visibilityMode">ignore</item>
     </style>
 
 </resources>

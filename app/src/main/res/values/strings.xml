@@ -15,7 +15,7 @@
     <string name="map_string">Map</string>
     <string name="restaurants_list">Restaurants</string>
     <string name="workmates_string">Workmates</string>
-    <string name="chat_string">Chat</string>
+    <string name="conversations_string">Conversations</string>
     <string name="search_a_restaurant_btn_txt">Search a restaurant</string>
     <string name="drawer_your_lunch_txt">Your lunch</string>
     <string name="settings_txt">Settings</string>
@@ -39,5 +39,9 @@
     <string name="restaurant_status_open">Open</string>
     <string name="restaurant_status_closed">Closed</string>
     <string name="search_restaurants_hint">Search restaurants</string>
+    <string name="user_choice_state">User choice for this restaurant state</string>
+    <string name="call_text">CALL</string>
+    <string name="like_text">LIKE</string>
+    <string name="website_text">WEBSITE</string>
 
 </resources>

@@ -9,19 +9,31 @@
         android:id="@+id/mapFragment"
         android:name="com.berete.go4lunch.ui.map.MapFragment"
         android:label="@string/find_a_restaurant_title"
-        tools:layout="@layout/fragment_map" />
+        tools:layout="@layout/fragment_map" >
+        <action
+            android:id="@+id/action_mapFragment_to_restaurantDetailsActivity"
+            app:destination="@id/restaurantDetailsActivity" />
+    </fragment>
 
     <fragment
         android:id="@+id/restaurantListFragment"
-        android:name="com.berete.go4lunch.ui.restaurantsList.RestaurantListFragment"
+        android:name="com.berete.go4lunch.ui.restaurant.list.RestaurantListFragment"
         android:label="@string/find_a_restaurant_title"
-        tools:layout="@layout/fragment_restaurants_list"/>
+        tools:layout="@layout/fragment_restaurants_list">
+        <action
+            android:id="@+id/action_restaurantListFragment_to_restaurantDetailsActivity"
+            app:destination="@id/restaurantDetailsActivity" />
+    </fragment>
 
     <fragment
         android:id="@+id/workmatesListFragment"
         android:name="com.berete.go4lunch.ui.workmates.workmatesListFragment"
         android:label="@string/available_workmates_title"
-        tools:layout="@layout/fragment_workmates" />
+        tools:layout="@layout/fragment_workmates" >
+        <action
+            android:id="@+id/action_workmatesListFragment_to_restaurantDetailsActivity"
+            app:destination="@id/restaurantDetailsActivity" />
+    </fragment>
 
     <fragment
         android:id="@+id/conversationsListFragment"
@@ -38,5 +50,15 @@
         android:name="com.berete.go4lunch.ui.chat.ChatFragment"
         android:label="@string/chat_title"
         tools:layout="@layout/fragment_chat" />
+    <activity
+        android:id="@+id/restaurantDetailsActivity"
+        android:name="com.berete.go4lunch.ui.restaurant.details.RestaurantDetailsActivity"
+        android:label="RestaurantDetailsActivity">
+        <argument
+            android:name="restaurantId"
+            app:argType="string"
+            android:defaultValue="@null"/>
+    </activity>
+
 
 </navigation>
