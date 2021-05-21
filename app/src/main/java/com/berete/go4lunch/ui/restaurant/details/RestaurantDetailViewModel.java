@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel;
 
 import com.berete.go4lunch.domain.restaurants.models.Place;
 import com.berete.go4lunch.domain.restaurants.repositories.RestaurantDetailsRepository;
-import com.berete.go4lunch.domain.restaurants.services.PlaceDetailsProvider;
+import com.berete.go4lunch.domain.utils.Callback;
 
 import javax.inject.Inject;
 
@@ -30,7 +30,7 @@ public class RestaurantDetailViewModel extends ViewModel {
   }
 
   public void getRestaurantDetails(
-      String restaurantId, PlaceDetailsProvider.ResponseListener listener) {
+      String restaurantId, Callback<Place> listener) {
     restaurantDetailsRepository.getRestaurantDetails(
         restaurantId, Place.Field.values(), Place.LangCode.getSystemLanguage(), listener);
   }

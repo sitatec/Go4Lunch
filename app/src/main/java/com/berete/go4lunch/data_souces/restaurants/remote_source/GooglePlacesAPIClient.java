@@ -6,9 +6,11 @@ import com.berete.go4lunch.data_souces.restaurants.data_objects.NearbySearchHttp
 import com.berete.go4lunch.data_souces.restaurants.data_objects.PlaceDetailsHttpResponse;
 import com.berete.go4lunch.domain.restaurants.models.GeoCoordinates;
 import com.berete.go4lunch.domain.restaurants.models.Place;
+import com.berete.go4lunch.domain.restaurants.models.Prediction;
 import com.berete.go4lunch.domain.restaurants.services.AutocompleteService;
 import com.berete.go4lunch.domain.restaurants.services.NearbyPlaceProvider;
 import com.berete.go4lunch.domain.restaurants.services.PlaceDetailsProvider;
+import com.berete.go4lunch.domain.utils.Callback;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -100,7 +102,7 @@ public class GooglePlacesAPIClient
       GeoCoordinates currentLocation,
       Place.LangCode langCode,
       Integer radiusInMeter,
-      ResultListener listener) {
+      Callback<Prediction[]> listener) {
     buildAutocompleteQuery(input, currentLocation, langCode, radiusInMeter);
     placeHttpClient
         .getPredictions(autocompleteQueryParams)
@@ -112,7 +114,7 @@ public class GooglePlacesAPIClient
       String input,
       GeoCoordinates currentLocation,
       Place.LangCode langCode,
-      ResultListener listener) {
+      Callback<Prediction[]> listener) {
     predict(input, currentLocation, langCode, DEFAULT_COVERED_RADIUS, listener);
   }
 
@@ -133,7 +135,7 @@ public class GooglePlacesAPIClient
   }
 
   private retrofit2.Callback<AutocompleteHttpResponse> getAutocompleteResponseListener(
-      ResultListener listener) {
+      Callback<Prediction[]> listener) {
     return new retrofit2.Callback<AutocompleteHttpResponse>() {
       @Override
       public void onResponse(
@@ -159,7 +161,7 @@ public class GooglePlacesAPIClient
       String placeId,
       Place.Field[] fieldsToReturn,
       Place.LangCode langCode,
-      ResponseListener listener) {
+      Callback<Place> listener) {
     final Map<String, String> placeDetailsQueryParams = new HashMap<>();
     placeDetailsQueryParams.put("key", BuildConfig.GOOGLE_PLACE_API_KEY);
     placeDetailsQueryParams.put("place_id", placeId);
@@ -171,7 +173,7 @@ public class GooglePlacesAPIClient
   }
 
   private retrofit2.Callback<PlaceDetailsHttpResponse> getDetailsResponseCallback(
-      ResponseListener listener) {
+      Callback<Place> listener) {
     return new retrofit2.Callback<PlaceDetailsHttpResponse>() {
       @Override
       public void onResponse(

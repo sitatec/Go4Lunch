@@ -13,9 +13,9 @@ public class PredictionListAdapter
     extends RecyclerView.Adapter<PredictionListAdapter.PredictionViewHolder> {
 
   private Prediction[] predictions = new Prediction[0];
-  private final OnPredictionSelected onItemSelectedListener;
+  private final ListAdapterCallback<String> onItemSelectedListener;
 
-  public PredictionListAdapter(OnPredictionSelected onItemSelectedListener) {
+  public PredictionListAdapter(ListAdapterCallback<String> onItemSelectedListener) {
     this.onItemSelectedListener = onItemSelectedListener;
   }
 
@@ -57,14 +57,11 @@ public class PredictionListAdapter
       binding
           .getRoot()
           .setOnClickListener(
-              v -> onItemSelectedListener.onSelected(prediction.getCorrespondingPlaceId()));
+              v -> onItemSelectedListener.call(prediction.getCorrespondingPlaceId()));
       binding.bestMatch.setText(prediction.getBestMatch());
       binding.relatedText.setText(prediction.getRelatedText());
       binding.distanceFromCurrentLoc.setText(prediction.getDisplayableDistance());
     }
   }
 
-  public interface OnPredictionSelected {
-    void onSelected(String selectedPredictionPlaceId);
-  }
 }

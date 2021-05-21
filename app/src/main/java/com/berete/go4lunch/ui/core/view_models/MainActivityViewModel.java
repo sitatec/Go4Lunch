@@ -4,8 +4,9 @@ import androidx.lifecycle.ViewModel;
 
 import com.berete.go4lunch.domain.restaurants.models.GeoCoordinates;
 import com.berete.go4lunch.domain.restaurants.models.Place;
-import com.berete.go4lunch.domain.restaurants.services.AutocompleteService;
+import com.berete.go4lunch.domain.restaurants.models.Prediction;
 import com.berete.go4lunch.domain.restaurants.repositories.RestaurantNamePredictionsRepository;
+import com.berete.go4lunch.domain.utils.Callback;
 
 import javax.inject.Inject;
 
@@ -24,7 +25,7 @@ public class MainActivityViewModel extends ViewModel {
       restaurantNamePredictionsRepository.predict(input, currentLocation, Place.LangCode.getSystemLanguage());
     }
 
-    public void setPredictionResultListener(AutocompleteService.ResultListener listener){
+    public void setPredictionResultListener(Callback<Prediction[]> listener){
       restaurantNamePredictionsRepository.subscribeForResults(listener);
     }
 }

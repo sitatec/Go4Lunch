@@ -2,7 +2,9 @@ package com.berete.go4lunch.domain.restaurants.repositories;
 
 import com.berete.go4lunch.domain.restaurants.models.GeoCoordinates;
 import com.berete.go4lunch.domain.restaurants.models.Place;
+import com.berete.go4lunch.domain.restaurants.models.Prediction;
 import com.berete.go4lunch.domain.restaurants.services.AutocompleteService;
+import com.berete.go4lunch.domain.utils.Callback;
 
 import javax.inject.Inject;
 
@@ -12,7 +14,7 @@ import dagger.hilt.android.scopes.ViewModelScoped;
 public class RestaurantNamePredictionsRepository {
 
   private final AutocompleteService autocompleteService;
-  private AutocompleteService.ResultListener autocompleteResultListener;
+  private Callback<Prediction[]> autocompleteResultListener;
 
   @Inject
   public RestaurantNamePredictionsRepository(AutocompleteService autocompleteService) {
@@ -29,7 +31,7 @@ public class RestaurantNamePredictionsRepository {
         autocompleteResultListener);
   }
 
-  public void subscribeForResults(AutocompleteService.ResultListener listener) {
+  public void subscribeForResults(Callback<Prediction[]> listener) {
     this.autocompleteResultListener = listener;
   }
 }

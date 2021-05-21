@@ -16,7 +16,7 @@ import com.berete.go4lunch.R;
 import com.berete.go4lunch.databinding.ActivityRestaurantDetailsBinding;
 import com.berete.go4lunch.domain.restaurants.models.Place;
 import com.berete.go4lunch.domain.restaurants.models.Restaurant;
-import com.berete.go4lunch.domain.restaurants.services.PlaceDetailsProvider;
+import com.berete.go4lunch.domain.utils.Callback;
 import com.berete.go4lunch.ui.restaurant.RestaurantUtils;
 import com.bumptech.glide.Glide;
 
@@ -51,7 +51,7 @@ public class RestaurantDetailsActivity extends AppCompatActivity {
     final String restaurantId = getIntent().getStringExtra("restaurantId");
     viewModel.getRestaurantDetails(
         restaurantId,
-        new PlaceDetailsProvider.ResponseListener() {
+        new Callback<Place>() {
           @Override
           public void onSuccess(Place place) {
             Log.i("REQUEST_RESULT_SUCCESS", place.toString());

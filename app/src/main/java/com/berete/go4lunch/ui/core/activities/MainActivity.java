@@ -19,8 +19,8 @@ import com.berete.go4lunch.R;
 import com.berete.go4lunch.databinding.ActivityMainBinding;
 import com.berete.go4lunch.domain.restaurants.models.GeoCoordinates;
 import com.berete.go4lunch.domain.restaurants.models.Prediction;
-import com.berete.go4lunch.domain.restaurants.services.AutocompleteService;
 import com.berete.go4lunch.domain.restaurants.services.CurrentLocationProvider;
+import com.berete.go4lunch.domain.utils.Callback;
 import com.berete.go4lunch.ui.core.adapters.PredictionListAdapter;
 import com.berete.go4lunch.ui.core.view_models.MainActivityViewModel;
 import com.berete.go4lunch.ui.restaurant.details.RestaurantDetailsActivity;
@@ -124,7 +124,7 @@ public class MainActivity extends AppCompatActivity {
   private void initViewModel() {
     viewModel = new ViewModelProvider(this).get(MainActivityViewModel.class);
     viewModel.setPredictionResultListener(
-        new AutocompleteService.ResultListener() {
+        new Callback<Prediction[]>() {
           @Override
           public void onSuccess(Prediction[] predictions) {
             predictionListAdapter.updateList(predictions);

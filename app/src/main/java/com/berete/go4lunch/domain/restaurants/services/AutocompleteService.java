@@ -3,6 +3,7 @@ package com.berete.go4lunch.domain.restaurants.services;
 import com.berete.go4lunch.domain.restaurants.models.GeoCoordinates;
 import com.berete.go4lunch.domain.restaurants.models.Place;
 import com.berete.go4lunch.domain.restaurants.models.Prediction;
+import com.berete.go4lunch.domain.utils.Callback;
 
 public interface AutocompleteService {
 
@@ -13,16 +14,11 @@ public interface AutocompleteService {
       GeoCoordinates currentLocation,
       Place.LangCode langCode,
       Integer radiusInMeter,
-      ResultListener listener);
+      Callback<Prediction[]> listener);
 
   public void predict(
       String input,
       GeoCoordinates currentLocation,
       Place.LangCode langCode,
-      ResultListener listener);
-
-  public interface ResultListener {
-    void onSuccess(Prediction[] predictions);
-    void onFailure();
-  }
+      Callback<Prediction[]> listener);
 }
