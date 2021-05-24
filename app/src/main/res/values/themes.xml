@@ -33,7 +33,7 @@
         <item name="android:navigationBarColor" tools:targetApi="o_mr1">@android:color/transparent</item>
     </style>
 
-    <style name="RetryBtnStyle" parent="Widget.MaterialComponents.Button.Icon">
+    <style name="RetryLoginBtnStyle" parent="Widget.MaterialComponents.Button.Icon">
         <item name="iconTint">@color/black</item>
         <item name="backgroundTint">@color/white</item>
         <item name="android:textColor">@color/black</item>
@@ -44,12 +44,13 @@
     <style name="ToolbarTheme" parent="ThemeOverlay.AppCompat.Dark">
         <item name="colorControlNormal">@color/white</item>
         <item name="titleTextColor">@color/white</item>
+        <item name="android:textColor">@color/black</item>
     </style>
 
-    <style name="RestaurantDetailsAction">
-        <item name="android:background">@android:color/transparent</item>
+    <style name="RestaurantDetailsAction" parent="Widget.AppCompat.Button.Borderless">
         <item name="android:textAlignment">center</item>
         <item name="android:drawablePadding">5dp</item>
+        <item name="android:paddingBottom">2dp</item>
         <item name="android:textColor">?attr/colorPrimary</item>
         <item name="android:layout_width">0dp</item>
         <item name="android:layout_height">wrap_content</item>

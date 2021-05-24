@@ -11,13 +11,14 @@ import javax.inject.Inject;
 import dagger.hilt.android.scopes.ViewModelScoped;
 
 @ViewModelScoped
-public class RestaurantNamePredictionsRepository {
+public class PlaceNamePredictionsRepository {
 
   private final AutocompleteService autocompleteService;
   private Callback<Prediction[]> autocompleteResultListener;
+  private Callback<Prediction[]> filteredAutocompleteResultListener;
 
   @Inject
-  public RestaurantNamePredictionsRepository(AutocompleteService autocompleteService) {
+  public PlaceNamePredictionsRepository(AutocompleteService autocompleteService) {
     this.autocompleteService = autocompleteService;
   }
 
@@ -31,7 +32,23 @@ public class RestaurantNamePredictionsRepository {
         autocompleteResultListener);
   }
 
+  public void predictWithFilter(
+      String input, GeoCoordinates currentLocation, Place.LangCode langCode, Place.Type[] filter) {
+    assert filteredAutocompleteResultListener != null;
+    autocompleteService.predictWithFilter(
+        input,
+        currentLocation,
+        langCode,
+        AutocompleteService.DEFAULT_COVERED_RADIUS,
+        filter,
+        filteredAutocompleteResultListener);
+  }
+
   public void subscribeForResults(Callback<Prediction[]> listener) {
     this.autocompleteResultListener = listener;
+  }
+
+  public void subscribeForFilteredResult(Callback<Prediction[]> listener) {
+    this.filteredAutocompleteResultListener = listener;
   }
 }

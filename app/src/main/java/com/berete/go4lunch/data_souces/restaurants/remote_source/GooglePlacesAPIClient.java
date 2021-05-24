@@ -1,5 +1,7 @@
 package com.berete.go4lunch.data_souces.restaurants.remote_source;
 
+import android.util.Log;
+
 import com.berete.go4lunch.BuildConfig;
 import com.berete.go4lunch.data_souces.restaurants.data_objects.AutocompleteHttpResponse;
 import com.berete.go4lunch.data_souces.restaurants.data_objects.NearbySearchHttpResponse;
@@ -106,7 +108,7 @@ public class GooglePlacesAPIClient
     buildAutocompleteQuery(input, currentLocation, langCode, radiusInMeter);
     placeHttpClient
         .getPredictions(autocompleteQueryParams)
-        .enqueue(getAutocompleteResponseListener(listener));
+        .enqueue(getAutocompleteResponseListener(listener, null));
   }
 
   @Override
@@ -118,6 +120,30 @@ public class GooglePlacesAPIClient
     predict(input, currentLocation, langCode, DEFAULT_COVERED_RADIUS, listener);
   }
 
+  @Override
+  public void predictWithFilter(
+      String input,
+      GeoCoordinates currentLocation,
+      Place.LangCode langCode,
+      Integer radiusInMeter,
+      Place.Type[] filter,
+      Callback<Prediction[]> listener) {
+    buildAutocompleteQuery(input, currentLocation, langCode, radiusInMeter);
+    placeHttpClient
+        .getPredictions(autocompleteQueryParams)
+        .enqueue(getAutocompleteResponseListener(listener, filter));
+  }
+
+  @Override
+  public void predictWithFilter(
+      String input,
+      GeoCoordinates currentLocation,
+      Place.LangCode langCode,
+      Place.Type[] filter,
+      Callback<Prediction[]> listener) {
+    predictWithFilter(input, currentLocation, langCode, DEFAULT_COVERED_RADIUS, filter, listener);
+  }
+
   private void buildAutocompleteQuery(
       String input,
       GeoCoordinates currentLocation,
@@ -127,22 +153,29 @@ public class GooglePlacesAPIClient
     autocompleteQueryParams.put("key", BuildConfig.GOOGLE_PLACE_API_KEY);
     autocompleteQueryParams.put("types", "establishment");
     autocompleteQueryParams.put("input", input);
-    autocompleteQueryParams.put("origin", currentLocation.toString());
-    autocompleteQueryParams.put("location", currentLocation.toString());
-    autocompleteQueryParams.put("radius", radiusInMeter.toString());
     autocompleteQueryParams.put("language", langCode.name());
     autocompleteQueryParams.put("sessiontoken", autocompleteSessionTokenHandler.getToken());
+    if(currentLocation != null) {
+      autocompleteQueryParams.put("origin", currentLocation.toString());
+      autocompleteQueryParams.put("location", currentLocation.toString());
+      autocompleteQueryParams.put("radius", radiusInMeter.toString());
+      autocompleteQueryParams.put("strictbounds", "");
+    }
   }
 
   private retrofit2.Callback<AutocompleteHttpResponse> getAutocompleteResponseListener(
-      Callback<Prediction[]> listener) {
+      Callback<Prediction[]> listener, Place.Type[] filter) {
     return new retrofit2.Callback<AutocompleteHttpResponse>() {
       @Override
       public void onResponse(
           Call<AutocompleteHttpResponse> call, Response<AutocompleteHttpResponse> response) {
         final AutocompleteHttpResponse responseBody = response.body();
         if (responseBody == null) listener.onFailure();
-        else listener.onSuccess(responseBody.getPredictions());
+        else {
+          if(filter != null) listener.onSuccess(responseBody.getFilteredPredictions(filter));
+          else listener.onSuccess(responseBody.getPredictions());
+          Log.i("HTTP_RESPONSE", "onResponseCallback");
+        }
       }
 
       @Override
@@ -167,6 +200,7 @@ public class GooglePlacesAPIClient
     placeDetailsQueryParams.put("place_id", placeId);
     placeDetailsQueryParams.put("language", langCode.name());
     placeDetailsQueryParams.put("fields", joinAndSeparatesByComma(fieldsToReturn));
+    placeDetailsQueryParams.put("sessiontoken", autocompleteSessionTokenHandler.getAndResetToken());
     placeHttpClient
         .getPlaceDetails(placeDetailsQueryParams)
         .enqueue(getDetailsResponseCallback(listener));
@@ -179,14 +213,12 @@ public class GooglePlacesAPIClient
       public void onResponse(
           Call<PlaceDetailsHttpResponse> call, Response<PlaceDetailsHttpResponse> response) {
         final PlaceDetailsHttpResponse responseBody = response.body();
-        if(responseBody != null){
+        if (responseBody != null) {
           final Place placeResult = responseBody.getPlaceDetails();
-          if(placeResult != null) {
+          if (placeResult != null) {
             listener.onSuccess(placeResult);
-          }else
-            listener.onFailure();
-        }else
-          listener.onFailure();
+          } else listener.onFailure();
+        } else listener.onFailure();
       }
 
       @Override
@@ -201,7 +233,7 @@ public class GooglePlacesAPIClient
     String currentField;
     for (int i = 0; i < entries.length; i++) {
       currentField = convertToGoogleApiField(entries[i]);
-      if(currentField != null) {
+      if (currentField != null) {
         stringBuilder.append(currentField);
         if (i < entries.length - 1) stringBuilder.append(",");
       }
@@ -209,16 +241,26 @@ public class GooglePlacesAPIClient
     return stringBuilder.toString();
   }
 
-  private String convertToGoogleApiField(Place.Field input){
-    switch (input){
-      case NAME: return "name";
-      case ADDRESS: return "formatted_address";
-      case PHONE_NUMBER: return "formatted_phone_number";
-      case WEBSITE_URL: return "website";
-      case RATE: return "rating";
-      case OPENING_HOURS: return "opening_hours";
-      case PHOTO_URL: return "photo";
-      default: return null;
+  private String convertToGoogleApiField(Place.Field input) {
+    switch (input) {
+      case ID:
+        return "place_id";
+      case NAME:
+        return "name";
+      case ADDRESS:
+        return "formatted_address";
+      case PHONE_NUMBER:
+        return "formatted_phone_number";
+      case WEBSITE_URL:
+        return "website";
+      case RATE:
+        return "rating";
+      case OPENING_HOURS:
+        return "opening_hours";
+      case PHOTO_URL:
+        return "photo";
+      default:
+        return null;
     }
   }
 
@@ -250,17 +292,22 @@ public class GooglePlacesAPIClient
       else postponeTokenExpiration();
       return token;
     }
+
+    public String getAndResetToken(){
+      if(token == null) return "null_token";
+      final String tokenCopy = new String(token);
+      resetToken();
+      return tokenCopy;
+    }
+
   }
 
-
   public interface Utils {
-     static String photoReferenceToUrl(String reference) {
+    static String photoReferenceToUrl(String reference) {
       return "https://maps.googleapis.com/maps/api/place/photo?maxwidth=500&photoreference="
           + reference
           + "&key="
           + BuildConfig.GOOGLE_PLACE_API_KEY;
     }
   }
-
-
 }

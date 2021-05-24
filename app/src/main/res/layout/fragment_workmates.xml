@@ -1,13 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.recyclerview.widget.RecyclerView xmlns:android="http://schemas.android.com/apk/res/android"
+
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/workmates_list"
-    android:name="com.berete.go4lunch.workmatesListFragment"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:layout_marginLeft="16dp"
-    android:layout_marginRight="16dp"
-    app:layoutManager="LinearLayoutManager"
-    tools:context=".ui.workmates.workmatesListFragment"
-    tools:listitem="@layout/item_workmate" />
+    android:layout_height="match_parent">
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/workmates_list"
+        android:name="com.berete.go4lunch.workmatesListFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/light_grey"
+        app:layoutManager="LinearLayoutManager"
+        tools:context=".ui.workmates.workmatesListFragment"
+        tools:listitem="@layout/workmate_list_item" />
+
+    <LinearLayout
+        android:id="@+id/workplace_required_message"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:padding="40dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAlignment="center"
+            android:layout_marginBottom="8dp"
+            android:text="@string/workplace_required_message"
+            android:textSize="16sp" />
+
+        <Button
+            android:id="@+id/select_my_workplace_action"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/select_my_workplace_btn" />
+
+    </LinearLayout>
+
+</FrameLayout>

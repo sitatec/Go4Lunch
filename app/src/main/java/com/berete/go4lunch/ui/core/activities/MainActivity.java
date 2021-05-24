@@ -1,8 +1,11 @@
 package com.berete.go4lunch.ui.core.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
@@ -20,12 +23,19 @@ import com.berete.go4lunch.databinding.ActivityMainBinding;
 import com.berete.go4lunch.domain.restaurants.models.GeoCoordinates;
 import com.berete.go4lunch.domain.restaurants.models.Prediction;
 import com.berete.go4lunch.domain.restaurants.services.CurrentLocationProvider;
+import com.berete.go4lunch.domain.shared.UserProvider;
 import com.berete.go4lunch.domain.utils.Callback;
 import com.berete.go4lunch.ui.core.adapters.PredictionListAdapter;
+import com.berete.go4lunch.ui.core.fragment.WorkplacePickerDialogFragment;
 import com.berete.go4lunch.ui.core.view_models.MainActivityViewModel;
 import com.berete.go4lunch.ui.restaurant.details.RestaurantDetailsActivity;
+import com.firebase.ui.auth.AuthUI;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
+
+import java.lang.ref.WeakReference;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.inject.Inject;
 
@@ -35,10 +45,13 @@ import dagger.hilt.android.AndroidEntryPoint;
 public class MainActivity extends AppCompatActivity {
 
   @Inject public CurrentLocationProvider currentLocationProvider;
+  @Inject public UserProvider userProvider;
 
+  private final Set<WeakReference<Runnable>> onWorkplaceSelectedListeners = new HashSet<>();
   private ActivityMainBinding binding;
   private MainActivityViewModel viewModel;
   private GeoCoordinates currentLocation;
+  private static WorkplacePickerDialogFragment workplacePicker;
   private final PredictionListAdapter predictionListAdapter =
       new PredictionListAdapter(this::displayRestaurantDetail);
 
@@ -48,6 +61,13 @@ public class MainActivity extends AppCompatActivity {
     binding = ActivityMainBinding.inflate(getLayoutInflater());
     setContentView(binding.getRoot());
     setupNavigation();
+    initViewModel();
+    userProvider.addAuthStateChangesListener(
+        currentUser -> {
+          if (currentUser.getWorkplaceId() == null || currentUser.getWorkplaceId().isEmpty()) {
+            showWorkplacePikerInternal();
+          }
+        });
   }
 
   private void setupNavigation() {
@@ -61,7 +81,47 @@ public class MainActivity extends AppCompatActivity {
     setSupportActionBar(toolbar);
     NavigationUI.setupActionBarWithNavController(this, navController, getAppBarConfig());
     NavigationUI.setupWithNavController(navigationView, navController);
+    navigationView.setNavigationItemSelectedListener(this::onNavigationDrawerMenuItemSelected);
     NavigationUI.setupWithNavController(bottomNavigationView, navController);
+  }
+
+  private boolean onNavigationDrawerMenuItemSelected(MenuItem menuItem) {
+    if (menuItem.getItemId() == R.id.logout) {
+      signOut();
+    }
+    return true;
+  }
+
+  private void signOut() {
+    AuthUI.getInstance()
+        .signOut(this)
+        .addOnSuccessListener(
+            __ -> {
+              startActivity(new Intent(this, EntryPointActivity.class));
+              finish();
+            });
+  }
+
+  private void showWorkplacePikerInternal() {
+    if (workplacePicker == null) {
+      workplacePicker =
+          new WorkplacePickerDialogFragment(
+              this::onWorkplacePredictionSelected,
+              newText -> viewModel.getWorkplacePredictions(newText));
+    }
+    workplacePicker.show(getSupportFragmentManager(), getString(R.string.workplace_picker_tag));
+  }
+
+  private void onWorkplacePredictionSelected(Prediction selectedPrediction) {
+    final String selectedWorkplaceId = selectedPrediction.getCorrespondingPlaceId();
+    userProvider.getCurrentUser().setWorkplaceId(selectedWorkplaceId);
+    workplacePicker.dismiss();
+    userProvider.updateUserData(UserProvider.WORKPLACE, selectedWorkplaceId);
+  }
+
+  public void showWorkplacePiker(Runnable onWorkplaceSelected) {
+    onWorkplaceSelectedListeners.add(new WeakReference<>(onWorkplaceSelected));
+    showWorkplacePikerInternal();
   }
 
   private AppBarConfiguration getAppBarConfig() {
@@ -76,18 +136,19 @@ public class MainActivity extends AppCompatActivity {
 
   @Override
   public boolean onSupportNavigateUp() {
-    final NavController navController = Navigation.findNavController(this, R.id.fragmentContainerView);;
-    return NavigationUI.navigateUp(navController, getAppBarConfig())
-        || super.onSupportNavigateUp();
+    final NavController navController =
+        Navigation.findNavController(this, R.id.fragmentContainerView);
+    return NavigationUI.navigateUp(navController, getAppBarConfig()) || super.onSupportNavigateUp();
   }
 
   private void displayRestaurantDetail(String restaurantId) {
-    RestaurantDetailsActivity.start(restaurantId, this);
+    RestaurantDetailsActivity.navigate(restaurantId, this);
   }
 
   @Override
   public boolean onCreateOptionsMenu(Menu menu) {
     getMenuInflater().inflate(R.menu.toolbar_menu, menu);
+    menu.findItem(R.id.orderRestaurants).setVisible(false);
     final SearchView searchField = (SearchView) menu.findItem(R.id.searchAction).getActionView();
     searchField.setOnQueryTextFocusChangeListener(this::onSearchFieldFocusChanged);
     searchField.setOnQueryTextListener(getQueryListener());
@@ -104,17 +165,10 @@ public class MainActivity extends AppCompatActivity {
   }
 
   private void startSearchSession() {
-    currentLocationProvider.getCurrentCoordinates(
-        new CurrentLocationProvider.OnCoordinatesResultListener() {
-          @Override
-          public void onResult(GeoCoordinates geoCoordinates) {
-            currentLocation = geoCoordinates;
-          }
-        });
+    currentLocationProvider.getCurrentCoordinates(currentLoc -> currentLocation = currentLoc);
     binding.predictionList.setLayoutManager(new LinearLayoutManager(this));
     binding.predictionList.setAdapter(predictionListAdapter);
     binding.searchView.setVisibility(View.VISIBLE);
-    initViewModel();
   }
 
   private void endSearchSession() {
@@ -123,7 +177,7 @@ public class MainActivity extends AppCompatActivity {
 
   private void initViewModel() {
     viewModel = new ViewModelProvider(this).get(MainActivityViewModel.class);
-    viewModel.setPredictionResultListener(
+    viewModel.setRestaurantPredictionResultListener(
         new Callback<Prediction[]>() {
           @Override
           public void onSuccess(Prediction[] predictions) {
@@ -133,30 +187,36 @@ public class MainActivity extends AppCompatActivity {
           @Override
           public void onFailure() {}
         });
+
+    viewModel.setWorkplacePredictionListener(
+        new Callback<Prediction[]>() {
+          @Override
+          public void onSuccess(Prediction[] predictions) {
+            workplacePicker.updatePredictionsList(predictions);
+          }
+
+          @Override
+          public void onFailure() {}
+        });
   }
 
-  // When the user start typing the restaurant name, we will not send an autocomplete request for
-  // each character (for the billing purpose) instead, we will send a request for each character
-  // whose position in the word is impair, ie: the sequence for the Go4Lunch word would be
-  // "G", "Go4", "Go4Lu", "Go4Lunc". Then if the user type "Go4Lunch" and  last autocompleted word
-  // was "Go4Lunc", he will submit a search query for the complete word.
   private SearchView.OnQueryTextListener getQueryListener() {
     return new SearchView.OnQueryTextListener() {
       @Override
       public boolean onQueryTextSubmit(String query) {
-        if (!isStringLengthPair(query) && currentLocation != null) viewModel.getPredictions(query, currentLocation);
+        final InputMethodManager inputMethodManager =
+            (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+        inputMethodManager.hideSoftInputFromWindow(binding.getRoot().getWindowToken(), 0);
         return false;
       }
 
       @Override
       public boolean onQueryTextChange(String newText) {
-        if (isStringLengthPair(newText) && currentLocation != null) viewModel.getPredictions(newText, currentLocation);
+        if (currentLocation != null) {
+          viewModel.getRestaurantPrediction(newText, currentLocation);
+        }
         return false;
       }
     };
-  }
-
-  private boolean isStringLengthPair(String stringToCheck) {
-    return stringToCheck.length() % 2 != 0;
   }
 }

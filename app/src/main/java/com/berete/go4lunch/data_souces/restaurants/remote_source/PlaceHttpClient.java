@@ -14,7 +14,7 @@ public interface PlaceHttpClient {
     @GET("nearbysearch/json")
     Call<NearbySearchHttpResponse> getPlaces(@QueryMap Map<String, String> params);
 
-    @GET("autocomplete/json?strictbounds")
+    @GET("autocomplete/json")
     Call<AutocompleteHttpResponse> getPredictions(@QueryMap Map<String, String> params);
 
     @GET("details/json")

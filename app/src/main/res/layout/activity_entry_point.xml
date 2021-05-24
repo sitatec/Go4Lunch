@@ -13,7 +13,7 @@
     android:gravity="center"
     android:orientation="vertical"
     tools:context=".ui.core.activities.EntryPointActivity"
-    android:visibility="visible">
+    android:visibility="gone">
 
     <include
         layout="@layout/brand"
@@ -53,7 +53,7 @@
 
             <Button
                 android:id="@+id/retry_login"
-                style="@style/RetryBtnStyle"
+                style="@style/RetryLoginBtnStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="end"

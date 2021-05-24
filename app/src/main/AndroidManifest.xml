@@ -24,7 +24,6 @@
 
         <activity
             android:name=".ui.core.activities.EntryPointActivity"
-            android:noHistory="true"
             android:screenOrientation="portrait"
             android:theme="@style/RootActivityTheme"
             tools:ignore="LockedOrientationActivity">

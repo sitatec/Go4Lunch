@@ -1,11 +1,16 @@
 package com.berete.go4lunch.data_souces.restaurants.data_objects;
 
+import android.util.Log;
+
+import com.berete.go4lunch.domain.restaurants.models.Place;
 import com.berete.go4lunch.domain.restaurants.models.Prediction;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
+import java.util.function.Function;
 
 public class AutocompleteHttpResponse {
 
@@ -19,8 +24,22 @@ public class AutocompleteHttpResponse {
 
   public Prediction[] getPredictions() {
     if(!status.equals("OK")) return new Prediction[0];
+    return convertResult(PredictionDataObject::toPrediction);
+  }
+
+  public Prediction[] getFilteredPredictions(Place.Type[] filter){
+    if(!status.equals("OK")) return new Prediction[0];
+    final List<Place.Type> placeList = Arrays.asList(filter);
+    if(placeList.contains(Place.Type.RESTAURANT)){
+      return convertResult(PredictionDataObject::toRestaurantPrediction);
+    }
+    return new Prediction[0];// Only the restaurant Type is available yet.
+  }
+
+  private Prediction[] convertResult(Function<PredictionDataObject, Prediction> convertToPrediction){
+    Log.i("HTTP_RESPONSE", "convertResult");
     return predictionDataObjects.stream()
-        .map(PredictionDataObject::toPrediction)
+        .map(convertToPrediction)
         .filter(Objects::nonNull)
         .toArray(Prediction[]::new);
   }
@@ -59,18 +78,22 @@ class PredictionDataObject {
   @Expose
   public List<String> types = null;
 
-  public Prediction toPrediction() {
+  public Prediction toRestaurantPrediction() {
     if (types.contains("restaurant")
         || types.contains("food")
         || types.contains("meal_takeaway")
         || types.contains("meal_delivery")) {
-      return new Prediction(
-          structured_formatting.main_text,
-          structured_formatting.secondary_text,
-          place_id,
-          distance_meters);
+      return toPrediction();
     }
     return null;
+  }
+
+  public Prediction toPrediction(){
+    return new Prediction(
+        structured_formatting.main_text,
+        structured_formatting.secondary_text,
+        place_id,
+        distance_meters);
   }
 }
 

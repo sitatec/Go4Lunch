@@ -39,7 +39,7 @@ public class LocationPermissionHandler implements EasyPermissions.PermissionCall
         new PermissionRequest.Builder(
                 activity, PERMISSION_REQUEST_CODE, Manifest.permission.ACCESS_FINE_LOCATION)
             .setRationale(R.string.rational_location_request_msg)
-            .setNegativeButtonText(R.string.deni_location_permission)
+            .setNegativeButtonText(R.string.not_now_txt)
             .setPositiveButtonText(R.string.allow_location_permission)
             .build());
   }

@@ -21,4 +21,22 @@ public interface AutocompleteService {
       GeoCoordinates currentLocation,
       Place.LangCode langCode,
       Callback<Prediction[]> listener);
+
+  public void predictWithFilter(
+      String input,
+      GeoCoordinates currentLocation,
+      Place.LangCode langCode,
+      Integer radiusInMeter,
+      Place.Type[] filter,
+      Callback<Prediction[]> listener
+  );
+
+  public void predictWithFilter(
+      String input,
+      GeoCoordinates currentLocation,
+      Place.LangCode langCode,
+      Place.Type[] filter,
+      Callback<Prediction[]> listener
+  );
+
 }

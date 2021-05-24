@@ -1,46 +1,72 @@
 package com.berete.go4lunch.ui.workmates;
 
+import android.content.res.Resources;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.view.LayoutInflater;
-import android.view.ViewGroup;
-import android.widget.TextView;
+import com.berete.go4lunch.R;
+import com.berete.go4lunch.databinding.WorkmateListItemBinding;
+import com.berete.go4lunch.domain.shared.models.User;
+import com.berete.go4lunch.ui.core.adapters.ListAdapterCallback;
+import com.bumptech.glide.Glide;
 
-import com.berete.go4lunch.databinding.FragmentWorkmatesBinding;
-import com.berete.go4lunch.ui.workmates.models.Workmate;
+public class WorkmatesListAdapter
+    extends RecyclerView.Adapter<WorkmatesListAdapter.WorkmateViewHolder> {
 
-import java.util.List;
+  private User[] workmates = new User[0];
+  private final ListAdapterCallback<String> onWorkmatesSelected;
 
-public class WorkmatesListAdapter extends RecyclerView.Adapter<WorkmatesListAdapter.ViewHolder> {
+  public WorkmatesListAdapter(ListAdapterCallback<String> onWorkmatesSelected) {
+    this.onWorkmatesSelected = onWorkmatesSelected;
+  }
 
-    private final List<Workmate> mValues;
+  @Override
+  public WorkmateViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    final WorkmateListItemBinding binding =
+        WorkmateListItemBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false);
+    return new WorkmateViewHolder(binding);
+  }
 
-    public WorkmatesListAdapter(List<Workmate> items) {
-        mValues = items;
+  @Override
+  public void onBindViewHolder(final WorkmateViewHolder holder, int position) {
+    holder.updateView(workmates[position]);
+  }
+
+  @Override
+  public int getItemCount() {
+    return workmates.length;
+  }
+
+  public void updateList(User[] newWorkmates){
+    workmates = newWorkmates;
+    notifyDataSetChanged();
+  }
+
+  public class WorkmateViewHolder extends RecyclerView.ViewHolder {
+
+    final WorkmateListItemBinding binding;
+
+    public WorkmateViewHolder(WorkmateListItemBinding binding) {
+      super(binding.getRoot());
+      this.binding = binding;
     }
 
-    @Override
-    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-
-        return new ViewHolder(FragmentWorkmatesBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false));
-
+    public void updateView(User workmate) {
+      binding.choosedRestaurantName.setText(workmate.getChosenRestaurantName());
+      String itemTitle;
+      final Resources resources = binding.getRoot().getResources();
+      if (workmate.getChosenRestaurantId() == null || workmate.getChosenRestaurantId().isEmpty()) {
+        itemTitle = resources.getString(R.string.has_not_decided_yet_txt, workmate.getUsername());
+        binding.choosedRestaurantName.setVisibility(View.GONE);
+      } else {
+        itemTitle = resources.getString(R.string.is_eating_at_txt, workmate.getUsername());
+        binding.getRoot().setOnClickListener(v -> onWorkmatesSelected.call(workmate.getChosenRestaurantId()));
+      }
+      binding.itemTitle.setText(itemTitle);
+      Glide.with(binding.getRoot()).load(workmate.getPhotoUrl()).centerCrop().into(binding.workmatesPhoto);
     }
-
-    @Override
-    public void onBindViewHolder(final ViewHolder holder, int position) {
-
-    }
-
-    @Override
-    public int getItemCount() {
-        return mValues.size();
-    }
-
-    public class ViewHolder extends RecyclerView.ViewHolder {
-
-        public ViewHolder(FragmentWorkmatesBinding binding) {
-            super(binding.getRoot());
-        }
-
-    }
+  }
 }

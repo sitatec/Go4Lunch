@@ -114,7 +114,9 @@ public class Place {
 
   public int getStarsBoundedTo3(){
     // TODO refactor (take into account the users likes)
-    return stars < 1.5 ? 1 : stars < 3.5 ? 2 : 3;
+    final double starsPercentageFor5StarsMax = (stars * 100) / 5;
+    final double correspondingStarsFor3StarsMax = (starsPercentageFor5StarsMax / 100) * 3;
+    return (int) Math.round(correspondingStarsFor3StarsMax);
   }
 
   ////////////////// --- INNERS ---///////////////////////
@@ -144,6 +146,7 @@ public class Place {
   }
 
   public enum Field {
+    ID,
     NAME,
     GEO_COORDINATES,
     ADDRESS,

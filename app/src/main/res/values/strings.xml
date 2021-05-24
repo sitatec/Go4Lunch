@@ -31,7 +31,7 @@
         nearby restaurants will not be displayed neither on the map nor in the restaurants list.
     </string>
     <string name="allow_location_permission">continue</string>
-    <string name="deni_location_permission">not now</string>
+    <string name="not_now_txt">not now</string>
     <string name="continue_without_permission">continue without permission</string>
     <string name="allow_location_permission_1">allow</string>
     <string name="restaurant_photo_description">The restaurant photo</string>
@@ -43,5 +43,18 @@
     <string name="call_text">CALL</string>
     <string name="like_text">LIKE</string>
     <string name="website_text">WEBSITE</string>
-
+    <string name="workmate_is_joining">%1$s is joining!</string>
+    <string name="is_eating_at_txt">%1$s is eating at</string>
+    <string name="has_not_decided_yet_txt">%1$s hasn\'t decided yet</string>
+    <string name="workplace_search_field_hint">Type you workplace name or address</string>
+    <string name="workplace_picker_title">Select your workplace</string>
+    <string name="workplace_picker_tag">Workplace Picker</string>
+    <string name="workplace_required_message_restaurant_details">Select your workplace to see your workmates that are joining this restaurant</string>
+    <string name="select_my_workplace_btn">Select my workplace</string>
+    <string name="workplace_required_message">Select your workplace to see you workmates</string>
+    <string name="order_restaurant_list">Sort Restaurant list</string>
+    <string name="order_by_stars">Sort By Stars</string>
+    <string name="order_by_nearest">Sort by nearest</string>
+    <string name="order_by_workmate">Sort by workmates count</string>
+    <string name="in_brackets">(%1$d)</string>
 </resources>

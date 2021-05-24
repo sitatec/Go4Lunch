@@ -22,7 +22,7 @@ import com.berete.go4lunch.domain.restaurants.models.Place;
 import com.berete.go4lunch.domain.restaurants.models.Restaurant;
 import com.berete.go4lunch.domain.restaurants.services.CurrentLocationProvider;
 import com.berete.go4lunch.domain.utils.Callback;
-import com.berete.go4lunch.ui.core.view_models.shared.RestaurantViewModel;
+import com.berete.go4lunch.ui.core.view_models.shared.RestaurantRelatedViewModel;
 import com.berete.go4lunch.ui.restaurant.details.RestaurantDetailsActivity;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -42,7 +42,7 @@ public class MapFragment extends Fragment {
 
   private static final String LOG_TAG = MapFragment.class.getSimpleName();
   private GoogleMap map;
-  private RestaurantViewModel viewModel;
+  private RestaurantRelatedViewModel viewModel;
 
   @Inject public CurrentLocationProvider currentLocationProvider;
 
@@ -66,7 +66,7 @@ public class MapFragment extends Fragment {
         new ViewModelProvider(
                 backStackEntry,
                 HiltViewModelFactory.createInternal(getActivity(), backStackEntry, null, null))
-            .get(RestaurantViewModel.class);
+            .get(RestaurantRelatedViewModel.class);
   }
 
   @SuppressLint("MissingPermission")
@@ -133,7 +133,7 @@ public class MapFragment extends Fragment {
   }
 
   private void displayRestaurantDetails(Marker clickedMarker) {
-    RestaurantDetailsActivity.start(clickedMarker.getTag().toString(), getActivity());
+    RestaurantDetailsActivity.navigate(clickedMarker.getTag().toString(), getActivity());
   }
 }
 
