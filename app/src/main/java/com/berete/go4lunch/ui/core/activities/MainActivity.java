@@ -117,6 +117,9 @@ public class MainActivity extends AppCompatActivity {
     userProvider.getCurrentUser().setWorkplaceId(selectedWorkplaceId);
     workplacePicker.dismiss();
     userProvider.updateUserData(UserProvider.WORKPLACE, selectedWorkplaceId);
+    for (WeakReference<Runnable> listener : onWorkplaceSelectedListeners)
+      if(listener.get() != null)
+        listener.get().run();
   }
 
   public void showWorkplacePiker(Runnable onWorkplaceSelected) {

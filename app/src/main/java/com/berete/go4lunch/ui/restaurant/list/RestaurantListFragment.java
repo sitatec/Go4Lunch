@@ -130,7 +130,7 @@ public class RestaurantListFragment extends Fragment {
           binding.restaurantListShimmer.stopShimmer();
           binding.restaurantListShimmer.setVisibility(View.GONE);
         }
-        getWorkmatesCountByRestaurant();
+        fetchWorkmatesCountByRestaurant();
       }
 
       @Override
@@ -138,7 +138,7 @@ public class RestaurantListFragment extends Fragment {
     };
   }
 
-  private void getWorkmatesCountByRestaurant() {
+  private void fetchWorkmatesCountByRestaurant() {
     restaurantRelatedViewModel.getWorkmatesCountByRestaurant(
         userProvider.getCurrentUser().getWorkplaceId(),
         new Callback<Map<String, Integer>>() {

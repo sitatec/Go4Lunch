@@ -6,11 +6,11 @@ public class User {
   private final String id;
   private final String username;
   private final String photoUrl;
-  private String workplaceId;
-  private String chosenRestaurantId;
   private List<String> likedRestaurantsIds;
   private List<String> conversationsIds;
-  private String chosenRestaurantName;
+  private String workplaceId ="";
+  private String chosenRestaurantId = "";
+  private String chosenRestaurantName = "";
 
   public User(String id, String username, String photoUrl) {
     this.id = id;

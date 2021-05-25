@@ -99,11 +99,12 @@ public class RestaurantListAdapter
     private void setWorkmatesCount(Restaurant restaurant) {
       if (workmatesCountByRestaurant != null) {
         final Integer workmatesCount = workmatesCountByRestaurant.get(restaurant.getId());
+        String formattedWorkmateCount = "";
         if (workmatesCount != null && workmatesCount != 0) {
-          final String formattedWorkmateCount =
+          formattedWorkmateCount =
               binding.getRoot().getResources().getString(R.string.in_brackets, workmatesCount);
-          binding.numberOfFriendsThere.setText(formattedWorkmateCount);
         }
+        binding.numberOfFriendsThere.setText(formattedWorkmateCount);
       }
     }
 
