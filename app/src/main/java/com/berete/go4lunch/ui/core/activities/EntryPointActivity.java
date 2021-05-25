@@ -12,19 +12,27 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.berete.go4lunch.R;
 import com.berete.go4lunch.databinding.ActivityEntryPointBinding;
+import com.berete.go4lunch.domain.shared.UserProvider;
 import com.firebase.ui.auth.AuthMethodPickerLayout;
 import com.firebase.ui.auth.AuthUI;
 import com.firebase.ui.auth.ErrorCodes;
 import com.firebase.ui.auth.FirebaseUiException;
 import com.firebase.ui.auth.IdpResponse;
-import com.google.firebase.auth.FirebaseAuth;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 
 import java.util.Arrays;
 import java.util.List;
 
+import javax.inject.Inject;
+
+import dagger.hilt.android.AndroidEntryPoint;
+
+@AndroidEntryPoint
 public class EntryPointActivity extends AppCompatActivity {
 
   private ActivityEntryPointBinding binding;
+  @Inject
+  public UserProvider userProvider;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -36,8 +44,8 @@ public class EntryPointActivity extends AppCompatActivity {
   }
 
   private void requireAuthentication() {
-    if (FirebaseAuth.getInstance().getCurrentUser() != null) {
-      startMainActivity();
+    if ( userProvider.getCurrentUser() != null) {
+        startMainActivity();
     } else {
       startLoginActivity();
     }
@@ -51,6 +59,7 @@ public class EntryPointActivity extends AppCompatActivity {
             AuthUI.getInstance()
                 .createSignInIntentBuilder()
                 .setAvailableProviders(getAuthProviders())
+                .setLogo(R.drawable.logo)
                 .setAuthMethodPickerLayout(getCustomAuthLayout())
                 .setTheme(R.style.NoActionBarSysUITransparentTheme)
                 .build());
@@ -58,7 +67,9 @@ public class EntryPointActivity extends AppCompatActivity {
 
   private List<AuthUI.IdpConfig> getAuthProviders() {
     return Arrays.asList(
-        new AuthUI.IdpConfig.GoogleBuilder().build(),
+        new AuthUI.IdpConfig.GoogleBuilder()
+            .setSignInOptions(GoogleSignInOptions.DEFAULT_SIGN_IN)
+            .build(),
         new AuthUI.IdpConfig.FacebookBuilder().build());
   }
 
@@ -71,12 +82,14 @@ public class EntryPointActivity extends AppCompatActivity {
 
   private void onActivityResult(ActivityResult result) {
     Log.i("LOGING", "____ON_RESULT_LOGIN______");
-    binding.getRoot().setVisibility(View.VISIBLE);
     if (result.getResultCode() == Activity.RESULT_OK) {
       startMainActivity();
-    } else if (result.getResultCode() == Activity.RESULT_CANCELED) {
-      showLoginError(R.string.login_canceled);
-    } else handleLoginFailure(result.getData());
+    } else {
+      binding.getRoot().setVisibility(View.VISIBLE);
+      if (result.getResultCode() == Activity.RESULT_CANCELED) {
+        showLoginError(R.string.login_canceled);
+      } else handleLoginFailure(result.getData());
+    }
   }
 
   @SuppressWarnings({"ConstantConditions"})
@@ -100,6 +113,9 @@ public class EntryPointActivity extends AppCompatActivity {
   }
 
   private void startMainActivity() {
-    startActivity(new Intent(this, MainActivity.class));
+    final Intent startMainActivityIntent = new Intent(this, MainActivity.class);
+    startMainActivityIntent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+    startActivity(startMainActivityIntent);
+    finish();
   }
 }

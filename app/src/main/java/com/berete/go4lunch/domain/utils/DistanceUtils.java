@@ -24,6 +24,7 @@ public class DistanceUtils {
 
   @SuppressLint("DefaultLocale")
   public static String convertToDisplayableDistance(Float distanceInMeter){
+    if(distanceInMeter == null) return "0.0m";
     if(distanceInMeter < 100) return Math.round(distanceInMeter) + " m";
     if(distanceInMeter < 1000) return Math.round(distanceInMeter) + "m";
     if((distanceInMeter % 1000) < 100 ) return Math.round(distanceInMeter / 1000) + " km";

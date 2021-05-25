@@ -18,7 +18,7 @@ import com.berete.go4lunch.domain.restaurants.models.GeoCoordinates;
 import com.berete.go4lunch.domain.restaurants.models.Place;
 import com.berete.go4lunch.domain.restaurants.models.Restaurant;
 import com.berete.go4lunch.domain.restaurants.services.CurrentLocationProvider;
-import com.berete.go4lunch.domain.restaurants.services.NearbyPlaceProvider;
+import com.berete.go4lunch.domain.utils.Callback;
 import com.berete.go4lunch.ui.core.view_models.shared.RestaurantViewModel;
 import com.berete.go4lunch.ui.restaurant.details.RestaurantDetailsActivity;
 
@@ -48,9 +48,9 @@ public class RestaurantListFragment extends Fragment {
     return binding.getRoot();
   }
 
-  private NearbyPlaceProvider.Callback onNearbyRestaurantReceived(GeoCoordinates currentLocation) {
+  private Callback<Place[]> onNearbyRestaurantReceived(GeoCoordinates currentLocation) {
     final RecyclerView recyclerView = binding.restaurantsList;
-    return new NearbyPlaceProvider.Callback() {
+    return new Callback<Place[]>() {
       @Override
       public void onSuccess(Place[] places) {
         recyclerView.setAdapter(

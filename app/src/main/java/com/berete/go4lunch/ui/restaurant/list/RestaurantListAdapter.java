@@ -17,6 +17,7 @@ import com.berete.go4lunch.databinding.RestaurantListItemBinding;
 import com.berete.go4lunch.domain.restaurants.models.GeoCoordinates;
 import com.berete.go4lunch.domain.restaurants.models.Restaurant;
 import com.berete.go4lunch.domain.utils.DistanceUtils;
+import com.berete.go4lunch.ui.core.adapters.ListAdapterCallback;
 import com.berete.go4lunch.ui.restaurant.RestaurantUtils;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.DataSource;
@@ -29,9 +30,12 @@ public class RestaurantListAdapter
 
   private Restaurant[] restaurants;
   private GeoCoordinates currentLocation;
-  private final OnItemClicked onItemClicked;
+  private final ListAdapterCallback<String> onItemClicked;
 
-  public RestaurantListAdapter(Restaurant[] restaurants, @Nullable GeoCoordinates currentLocation, OnItemClicked onItemClicked) {
+  public RestaurantListAdapter(
+      Restaurant[] restaurants,
+      @Nullable GeoCoordinates currentLocation,
+      ListAdapterCallback<String> onItemClicked) {
     this.restaurants = restaurants;
     this.currentLocation = currentLocation;
     this.onItemClicked = onItemClicked;
@@ -55,7 +59,7 @@ public class RestaurantListAdapter
     return restaurants.length;
   }
 
-  public void updateList(Restaurant[] restaurants, @Nullable GeoCoordinates currentLocation){
+  public void updateList(Restaurant[] restaurants, @Nullable GeoCoordinates currentLocation) {
     this.restaurants = restaurants;
     this.currentLocation = currentLocation;
     notifyDataSetChanged();
@@ -78,8 +82,9 @@ public class RestaurantListAdapter
       binding.distanceFromCurrentLoc.setText(getDistanceAsString(restaurant));
       setRestaurantStatus(restaurant);
       loadRestaurantPhoto(restaurant);
-      binding.restaurantStars.setImageResource(RestaurantUtils.getStarsDrawableId(restaurant.getStarsBoundedTo3()));
-      binding.getRoot().setOnClickListener(v -> onItemClicked.onClicked(restaurant.getId()));
+      binding.restaurantStars.setImageResource(
+          RestaurantUtils.getStarsDrawableId(restaurant.getStarsBoundedTo3()));
+      binding.getRoot().setOnClickListener(v -> onItemClicked.call(restaurant.getId()));
     }
 
     private String getDistanceAsString(Restaurant restaurant) {
@@ -87,11 +92,11 @@ public class RestaurantListAdapter
       return DistanceUtils.getDisplayableDistance(currentLocation, restaurant.getCoordinates());
     }
 
-    public void setRestaurantStatus(Restaurant restaurant){
-      if(restaurant.isOpen()){
+    public void setRestaurantStatus(Restaurant restaurant) {
+      if (restaurant.isOpen()) {
         binding.restaurantOpeningHours.setText(R.string.restaurant_status_open);
         binding.restaurantOpeningHours.setTextColor(getSupportColor(R.color.light_green));
-      }else {
+      } else {
         binding.restaurantOpeningHours.setText(R.string.restaurant_status_closed);
         binding.restaurantOpeningHours.setTextColor(getSupportColor(R.color.light_red));
       }
@@ -137,8 +142,5 @@ public class RestaurantListAdapter
         }
       };
     }
-  }
-  public interface OnItemClicked {
-    void onClicked(String selectedRestaurantId);
   }
 }

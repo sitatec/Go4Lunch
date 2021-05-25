@@ -1,70 +1,98 @@
 package com.berete.go4lunch.ui.workmates;
 
-import android.content.Context;
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.berete.go4lunch.R;
+import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.NavBackStackEntry;
+import androidx.navigation.Navigation;
+import androidx.recyclerview.widget.LinearLayoutManager;
 
-/**
- * A fragment representing a list of Items.
- */
+import com.berete.go4lunch.databinding.FragmentWorkmatesBinding;
+import com.berete.go4lunch.domain.shared.UserProvider;
+import com.berete.go4lunch.domain.shared.models.User;
+import com.berete.go4lunch.domain.utils.Callback;
+import com.berete.go4lunch.ui.core.activities.MainActivity;
+import com.berete.go4lunch.ui.core.view_models.shared.UserRelatedViewModel;
+import com.berete.go4lunch.ui.restaurant.details.RestaurantDetailsActivity;
+
+import org.jetbrains.annotations.NotNull;
+
+import java.util.Arrays;
+
+import javax.inject.Inject;
+
+import dagger.hilt.android.AndroidEntryPoint;
+import dagger.hilt.android.internal.lifecycle.HiltViewModelFactory;
+
+@AndroidEntryPoint
 public class workmatesListFragment extends Fragment {
 
-    // TODO: Customize parameter argument names
-    private static final String ARG_COLUMN_COUNT = "column-count";
-    // TODO: Customize parameters
-    private int mColumnCount = 1;
+  UserRelatedViewModel viewModel;
+  @Inject UserProvider userProvider;
+  final WorkmatesListAdapter workmatesListAdapter =
+      new WorkmatesListAdapter(
+          restaurantId -> RestaurantDetailsActivity.navigate(restaurantId, getActivity()));
 
-    /**
-     * Mandatory empty constructor for the fragment manager to instantiate the
-     * fragment (e.g. upon screen orientation changes).
-     */
-    public workmatesListFragment() {
+  @Override
+  public void onCreate(Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
+  }
+
+  @Override
+  public View onCreateView(
+      @NotNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    final FragmentWorkmatesBinding binding =
+        FragmentWorkmatesBinding.inflate(
+            LayoutInflater.from(container.getContext()), container, false);
+    binding.workmatesList.setLayoutManager(new LinearLayoutManager(binding.getRoot().getContext()));
+    binding.workmatesList.setAdapter(workmatesListAdapter);
+    handleWorkplaceRequiredMessageVisibility(binding);
+    intiViewMode(container);
+    viewModel.getCurrentUserWorkmates(getWorkmatesRequestCallback());
+    return binding.getRoot();
+  }
+
+  private void handleWorkplaceRequiredMessageVisibility(FragmentWorkmatesBinding binding) {
+    final User currentUser = userProvider.getCurrentUser();
+    if (currentUser.getWorkplaceId() == null || currentUser.getWorkplaceId().isEmpty()) {
+      binding.workplaceRequiredMessage.setVisibility(View.VISIBLE);
+      binding.selectMyWorkplaceAction.setOnClickListener(
+          v -> {
+            ((MainActivity) getActivity())
+                .showWorkplacePiker(
+                    () -> binding.workplaceRequiredMessage.setVisibility(View.GONE));
+          });
     }
+  }
 
-    // TODO: Customize parameter initialization
-    @SuppressWarnings("unused")
-    public static workmatesListFragment newInstance(int columnCount) {
-        workmatesListFragment fragment = new workmatesListFragment();
-        Bundle args = new Bundle();
-        args.putInt(ARG_COLUMN_COUNT, columnCount);
-        fragment.setArguments(args);
-        return fragment;
-    }
+  private void intiViewMode(View view) {
+    final NavBackStackEntry backStackEntry =
+        Navigation.findNavController(view).getCurrentBackStackEntry();
+    viewModel =
+        new ViewModelProvider(
+                backStackEntry,
+                HiltViewModelFactory.createInternal(getActivity(), backStackEntry, null, null))
+            .get(UserRelatedViewModel.class);
+  }
 
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+  private Callback<User[]> getWorkmatesRequestCallback() {
+    return new Callback<User[]>() {
+      @Override
+      public void onSuccess(User[] users) {
+        Log.d("WORKMATES_RESPONSE", "____SUCCESS____ : " + Arrays.toString(users));
+        workmatesListAdapter.updateList(users);
+      }
 
-        if (getArguments() != null) {
-            mColumnCount = getArguments().getInt(ARG_COLUMN_COUNT);
-        }
-    }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_workmates, container, false);
-
-        // Set the adapter
-        if (view instanceof RecyclerView) {
-            Context context = view.getContext();
-            RecyclerView recyclerView = (RecyclerView) view;
-            if (mColumnCount <= 1) {
-                recyclerView.setLayoutManager(new LinearLayoutManager(context));
-            } else {
-                recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
-            }
-        }
-        return view;
-    }
+      @Override
+      public void onFailure() {
+        Log.d("WORKMATES_RESPONSE", "____FAILED____");
+        // TODO implement
+      }
+    };
+  }
 }

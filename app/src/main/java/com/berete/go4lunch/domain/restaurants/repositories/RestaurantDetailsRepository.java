@@ -2,6 +2,7 @@ package com.berete.go4lunch.domain.restaurants.repositories;
 
 import com.berete.go4lunch.domain.restaurants.models.Place;
 import com.berete.go4lunch.domain.restaurants.services.PlaceDetailsProvider;
+import com.berete.go4lunch.domain.utils.Callback;
 
 import javax.inject.Inject;
 
@@ -18,7 +19,7 @@ public class RestaurantDetailsRepository {
       String restaurantId,
       Place.Field[] fieldsToReturn,
       Place.LangCode langCode,
-      PlaceDetailsProvider.ResponseListener listener){
+      Callback<Place> listener){
     placeDetailsProvider.getPlaceDetail(restaurantId, fieldsToReturn, langCode, listener);
   }
 

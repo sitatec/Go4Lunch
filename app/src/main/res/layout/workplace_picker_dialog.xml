@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical">
+
+    <EditText
+        android:id="@+id/workplace_search_field"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/workplace_search_field_hint"
+        android:drawableStart="@drawable/ic_search_24"
+        app:drawableTint="@android:color/darker_gray"
+        android:drawablePadding="5dp"
+        android:shadowColor="?attr/colorPrimary"
+        />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/workplace_predictions_list"
+        android:background="@color/light_grey"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:listitem="@layout/workplace_prediction_list_item"
+        />
+
+</LinearLayout>
