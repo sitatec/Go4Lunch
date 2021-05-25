@@ -25,12 +25,15 @@ import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
 
+import java.util.Map;
+
 public class RestaurantListAdapter
     extends RecyclerView.Adapter<RestaurantListAdapter.RestaurantViewHolder> {
 
   private Restaurant[] restaurants;
   private GeoCoordinates currentLocation;
   private final ListAdapterCallback<String> onItemClicked;
+  private Map<String, Integer> workmatesCountByRestaurant;
 
   public RestaurantListAdapter(
       Restaurant[] restaurants,
@@ -61,7 +64,12 @@ public class RestaurantListAdapter
 
   public void updateList(Restaurant[] restaurants, @Nullable GeoCoordinates currentLocation) {
     this.restaurants = restaurants;
-    this.currentLocation = currentLocation;
+    if (currentLocation != null) this.currentLocation = currentLocation;
+    notifyDataSetChanged();
+  }
+
+  public void setWorkmatesCountByRestaurant(Map<String, Integer> workmatesCountByRestaurant) {
+    this.workmatesCountByRestaurant = workmatesCountByRestaurant;
     notifyDataSetChanged();
   }
 
@@ -85,6 +93,18 @@ public class RestaurantListAdapter
       binding.restaurantStars.setImageResource(
           RestaurantUtils.getStarsDrawableId(restaurant.getStarsBoundedTo3()));
       binding.getRoot().setOnClickListener(v -> onItemClicked.call(restaurant.getId()));
+      setWorkmatesCount(restaurant);
+    }
+
+    private void setWorkmatesCount(Restaurant restaurant) {
+      if (workmatesCountByRestaurant != null) {
+        final Integer workmatesCount = workmatesCountByRestaurant.get(restaurant.getId());
+        if (workmatesCount != null && workmatesCount != 0) {
+          final String formattedWorkmateCount =
+              binding.getRoot().getResources().getString(R.string.in_brackets, workmatesCount);
+          binding.numberOfFriendsThere.setText(formattedWorkmateCount);
+        }
+      }
     }
 
     private String getDistanceAsString(Restaurant restaurant) {

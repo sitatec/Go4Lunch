@@ -8,4 +8,25 @@
         app:showAsAction="always|collapseActionView"
         app:actionViewClass="androidx.appcompat.widget.SearchView"
         />
+
+    <item
+        android:id="@+id/orderRestaurants"
+        android:title="@string/order_restaurant_list"
+        android:icon="@drawable/ic_filter_list_24"
+        app:showAsAction="ifRoom">
+
+        <menu>
+            <item
+                android:id="@+id/orderByStars"
+                android:title="@string/order_by_stars"/>
+
+            <item
+                android:id="@+id/orderByNearest"
+                android:title="@string/order_by_nearest"/>
+
+            <item android:id="@+id/orderByNumberOfWorkmates"
+                android:title="@string/order_by_workmate"/>
+        </menu>
+
+    </item>
 </menu>
