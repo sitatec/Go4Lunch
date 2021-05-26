@@ -147,6 +147,7 @@ public class RestaurantListFragment extends Fragment {
     };
   }
 
+
   private void fetchWorkmatesCountByRestaurant() {
     restaurantRelatedViewModel.getWorkmatesCountByRestaurant(
         userProvider.getCurrentUser().getWorkplaceId(),
