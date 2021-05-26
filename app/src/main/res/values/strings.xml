@@ -57,4 +57,24 @@
     <string name="order_by_nearest">Sort by nearest</string>
     <string name="order_by_workmate">Sort by workmates count</string>
     <string name="in_brackets">(%1$d)</string>
+    <string name="restaurant_not_chosen_yet">You have not chosen your restaurant yet!</string>
+    <!-- Preference Titles -->
+    <string name="messages_header">Messages</string>
+    <string name="sync_header">Sync</string>
+
+    <!-- Messages Preferences -->
+    <string name="signature_title">Your signature</string>
+    <string name="reply_title">Default reply action</string>
+
+    <!-- Sync Preferences -->
+    <string name="sync_title">Sync email periodically</string>
+    <string name="attachment_title">Download incoming attachments</string>
+    <string name="attachment_summary_on">Automatically download attachments for incoming emails
+    </string>
+    <string name="attachment_summary_off">Only download attachments when manually requested</string>
+    <string name="lunch_reminder_time">Lunch reminder time</string>
+    <string name="delete_account_btn_txt">Delete my account</string>
+    <string name="delete_account_desc">This action will permanently delete your account and all data related to it.</string>
+    <string name="account_deletion_confirmation">Your account and all your data have been successfully deleted.</string>
+    <string name="account_deleltion_failed_msg">An error occurred when deleting your account please retry.</string>
 </resources>

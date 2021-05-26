@@ -1,21 +1,24 @@
 package com.berete.go4lunch.ui.core.activities;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
-import androidx.appcompat.widget.Toolbar;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
+import androidx.preference.PreferenceManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.berete.go4lunch.R;
@@ -24,14 +27,16 @@ import com.berete.go4lunch.domain.restaurants.models.GeoCoordinates;
 import com.berete.go4lunch.domain.restaurants.models.Prediction;
 import com.berete.go4lunch.domain.restaurants.services.CurrentLocationProvider;
 import com.berete.go4lunch.domain.shared.UserProvider;
+import com.berete.go4lunch.domain.shared.models.User;
 import com.berete.go4lunch.domain.utils.Callback;
 import com.berete.go4lunch.ui.core.adapters.PredictionListAdapter;
-import com.berete.go4lunch.ui.core.fragment.WorkplacePickerDialogFragment;
+import com.berete.go4lunch.ui.core.fragments.WorkplacePickerDialogFragment;
 import com.berete.go4lunch.ui.core.view_models.MainActivityViewModel;
 import com.berete.go4lunch.ui.restaurant.details.RestaurantDetailsActivity;
+import com.berete.go4lunch.ui.settings.SettingsUtils;
+import com.bumptech.glide.Glide;
 import com.firebase.ui.auth.AuthUI;
-import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.android.material.navigation.NavigationView;
+import com.google.android.material.snackbar.Snackbar;
 
 import java.lang.ref.WeakReference;
 import java.util.HashSet;
@@ -47,7 +52,8 @@ public class MainActivity extends AppCompatActivity {
   @Inject public CurrentLocationProvider currentLocationProvider;
   @Inject public UserProvider userProvider;
 
-  private final Set<WeakReference<Runnable>> onWorkplaceSelectedListeners = new HashSet<>();
+  private final Set<WeakReference<OnWorkplaceSelected>> onWorkplaceSelectedListeners =
+      new HashSet<>();
   private ActivityMainBinding binding;
   private MainActivityViewModel viewModel;
   private GeoCoordinates currentLocation;
@@ -62,12 +68,18 @@ public class MainActivity extends AppCompatActivity {
     setContentView(binding.getRoot());
     setupNavigation();
     initViewModel();
-    userProvider.addAuthStateChangesListener(
-        currentUser -> {
-          if (currentUser.getWorkplaceId() == null || currentUser.getWorkplaceId().isEmpty()) {
-            showWorkplacePikerInternal();
-          }
-        });
+    userProvider.addAuthStateChangesListener(this::onAuthStateChanges);
+  }
+
+  private void onAuthStateChanges(User currentUser) {
+    if (currentUser == null) {
+      finish();
+    } else {
+      setNavDrawerHeaderData(currentUser);
+      if (currentUser.getWorkplaceId() == null || currentUser.getWorkplaceId().isEmpty()) {
+        showWorkplacePikerInternal();
+      }
+    }
   }
 
   private void setupNavigation() {
@@ -75,21 +87,42 @@ public class MainActivity extends AppCompatActivity {
         (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.fragmentContainerView);
     assert navHostFragment != null;
     final NavController navController = navHostFragment.getNavController();
-    final Toolbar toolbar = findViewById(R.id.toolbar);
-    final BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
-    final NavigationView navigationView = findViewById(R.id.bottom_navigation_view);
-    setSupportActionBar(toolbar);
+    setSupportActionBar(binding.toolbar);
     NavigationUI.setupActionBarWithNavController(this, navController, getAppBarConfig());
-    NavigationUI.setupWithNavController(navigationView, navController);
-    navigationView.setNavigationItemSelectedListener(this::onNavigationDrawerMenuItemSelected);
-    NavigationUI.setupWithNavController(bottomNavigationView, navController);
+    NavigationUI.setupWithNavController(binding.navigationView, navController);
+    binding.navigationView.setNavigationItemSelectedListener(
+        this::onNavigationDrawerMenuItemSelected);
+    NavigationUI.setupWithNavController(binding.bottomNavigationView, navController);
+  }
+
+  private void setNavDrawerHeaderData(User currentUser) {
+    final View drawerHeader = binding.navigationView.getHeaderView(0);
+    ((TextView) drawerHeader.findViewById(R.id.username)).setText(currentUser.getUsername());
+    ((TextView) drawerHeader.findViewById(R.id.user_email)).setText(currentUser.getEmail());
+    final ImageView userPhoto = drawerHeader.findViewById(R.id.user_photo);
+    Glide.with(this).load(currentUser.getPhotoUrl()).centerCrop().into(userPhoto);
   }
 
   private boolean onNavigationDrawerMenuItemSelected(MenuItem menuItem) {
     if (menuItem.getItemId() == R.id.logout) {
       signOut();
+    } else if (menuItem.getItemId() == R.id.user_lunch) {
+      showCurrentUserChosenRestaurant();
+    } else if (menuItem.getItemId() == R.id.settingsFragment) {
+      Navigation.findNavController(binding.fragmentContainerView).navigate(R.id.settingsFragment);
+      binding.getRoot().closeDrawer(binding.navigationView, false);
     }
     return true;
+  }
+
+  private void showCurrentUserChosenRestaurant() {
+    final String currentUserChosenRestaurant =
+        userProvider.getCurrentUser().getChosenRestaurantId();
+    if (currentUserChosenRestaurant != null && !currentUserChosenRestaurant.isEmpty()) {
+      RestaurantDetailsActivity.navigate(currentUserChosenRestaurant, this);
+    } else
+      Snackbar.make(binding.getRoot(), R.string.restaurant_not_chosen_yet, Snackbar.LENGTH_SHORT)
+          .show();
   }
 
   private void signOut() {
@@ -117,12 +150,21 @@ public class MainActivity extends AppCompatActivity {
     userProvider.getCurrentUser().setWorkplaceId(selectedWorkplaceId);
     workplacePicker.dismiss();
     userProvider.updateUserData(UserProvider.WORKPLACE, selectedWorkplaceId);
-    for (WeakReference<Runnable> listener : onWorkplaceSelectedListeners)
-      if(listener.get() != null)
-        listener.get().run();
+    for (WeakReference<OnWorkplaceSelected> listener : onWorkplaceSelectedListeners) {
+      if (listener.get() != null) listener.get().onSelected(selectedPrediction);
+    }
+    updateUserPreferences(selectedPrediction);
   }
 
-  public void showWorkplacePiker(Runnable onWorkplaceSelected) {
+  private void updateUserPreferences(Prediction selectedWorkplacePrediction) {
+    final SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+    final SharedPreferences.Editor preferencesEditor = preferences.edit();
+    preferencesEditor.putString(
+        "workplace", SettingsUtils.toFormattedWorkplaceSummary(selectedWorkplacePrediction));
+    preferencesEditor.apply();
+  }
+
+  public void showWorkplacePiker(OnWorkplaceSelected onWorkplaceSelected) {
     onWorkplaceSelectedListeners.add(new WeakReference<>(onWorkplaceSelected));
     showWorkplacePikerInternal();
   }
@@ -221,5 +263,9 @@ public class MainActivity extends AppCompatActivity {
         return false;
       }
     };
+  }
+
+  public interface OnWorkplaceSelected {
+    void onSelected(Prediction workplacePrediction);
   }
 }

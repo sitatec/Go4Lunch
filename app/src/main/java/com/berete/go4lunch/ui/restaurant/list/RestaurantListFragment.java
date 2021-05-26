@@ -55,7 +55,7 @@ public class RestaurantListFragment extends Fragment {
   public RestaurantListFragment() {}
 
   @Override
-  public void onCreate(@Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
+  public void onCreate(@Nullable Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setHasOptionsMenu(true);
   }
@@ -67,11 +67,20 @@ public class RestaurantListFragment extends Fragment {
     initializeViewModel(container);
     binding.restaurantsList.setAdapter(listAdapter);
     binding.restaurantsList.setLayoutManager(new LinearLayoutManager(getContext()));
-    currentLocationProvider.getCurrentCoordinates(
-        currentLocation ->
-            restaurantRelatedViewModel.getNearbyRestaurants(
-                currentLocation, onNearbyRestaurantReceived(currentLocation)));
+    currentLocationProvider.getCurrentCoordinates(this::onCurrentLocationGot);
     return binding.getRoot();
+  }
+
+  private void onCurrentLocationGot(GeoCoordinates currentLocation){
+    if(currentLocation != null){
+      restaurantRelatedViewModel
+          .getNearbyRestaurants(currentLocation, onNearbyRestaurantReceived(currentLocation));
+    } else
+      showLocationUnavailableMessage();
+  }
+
+  private void showLocationUnavailableMessage(){
+    // TODO
   }
 
   @Override

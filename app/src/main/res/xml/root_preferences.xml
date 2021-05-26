@@ -1,0 +1,42 @@
+<PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <PreferenceCategory app:title="Notification"
+        android:icon="@drawable/ic_notifications_24">
+
+        <CheckBoxPreference
+            android:order="0"
+            app:key="notification_enabled"
+            app:title="Enable notification" />
+
+        <com.berete.go4lunch.ui.settings.TimePreference
+            android:order="1"
+            app:key="reminder_time"
+            app:title="@string/lunch_reminder_time"
+            app:enabled="false"
+            />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        app:title="Account"
+        android:icon="@drawable/ic_account_box_24">
+
+        <Preference
+            android:order="0"
+            app:key="workplace"
+            app:title="My workplace"
+            android:defaultValue="Not set"
+            tools:summary="Enterprise Inc \n1431 Go4Lunch Awesome Application"/>
+
+        <PreferenceScreen android:enabled="false"/>
+
+        <Preference
+            android:order="1"
+            app:key="delete_account"
+            android:layout="@layout/delete_account_btn_layout"
+            />
+    </PreferenceCategory>
+
+</PreferenceScreen>

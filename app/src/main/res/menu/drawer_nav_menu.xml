@@ -6,7 +6,7 @@
         android:title="@string/drawer_your_lunch_txt"/>
 
     <item
-        android:id="@+id/settings"
+        android:id="@+id/settingsFragment"
         android:icon="@drawable/ic_settings_24"
         android:title="@string/settings_txt"/>
 

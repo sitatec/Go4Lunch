@@ -6,34 +6,42 @@
     xmlns:tool="http://schemas.android.com/tools"
     android:background="@drawable/drawer_header_bg">
 
-    <ImageView
-        android:id="@+id/user_photo"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
-        android:layout_margin="20dp"
-        tool:src="@drawable/jobs_face"
+    <androidx.cardview.widget.CardView
+        android:layout_margin="15dp"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        app:cardCornerRadius="30dp"
+        android:id="@+id/user_photo_container"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"/>
+        app:layout_constraintLeft_toLeftOf="parent">
+
+        <ImageView
+            android:id="@+id/user_photo"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            tool:src="@drawable/jobs_face"/>
+
+    </androidx.cardview.widget.CardView>
+
 
 
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        app:layout_constraintLeft_toRightOf="@id/user_photo"
-        app:layout_constraintTop_toTopOf="@id/user_photo"
-        app:layout_constraintBottom_toBottomOf="@id/user_photo"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:layout_marginStart="14dp"
+        app:layout_constraintBottom_toBottomOf="@id/user_photo_container"
+        app:layout_constraintLeft_toRightOf="@id/user_photo_container"
+        app:layout_constraintTop_toTopOf="@id/user_photo_container">
 
         <TextView
             android:id="@+id/username"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            tool:text="Steeve Jobs"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
             android:textColor="@color/white"
             android:textStyle="bold"
-            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-            />
+            tool:text="Steeve Jobs" />
 
         <TextView
             android:id="@+id/user_email"
