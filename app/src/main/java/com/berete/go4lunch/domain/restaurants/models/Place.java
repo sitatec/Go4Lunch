@@ -50,7 +50,7 @@ public class Place {
     this.address = address;
     this.websiteUrl = websiteUrl;
     this.phoneNumber = phoneNumber;
-    mainPhotoUrl = allPhotos[0].getUrl();
+    if(allPhotos.length > 0) mainPhotoUrl = allPhotos[0].getUrl();
   }
 
   // To make casting to a child easy.

@@ -36,6 +36,7 @@ public class PlaceDetailsHttpResponse {
   }
 
   private Place.Photo[] getPhotos() {
+    if(placeDetailsDataObject.photos == null) return new Place.Photo[0];
     final List<Place.Photo> photoList = new ArrayList<>();
     for (Photo currentPhoto : placeDetailsDataObject.photos) {
       photoList.add(
@@ -69,7 +70,7 @@ public class PlaceDetailsHttpResponse {
 
     @SerializedName("rating")
     @Expose
-    public Double rating;
+    public Double rating = 0.;
 
     @SerializedName("website")
     @Expose

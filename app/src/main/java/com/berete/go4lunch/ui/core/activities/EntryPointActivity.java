@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.View;
 
 import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -31,8 +32,10 @@ import dagger.hilt.android.AndroidEntryPoint;
 public class EntryPointActivity extends AppCompatActivity {
 
   private ActivityEntryPointBinding binding;
-  @Inject
-  public UserProvider userProvider;
+  @Inject public UserProvider userProvider;
+  private final ActivityResultLauncher<Intent> activityLauncher =
+      registerForActivityResult(
+          new ActivityResultContracts.StartActivityForResult(), this::onActivityResult);
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -44,8 +47,8 @@ public class EntryPointActivity extends AppCompatActivity {
   }
 
   private void requireAuthentication() {
-    if ( userProvider.getCurrentUser() != null) {
-        startMainActivity();
+    if (userProvider.getCurrentUser() != null) {
+      startMainActivity();
     } else {
       startLoginActivity();
     }
@@ -53,16 +56,14 @@ public class EntryPointActivity extends AppCompatActivity {
 
   private void startLoginActivity() {
     Log.i("LOGING", "____ON_REQUEST_LOGIN______");
-    registerForActivityResult(
-            new ActivityResultContracts.StartActivityForResult(), this::onActivityResult)
-        .launch(
-            AuthUI.getInstance()
-                .createSignInIntentBuilder()
-                .setAvailableProviders(getAuthProviders())
-                .setLogo(R.drawable.logo)
-                .setAuthMethodPickerLayout(getCustomAuthLayout())
-                .setTheme(R.style.NoActionBarSysUITransparentTheme)
-                .build());
+    activityLauncher.launch(
+        AuthUI.getInstance()
+            .createSignInIntentBuilder()
+            .setAvailableProviders(getAuthProviders())
+            .setLogo(R.drawable.logo)
+            .setAuthMethodPickerLayout(getCustomAuthLayout())
+            .setTheme(R.style.NoActionBarSysUITransparentTheme)
+            .build());
   }
 
   private List<AuthUI.IdpConfig> getAuthProviders() {

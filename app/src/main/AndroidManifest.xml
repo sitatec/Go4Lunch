@@ -4,6 +4,8 @@
     package="com.berete.go4lunch">
 
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.WAKE_LOCK"/>
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
 
     <application
         android:name=".Go4LunchApplication"
@@ -42,6 +44,22 @@
             android:name=".ui.core.activities.MainActivity"
             android:screenOrientation="portrait"
             tools:ignore="LockedOrientationActivity" />
+
+        <service
+            android:name=".ui.core.notification.LunchTimeNotificationService"
+            android:permission="android.permission.BIND_JOB_SERVICE" />
+
+        <receiver
+            android:name=".ui.core.notification.LunchAlarmReceiver"
+            android:enabled="true"/>
+
+        <receiver android:name=".ui.core.notification.BootReceiver"
+            android:enabled="false">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED"/>
+            </intent-filter>
+        </receiver>
+
     </application>
 
 </manifest>

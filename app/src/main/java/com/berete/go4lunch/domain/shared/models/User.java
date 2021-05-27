@@ -5,6 +5,7 @@ import java.util.List;
 public class User {
   private final String id;
   private final String username;
+  private final String email;
   private final String photoUrl;
   private List<String> likedRestaurantsIds;
   private List<String> conversationsIds;
@@ -12,22 +13,24 @@ public class User {
   private String chosenRestaurantId = "";
   private String chosenRestaurantName = "";
 
-  public User(String id, String username, String photoUrl) {
+  public User(String id, String username, String photoUrl, String email) {
     this.id = id;
     this.username = username;
     this.photoUrl = photoUrl;
+    this.email = email;
   }
 
   public User(
       String id,
       String username,
+      String email,
       String photoUrl,
       String workplaceId,
       String chosenRestaurantId,
       String chosenRestaurantName,
       List<String> likedRestaurantsIds,
       List<String> conversationsIds ) {
-    this(id, username, photoUrl);
+    this(id, username, photoUrl, email);
     this.workplaceId = workplaceId;
     this.chosenRestaurantId = chosenRestaurantId;
     this.conversationsIds = conversationsIds;
@@ -85,5 +88,9 @@ public class User {
 
   public void setChosenRestaurantName(String chosenRestaurantName) {
     this.chosenRestaurantName = chosenRestaurantName;
+  }
+
+  public String getEmail() {
+    return email;
   }
 }

@@ -169,14 +169,16 @@ public class MainActivity extends AppCompatActivity {
     showWorkplacePikerInternal();
   }
 
+  public static AppBarConfiguration appBarConfiguration;
   private AppBarConfiguration getAppBarConfig() {
-    return new AppBarConfiguration.Builder(
+    appBarConfiguration = new AppBarConfiguration.Builder(
             R.id.mapFragment,
             R.id.restaurantListFragment,
             R.id.workmatesListFragment,
             R.id.conversationsListFragment)
         .setOpenableLayout(binding.getRoot())
         .build();
+    return appBarConfiguration;
   }
 
   @Override

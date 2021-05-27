@@ -32,7 +32,7 @@ public class FirebaseServicesClient implements UserProvider, RestaurantSpecificD
   User currentUser;
 
   private OnAuthStateChangesListener authStateChangesListener;
-  private boolean userCompletlySignedIn = false;
+  private boolean userCompletelySignedIn = false;
 
   public FirebaseServicesClient(FirebaseFirestore firestoreDb, FirebaseAuth firebaseAuth) {
     this.firestoreDb = firestoreDb;
@@ -49,7 +49,8 @@ public class FirebaseServicesClient implements UserProvider, RestaurantSpecificD
           new User(
               firebaseUser.getUid(),
               firebaseUser.getDisplayName(),
-              userPhotoUrl != null ? userPhotoUrl.toString() : DEFAULT_USER_PHOTO_URL);
+              userPhotoUrl != null ? userPhotoUrl.toString() : DEFAULT_USER_PHOTO_URL,
+              firebaseUser.getEmail());
       fetchCurrentUserAdditionalData();
     } else currentUser = null;
   }
@@ -71,7 +72,7 @@ public class FirebaseServicesClient implements UserProvider, RestaurantSpecificD
     if (authStateChangesListener != null) {
       authStateChangesListener.onFetched(currentUser);
       authStateChangesListener = null;
-    } else userCompletlySignedIn = true;
+    } else userCompletelySignedIn = true;
   }
 
   @Override
@@ -87,7 +88,8 @@ public class FirebaseServicesClient implements UserProvider, RestaurantSpecificD
           new User(
               userJson.get("id"),
               userJson.get("name"),
-              getDefaultPhotoIfNull(userJson.get("photoUrl")));
+              getDefaultPhotoIfNull(userJson.get("photoUrl")),
+              "");
       currentUserInList.setChosenRestaurantName(userJson.get("restaurantName"));
       currentUserInList.setChosenRestaurantId(userJson.get("restaurantId"));
       users.add(currentUserInList);
@@ -118,6 +120,7 @@ public class FirebaseServicesClient implements UserProvider, RestaurantSpecificD
           new User(
               userDoc.getId(),
               userDoc.getString("name"),
+              "",
               userDoc.getString("photoUrl"),
               userDoc.getString(WORKPLACE),
               userDoc.getString(CHOSEN_RESTAURANT_ID),
@@ -245,9 +248,9 @@ public class FirebaseServicesClient implements UserProvider, RestaurantSpecificD
 
   @Override
   public void addAuthStateChangesListener(OnAuthStateChangesListener listener) {
-    if (userCompletlySignedIn) {
+    if (userCompletelySignedIn) {
       listener.onFetched(currentUser);
-      userCompletlySignedIn = false;
+      userCompletelySignedIn = false;
     } else authStateChangesListener = listener;
   }
 

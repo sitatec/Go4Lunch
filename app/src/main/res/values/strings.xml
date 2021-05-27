@@ -76,5 +76,9 @@
     <string name="delete_account_btn_txt">Delete my account</string>
     <string name="delete_account_desc">This action will permanently delete your account and all data related to it.</string>
     <string name="account_deletion_confirmation">Your account and all your data have been successfully deleted.</string>
-    <string name="account_deleltion_failed_msg">An error occurred when deleting your account please retry.</string>
+    <string name="account_deletion_failed_msg">An error occurred when deleting your account please retry.</string>
+    <string name="lunch_time_notification_title">Its lunch time</string>
+    <string name="lunch_time_notification_msg_with_workmates">%1$s, its time for your lunch at %2$s (%3$s) with %4$s.</string>
+    <string name="lunch_time_notification_msg">%1$s, its time for your lunch at %2$s (%3$s), you are alone today 😞.</string>
+    <string name="notification_channel_description">This notification will be displayed every day at the time you have set in settings.</string>
 </resources>

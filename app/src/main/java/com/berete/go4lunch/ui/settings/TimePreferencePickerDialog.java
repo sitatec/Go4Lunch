@@ -8,6 +8,9 @@ import android.widget.TimePicker;
 
 import androidx.preference.PreferenceDialogFragmentCompat;
 
+import com.berete.go4lunch.ui.core.notification.LunchAlarmManager;
+import com.berete.go4lunch.ui.core.notification.LunchAlarmReceiver;
+
 import java.util.Locale;
 
 public class TimePreferencePickerDialog extends PreferenceDialogFragmentCompat {
@@ -25,7 +28,8 @@ public class TimePreferencePickerDialog extends PreferenceDialogFragmentCompat {
   @Override
   protected View onCreateDialogView(Context context) {
     super.onCreateDialogView(context);
-    return timePicker = new TimePicker(context);
+    timePicker = new TimePicker(context);
+    return timePicker;
   }
 
   @Override
@@ -37,7 +41,10 @@ public class TimePreferencePickerDialog extends PreferenceDialogFragmentCompat {
       } else {
         minutesFromMidnight = (timePicker.getHour() * 60) + timePicker.getMinute();
       }
-      ((TimePreference) getPreference()).persistMinutesFromMidnight(minutesFromMidnight);
+      final TimePreference timePreference = (TimePreference) getPreference();
+      timePreference.persistMinutesFromMidnight(minutesFromMidnight);
+      new LunchAlarmManager(getContext())
+          .scheduleAlarm(timePreference.getPersistedTimeAsCalendar(), LunchAlarmReceiver.class);
     }
   }
 

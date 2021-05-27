@@ -65,7 +65,7 @@ public class workmatesListFragment extends Fragment {
           v -> {
             ((MainActivity) getActivity())
                 .showWorkplacePiker(
-                    () -> binding.workplaceRequiredMessage.setVisibility(View.GONE));
+                    __ -> binding.workplaceRequiredMessage.setVisibility(View.GONE));
           });
     }
   }

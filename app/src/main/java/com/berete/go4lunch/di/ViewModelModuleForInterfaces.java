@@ -35,7 +35,7 @@ public abstract class ViewModelModuleForInterfaces {
 
   @Binds
   @ViewModelScoped
-  public abstract RestaurantSpecificDataProvider bind(
+  public abstract RestaurantSpecificDataProvider bindRestaurantSpecificDataProvider(
     FirebaseServicesClient firebaseServicesClient
   );
 

@@ -6,6 +6,7 @@ import android.util.AttributeSet;
 import androidx.annotation.Nullable;
 import androidx.preference.DialogPreference;
 
+import java.util.Calendar;
 import java.util.Locale;
 
 public class TimePreference extends DialogPreference {
@@ -19,8 +20,20 @@ public class TimePreference extends DialogPreference {
     setSummary(getFormattedTime(Locale.getDefault()));
   }
 
+  public TimePreference(Context context){
+    super(context);
+  }
+
   public int getPersistedMinutesFromMidnight() {
     return getPersistedInt(DEFAULT_TIME_PREFERENCE_IN_MINUTES_FROM_MIDNIGHT);
+  }
+
+  public Calendar getPersistedTimeAsCalendar(){
+    final Calendar calendar = Calendar.getInstance();
+    calendar.setTimeInMillis(System.currentTimeMillis());
+    calendar.set(Calendar.HOUR_OF_DAY, getPersistedMinutesFromMidnight() / 60);
+    calendar.set(Calendar.MINUTE, getPersistedMinutesFromMidnight() % 60);
+    return calendar;
   }
 
   public void persistMinutesFromMidnight(int minutesFromMidnight) {
