@@ -13,6 +13,7 @@ import com.berete.go4lunch.domain.shared.UserProvider;
 import com.berete.go4lunch.domain.utils.Callback;
 import com.berete.go4lunch.ui.core.activities.MainActivity;
 import com.berete.go4lunch.ui.core.notification.LunchTimeNotification;
+import com.google.android.material.snackbar.BaseTransientBottomBar;
 import com.google.android.material.snackbar.Snackbar;
 
 import javax.inject.Inject;
@@ -71,6 +72,14 @@ public class SettingsFragment extends PreferenceFragmentCompat {
           @Override
           public void onSuccess(Boolean aBoolean) {
             Snackbar.make(getView(), R.string.account_deletion_confirmation, Snackbar.LENGTH_SHORT)
+                .addCallback(
+                    new BaseTransientBottomBar.BaseCallback<Snackbar>() {
+                      @Override
+                      public void onDismissed(Snackbar transientBottomBar, int event) {
+                        super.onDismissed(transientBottomBar, event);
+                        getActivity().finish();
+                      }
+                    })
                 .show();
           }
 

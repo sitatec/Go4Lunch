@@ -200,8 +200,7 @@ public class RestaurantDetailsActivity extends AppCompatActivity {
     final String currentUserWorkplaceId = userProvider.getCurrentUser().getWorkplaceId();
     if (currentUserWorkplaceId == null || currentUserWorkplaceId.isEmpty()) {
       binding.workplaceRequiredMessage.setVisibility(View.VISIBLE);
-      binding.selectMyWorkplaceAction.setOnClickListener(__ -> finish()); // Go back to the
-      // MainActivity which will show the WorkplacePickerDialog
+      binding.selectMyWorkplaceAction.setOnClickListener(__ -> finish());
     } else
       viewModel.getWorkmatesByChosenRestaurant(
           restaurant.getId(),

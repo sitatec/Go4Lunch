@@ -59,6 +59,7 @@ public class MapFragment extends Fragment {
     final SupportMapFragment mapFragment =
         (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
     mapFragment.getMapAsync(this::onMapReady);
+    fetchWorkmatesCountByRestaurant();
     return fragmentView;
   }
 
@@ -70,6 +71,7 @@ public class MapFragment extends Fragment {
           new Callback<Map<String, Integer>>() {
             @Override
             public void onSuccess(Map<String, Integer> workmatesCount) {
+              Log.d(LOG_TAG, "MAP LOADED SUCCESSFULLY");
               workmatesCountByRestaurant = workmatesCount;
               currentLocationProvider.getCurrentCoordinates(MapFragment.this::updateMapUI);
             }
@@ -94,7 +96,7 @@ public class MapFragment extends Fragment {
   private void onMapReady(GoogleMap map) {
     Log.d(LOG_TAG, "MAP LOADED SUCCESSFULLY");
     this.map = map;
-    fetchWorkmatesCountByRestaurant();
+    currentLocationProvider.getCurrentCoordinates(MapFragment.this::updateMapUI);
     map.setOnInfoWindowClickListener(this::displayRestaurantDetails);
   }
 

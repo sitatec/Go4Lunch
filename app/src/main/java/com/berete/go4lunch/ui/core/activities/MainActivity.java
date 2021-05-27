@@ -10,6 +10,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 import androidx.lifecycle.ViewModelProvider;
@@ -33,6 +34,7 @@ import com.berete.go4lunch.ui.core.adapters.PredictionListAdapter;
 import com.berete.go4lunch.ui.core.fragments.WorkplacePickerDialogFragment;
 import com.berete.go4lunch.ui.core.notification.LunchAlarmManager;
 import com.berete.go4lunch.ui.core.notification.LunchAlarmReceiver;
+import com.berete.go4lunch.ui.core.services.location.LocationPermissionHandler;
 import com.berete.go4lunch.ui.core.view_models.MainActivityViewModel;
 import com.berete.go4lunch.ui.restaurant.details.RestaurantDetailsActivity;
 import com.berete.go4lunch.ui.settings.SettingsUtils;
@@ -49,12 +51,14 @@ import java.util.Set;
 import javax.inject.Inject;
 
 import dagger.hilt.android.AndroidEntryPoint;
+import pub.devrel.easypermissions.EasyPermissions;
 
 @AndroidEntryPoint
 public class MainActivity extends AppCompatActivity {
 
   @Inject public CurrentLocationProvider currentLocationProvider;
   @Inject public UserProvider userProvider;
+  @Inject public LocationPermissionHandler locationPermissionHandler;
 
   private final Set<WeakReference<OnWorkplaceSelected>> onWorkplaceSelectedListeners =
       new HashSet<>();
@@ -74,14 +78,18 @@ public class MainActivity extends AppCompatActivity {
     initViewModel();
     userProvider.addAuthStateChangesListener(this::onAuthStateChanges);
     scheduleAlarmIfNeeded();
-    setNavDrawerHeaderData(userProvider.getCurrentUser());
   }
 
   private void scheduleAlarmIfNeeded() {
     final SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
     final boolean isFirstLaunch = sharedPreferences.getBoolean("isFirstLaunch", true);
     if (isFirstLaunch) {
-      final Calendar defaultLunchTime = new TimePreference(this).getPersistedTimeAsCalendar();
+      Calendar defaultLunchTime = new TimePreference(this).getPersistedTimeAsCalendar();
+      if (defaultLunchTime.before(Calendar.getInstance())) {
+        // The alarm time must not be in the past otherwise the alarm manager will trigger
+        // immediately
+        defaultLunchTime.add(Calendar.DAY_OF_MONTH, 1);
+      }
       new LunchAlarmManager(this).scheduleAlarm(defaultLunchTime, LunchAlarmReceiver.class);
       sharedPreferences.edit().putBoolean("isFirstLaunch", false).apply();
     }
@@ -170,6 +178,11 @@ public class MainActivity extends AppCompatActivity {
       if (listener.get() != null) listener.get().onSelected(selectedPrediction);
     }
     updateUserPreferences(selectedPrediction);
+    Snackbar.make(
+            binding.getRoot(),
+            getString(R.string.workplace_selection_success_msg, selectedPrediction.getBestMatch()),
+            Snackbar.LENGTH_LONG)
+        .show();
   }
 
   private void updateUserPreferences(Prediction selectedWorkplacePrediction) {
@@ -283,5 +296,13 @@ public class MainActivity extends AppCompatActivity {
 
   public interface OnWorkplaceSelected {
     void onSelected(Prediction workplacePrediction);
+  }
+
+  @Override
+  public void onRequestPermissionsResult(
+      int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+    super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+    EasyPermissions.onRequestPermissionsResult(
+        requestCode, permissions, grantResults, locationPermissionHandler);
   }
 }

@@ -38,6 +38,7 @@ public class LunchTimeNotification {
 
   public LunchTimeNotification setLunchParticipants(User[] otherParticipants) {
     assert userToReminder != null;
+    if(otherParticipants.length < 1) return this;
     for (int i = 0; i < otherParticipants.length; i++) {
       if (otherParticipants[i].getId().equals(userToReminder.getId())) {
         continue;

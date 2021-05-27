@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.location.Location;
 import android.os.Looper;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 
@@ -37,7 +38,9 @@ public class FusedLocationAdapter implements CurrentLocationProvider {
   @Override
   @SuppressLint("MissingPermission")
   public void getCurrentCoordinates(OnCoordinatesResultListener listener) {
+    Log.d("FusedLocationAdapter", "getCurrentCoordinates");
     if (locationPermissionHandler.hasPermission()) {
+      Log.d("FusedLocationAdapter", "----HAS PRM----");
       fusedLocationProviderClient
           .getLastLocation()
           .addOnCompleteListener(getOnCompleteListener(listener));

@@ -81,4 +81,5 @@
     <string name="lunch_time_notification_msg_with_workmates">%1$s, its time for your lunch at %2$s (%3$s) with %4$s.</string>
     <string name="lunch_time_notification_msg">%1$s, its time for your lunch at %2$s (%3$s), you are alone today 😞.</string>
     <string name="notification_channel_description">This notification will be displayed every day at the time you have set in settings.</string>
+    <string name="workplace_selection_success_msg">Your workplace is now %1$s.</string>
 </resources>

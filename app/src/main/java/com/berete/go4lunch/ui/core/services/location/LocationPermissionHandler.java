@@ -2,12 +2,12 @@ package com.berete.go4lunch.ui.core.services.location;
 
 import android.Manifest;
 import android.app.Activity;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 
 import com.berete.go4lunch.R;
 
-import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,7 +22,7 @@ public class LocationPermissionHandler implements EasyPermissions.PermissionCall
   private boolean permissionAlreadyDenied = false;
   private final Activity activity;
 
-  private static final List<WeakReference<Runnable>> onPermissionGrantedListeners =
+  private static final List<Runnable> onPermissionGrantedListeners =
       new ArrayList<>();
 
   @Inject
@@ -45,15 +45,15 @@ public class LocationPermissionHandler implements EasyPermissions.PermissionCall
   }
 
   public void requestPermission(Runnable onPermissionGranted) {
-    onPermissionGrantedListeners.add(new WeakReference<>(onPermissionGranted));
+    Log.d("LocationPermHandler", "requestPermission");
+    onPermissionGrantedListeners.add(onPermissionGranted);
     requestPermission();
   }
 
   @Override
   public void onPermissionsGranted(int requestCode, @NonNull List<String> perms) {
-    Runnable listener;
-    for (WeakReference<Runnable> listenerRef : onPermissionGrantedListeners) {
-      listener = listenerRef.get();
+    for (Runnable listener : onPermissionGrantedListeners) {
+      Log.d("LocationPermHandler", "onPermissionsGranted : " + listener);
       if (listener != null) listener.run();
     }
   }

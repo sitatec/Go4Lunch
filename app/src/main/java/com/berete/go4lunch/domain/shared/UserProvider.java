@@ -24,7 +24,7 @@ public interface UserProvider {
   void addAuthStateChangesListener(OnAuthStateChangesListener listener);
   User getCurrentUser();
 
-  public interface OnAuthStateChangesListener {
+  interface OnAuthStateChangesListener {
     void onFetched(User currentUser);
   }
 }
