@@ -31,14 +31,18 @@ import com.berete.go4lunch.domain.shared.models.User;
 import com.berete.go4lunch.domain.utils.Callback;
 import com.berete.go4lunch.ui.core.adapters.PredictionListAdapter;
 import com.berete.go4lunch.ui.core.fragments.WorkplacePickerDialogFragment;
+import com.berete.go4lunch.ui.core.notification.LunchAlarmManager;
+import com.berete.go4lunch.ui.core.notification.LunchAlarmReceiver;
 import com.berete.go4lunch.ui.core.view_models.MainActivityViewModel;
 import com.berete.go4lunch.ui.restaurant.details.RestaurantDetailsActivity;
 import com.berete.go4lunch.ui.settings.SettingsUtils;
+import com.berete.go4lunch.ui.settings.TimePreference;
 import com.bumptech.glide.Glide;
 import com.firebase.ui.auth.AuthUI;
 import com.google.android.material.snackbar.Snackbar;
 
 import java.lang.ref.WeakReference;
+import java.util.Calendar;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -69,11 +73,23 @@ public class MainActivity extends AppCompatActivity {
     setupNavigation();
     initViewModel();
     userProvider.addAuthStateChangesListener(this::onAuthStateChanges);
+    scheduleAlarmIfNeeded();
+    setNavDrawerHeaderData(userProvider.getCurrentUser());
+  }
+
+  private void scheduleAlarmIfNeeded() {
+    final SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+    final boolean isFirstLaunch = sharedPreferences.getBoolean("isFirstLaunch", true);
+    if (isFirstLaunch) {
+      final Calendar defaultLunchTime = new TimePreference(this).getPersistedTimeAsCalendar();
+      new LunchAlarmManager(this).scheduleAlarm(defaultLunchTime, LunchAlarmReceiver.class);
+      sharedPreferences.edit().putBoolean("isFirstLaunch", false).apply();
+    }
   }
 
   private void onAuthStateChanges(User currentUser) {
     if (currentUser == null) {
-      finish();
+      throw new IllegalStateException();
     } else {
       setNavDrawerHeaderData(currentUser);
       if (currentUser.getWorkplaceId() == null || currentUser.getWorkplaceId().isEmpty()) {
@@ -169,16 +185,14 @@ public class MainActivity extends AppCompatActivity {
     showWorkplacePikerInternal();
   }
 
-  public static AppBarConfiguration appBarConfiguration;
   private AppBarConfiguration getAppBarConfig() {
-    appBarConfiguration = new AppBarConfiguration.Builder(
+    return new AppBarConfiguration.Builder(
             R.id.mapFragment,
             R.id.restaurantListFragment,
             R.id.workmatesListFragment,
             R.id.conversationsListFragment)
         .setOpenableLayout(binding.getRoot())
         .build();
-    return appBarConfiguration;
   }
 
   @Override

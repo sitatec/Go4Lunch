@@ -31,7 +31,7 @@ public class LunchAlarmManager {
   public void cancelAlarm(Class<?> alarmReceiverClass) {
     final PendingIntent pendingIntent =
         getPendingIntent(alarmReceiverClass, PendingIntent.FLAG_NO_CREATE);
-    alarmManager.cancel(pendingIntent);
+    if(pendingIntent != null) alarmManager.cancel(pendingIntent);
   }
 
   private PendingIntent getPendingIntent(Class<?> alarmReceiverClass, int flag) {

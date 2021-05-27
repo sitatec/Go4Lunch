@@ -115,7 +115,6 @@ public class EntryPointActivity extends AppCompatActivity {
 
   private void startMainActivity() {
     final Intent startMainActivityIntent = new Intent(this, MainActivity.class);
-    startMainActivityIntent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
     startActivity(startMainActivityIntent);
     finish();
   }

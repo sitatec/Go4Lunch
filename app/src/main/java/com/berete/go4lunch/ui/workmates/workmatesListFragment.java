@@ -3,15 +3,18 @@ package com.berete.go4lunch.ui.workmates;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavBackStackEntry;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
+import com.berete.go4lunch.R;
 import com.berete.go4lunch.databinding.FragmentWorkmatesBinding;
 import com.berete.go4lunch.domain.shared.UserProvider;
 import com.berete.go4lunch.domain.shared.models.User;
@@ -41,6 +44,7 @@ public class workmatesListFragment extends Fragment {
   @Override
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
+    setHasOptionsMenu(true);
   }
 
   @Override
@@ -55,6 +59,12 @@ public class workmatesListFragment extends Fragment {
     intiViewMode(container);
     viewModel.getCurrentUserWorkmates(getWorkmatesRequestCallback());
     return binding.getRoot();
+  }
+
+  @Override
+  public void onPrepareOptionsMenu(@NonNull Menu menu) {
+    menu.findItem(R.id.searchAction).setVisible(false);
+    super.onPrepareOptionsMenu(menu);
   }
 
   private void handleWorkplaceRequiredMessageVisibility(FragmentWorkmatesBinding binding) {

@@ -12,9 +12,6 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
-import androidx.navigation.ui.NavigationUI;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.berete.go4lunch.R;
@@ -24,7 +21,6 @@ import com.berete.go4lunch.domain.restaurants.models.Restaurant;
 import com.berete.go4lunch.domain.shared.UserProvider;
 import com.berete.go4lunch.domain.shared.models.User;
 import com.berete.go4lunch.domain.utils.Callback;
-import com.berete.go4lunch.ui.core.activities.MainActivity;
 import com.berete.go4lunch.ui.restaurant.RestaurantUtils;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.DataSource;
@@ -44,7 +40,6 @@ public class RestaurantDetailsActivity extends AppCompatActivity {
   ActivityRestaurantDetailsBinding binding;
   private RestaurantDetailViewModel viewModel;
   private Restaurant restaurant;
-  private static NavController navController;
 
   @Inject UserProvider userProvider;
 
@@ -58,11 +53,6 @@ public class RestaurantDetailsActivity extends AppCompatActivity {
     stylizeTheCollapsingToolbar();
     viewModel = new ViewModelProvider(this).get(RestaurantDetailViewModel.class);
     getRestaurantDetails();
-  }
-
-  @Override
-  public boolean onSupportNavigateUp() {
-    return NavigationUI.navigateUp(navController, MainActivity.appBarConfiguration) || super.onSupportNavigateUp();
   }
 
   private void stylizeTheCollapsingToolbar() {
@@ -93,6 +83,7 @@ public class RestaurantDetailsActivity extends AppCompatActivity {
           }
         });
   }
+
 
   private void setViewsData() {
     binding.restaurantStars.setImageResource(
@@ -237,7 +228,8 @@ public class RestaurantDetailsActivity extends AppCompatActivity {
   public static void navigate(String restaurantId, Activity sourceActivity) {
     final Bundle arg = new Bundle();
     arg.putString("restaurantId", restaurantId);
-    navController = Navigation.findNavController(sourceActivity, R.id.fragmentContainerView);
-    navController.navigate(R.id.restaurantDetailsActivity, arg);
+    final Intent intent = new Intent(sourceActivity, RestaurantDetailsActivity.class);
+    intent.putExtras(arg);
+    sourceActivity.startActivity(intent);
   }
 }

@@ -1,7 +1,9 @@
 package com.berete.go4lunch.ui.settings;
 
 import android.os.Bundle;
+import android.view.Menu;
 
+import androidx.annotation.NonNull;
 import androidx.preference.CheckBoxPreference;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
@@ -27,6 +29,7 @@ public class SettingsFragment extends PreferenceFragmentCompat {
   @Override
   public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
     setPreferencesFromResource(R.xml.main_preferences, rootKey);
+    setHasOptionsMenu(true);
     notificationPreference = findPreference("notification_enabled");
     timePreference = findPreference("reminder_time");
     if (notificationPreference != null && timePreference != null) {
@@ -38,6 +41,12 @@ public class SettingsFragment extends PreferenceFragmentCompat {
         workplacePreference.getSharedPreferences().getString("workplace", "Not set"));
     workplacePreference.setOnPreferenceClickListener(this::onWorkplacePreferencesClick);
     findPreference("delete_account").setOnPreferenceClickListener(this::onDeleteAccountClick);
+  }
+
+  @Override
+  public void onPrepareOptionsMenu(@NonNull Menu menu) {
+    menu.findItem(R.id.searchAction).setVisible(false);
+    super.onPrepareOptionsMenu(menu);
   }
 
   private boolean onNotificationPreferencesChange(Preference preference, Object newValue) {

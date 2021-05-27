@@ -56,7 +56,6 @@ public class MapFragment extends Fragment {
       LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
     final View fragmentView = inflater.inflate(R.layout.fragment_map, container, false);
     initViewModel(container);
-    fetchWorkmatesCountByRestaurant();
     final SupportMapFragment mapFragment =
         (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
     mapFragment.getMapAsync(this::onMapReady);
@@ -93,14 +92,15 @@ public class MapFragment extends Fragment {
 
   @SuppressLint("MissingPermission")
   private void onMapReady(GoogleMap map) {
-    Log.i(LOG_TAG, "MAP LOADED SUCCESSFULLY");
+    Log.d(LOG_TAG, "MAP LOADED SUCCESSFULLY");
     this.map = map;
-    currentLocationProvider.getCurrentCoordinates(this::updateMapUI);
+    fetchWorkmatesCountByRestaurant();
     map.setOnInfoWindowClickListener(this::displayRestaurantDetails);
   }
 
   @SuppressLint("MissingPermission")
   private void updateMapUI(GeoCoordinates currentLocation) {
+    Log.d(LOG_TAG, "CURRENT_LOCATION = " + currentLocation);
     if (currentLocation != null) {
       map.setMyLocationEnabled(true);
       map.getUiSettings().setMyLocationButtonEnabled(true);

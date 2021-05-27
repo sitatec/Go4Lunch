@@ -280,24 +280,6 @@ public class FirebaseServicesClient implements UserProvider, RestaurantSpecificD
               }
               callback.onSuccess(employeesCountByRestaurant);
             });
-    //    firestoreDb
-    //        .collection("workplaces")
-    //        .document(workplaceId)
-    //        .collection("restaurantsChosenByEmployees")
-    //        .get()
-    //        .addOnSuccessListener(
-    //            collectionSnapshot -> {
-    //              final Map<String, Integer> employeesCountByRestaurant = new HashMap<>();
-    //              final List<DocumentSnapshot> restaurants = collectionSnapshot.getDocuments();
-    //              int currentRestaurantClientCount;
-    //              for (DocumentSnapshot currentDoc : restaurants) {
-    //                currentRestaurantClientCount = ((List<String>)
-    // currentDoc.get("clients")).size();
-    //                employeesCountByRestaurant.put(currentDoc.getId(),
-    // currentRestaurantClientCount);
-    //              }
-    //              callback.onSuccess(employeesCountByRestaurant);
-    //            });
   }
 
   //  private static String getFirebaseUserPotentialFirstName(String firebaseUserDisplayName){
