@@ -50,7 +50,7 @@ public class TimePreference extends DialogPreference {
   private String getPersistedMinutesAs24HourTimeFormat() {
     final int minutesFromMidnight = getPersistedMinutesFromMidnight();
     return String.format(
-        Locale.getDefault(), "%1$d:%2$2d", minutesFromMidnight / 60, minutesFromMidnight % 60);
+        Locale.getDefault(), "%1$d:%2$02d", minutesFromMidnight / 60, minutesFromMidnight % 60);
   }
 
   private String getPersistedMinutesAs12HourTimeFormat() {

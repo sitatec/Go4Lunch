@@ -12,14 +12,14 @@
     <string name="workmates_string">Collègues</string>
     <string name="search_a_restaurant_btn_txt">Cherche un restaurant</string>
     <string name="drawer_your_lunch_txt">Ton déjeuner</string>
-    <string name="settings_txt">Paramètre</string>
+    <string name="settings_txt">Paramètres</string>
     <string name="logout_txt">Se déconnecter</string>
     <string name="find_a_restaurant_title">Trouve un restaurant</string>
     <string name="available_workmates_title">Collègues disponibles</string>
     <string name="my_conversations_title">Mes conversations</string>
     <string name="rational_location_request_msg">Pour afficher les restaurants à proximité, autorisez Go4Lunch à accéder à votre position.</string>
     <string name="when_location_permission_denied">Si vous continuez sans autoriser la localisation, les restaurants à proximité ne seront pas affichés ni sur la carte ni dans la liste des restaurants.</string>
-    <string name="allow_location_permission">continuer</string>
+    <string name="allow_location_permission">Continuer</string>
     <string name="not_now_txt">Pas maintenant</string>
     <string name="continue_without_permission">Continuer sans autoriser</string>
     <string name="allow_location_permission_1">Autoriser</string>
@@ -35,7 +35,7 @@
     <string name="workmate_is_joining">%1$s rejoint</string>
     <string name="is_eating_at_txt">%1$s déjeune à</string>
     <string name="has_not_decided_yet_txt">%1$s n\'a pas encore décidé</string>
-    <string name="workplace_search_field_hint">Saisie le nom/addresse de ton lieu de travail</string>
+    <string name="workplace_search_field_hint">Saisie le nom/adresse de ton lieu de travail</string>
     <string name="workplace_picker_title">Selectionne ton lieu de travail</string>
     <string name="workplace_picker_tag">Selecteur de Lieu de travail</string>
     <string name="workplace_required_message_restaurant_details">Sélectionne ton lieu de travail pour voir tes collègues qui rejoignent ce restaurant</string>
@@ -52,8 +52,11 @@
     <string name="account_deletion_confirmation">Votre compte et toutes vos données ont été supprimés avec succès.</string>
     <string name="account_deletion_failed_msg">Une erreur s\'est produite lors de la suppression de votre compte, veuillez réessayer. Si le problème persiste, déconnectez-vous, reconnectez-vous et réessayez.</string>
     <string name="lunch_time_notification_title">C\'est l\'heure du déjeuner!</string>
-    <string name="lunch_time_notification_msg_with_workmates">%1$s, c\'est l\'heure de ton déjeuner à %2$s (%3$s) avec %4$s.</string>
-    <string name="lunch_time_notification_msg">%1$s, c\'est l\'heure de votre déjeuner à %2$s (%3$s), vous êtes seul aujourd\'hui 😞.</string>
+    <string name="lunch_time_notification_msg_with_workmates">%1$s, c\'est l\'heure de ton déjeuner au %2$s (%3$s) avec %4$s.</string>
+    <string name="lunch_time_notification_msg">%1$s, c\'est l\'heure de ton déjeuner au %2$s (%3$s), malheureusement tu y vas seul aujourd\'hui 😞.</string>
     <string name="notification_channel_description">This notification will be displayed every day at the time you have set in settings.</string>
     <string name="workplace_selection_success_msg">Ton lieu de travail est désormais %1$s.</string>
+    <string name="account_txt">Compte</string>
+    <string name="my_workplace_txt">Mon lieu de travail</string>
+    <string name="enable_notification">Activer la notification</string>
 </resources>

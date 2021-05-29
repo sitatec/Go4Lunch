@@ -57,7 +57,6 @@ import pub.devrel.easypermissions.EasyPermissions;
 public class MainActivity extends AppCompatActivity {
 
   @Inject public CurrentLocationProvider currentLocationProvider;
-  @Inject public UserProvider userProvider;
   @Inject public LocationPermissionHandler locationPermissionHandler;
 
   private final Set<WeakReference<OnWorkplaceSelected>> onWorkplaceSelectedListeners =
@@ -68,6 +67,7 @@ public class MainActivity extends AppCompatActivity {
   private static WorkplacePickerDialogFragment workplacePicker;
   private final PredictionListAdapter predictionListAdapter =
       new PredictionListAdapter(this::displayRestaurantDetail);
+  private User currentUser;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -76,7 +76,8 @@ public class MainActivity extends AppCompatActivity {
     setContentView(binding.getRoot());
     setupNavigation();
     initViewModel();
-    userProvider.addUserLoginCompleteListener(this::onAuthStateChanges);
+    currentUser = viewModel.getCurrentUser().getValue();
+    viewModel.getCurrentUser().observe(this, this::onAuthStateChanges);
     scheduleAlarmIfNeeded();
   }
 
@@ -96,6 +97,7 @@ public class MainActivity extends AppCompatActivity {
   }
 
   private void onAuthStateChanges(User currentUser) {
+    this.currentUser = currentUser;
     if (currentUser == null) {
       throw new IllegalStateException();
     } else {
@@ -140,8 +142,7 @@ public class MainActivity extends AppCompatActivity {
   }
 
   private void showCurrentUserChosenRestaurant() {
-    final String currentUserChosenRestaurant =
-        userProvider.getCurrentUser().getChosenRestaurantId();
+    final String currentUserChosenRestaurant = currentUser.getChosenRestaurantId();
     if (currentUserChosenRestaurant != null && !currentUserChosenRestaurant.isEmpty()) {
       RestaurantDetailsActivity.navigate(currentUserChosenRestaurant, this);
     } else
@@ -171,9 +172,9 @@ public class MainActivity extends AppCompatActivity {
 
   private void onWorkplacePredictionSelected(Prediction selectedPrediction) {
     final String selectedWorkplaceId = selectedPrediction.getCorrespondingPlaceId();
-    userProvider.getCurrentUser().setWorkplaceId(selectedWorkplaceId);
+    currentUser.setWorkplaceId(selectedWorkplaceId);
     workplacePicker.dismiss();
-    userProvider.updateUserData(UserProvider.WORKPLACE, selectedWorkplaceId);
+    viewModel.updateUserData(UserProvider.WORKPLACE, selectedWorkplaceId);
     for (WeakReference<OnWorkplaceSelected> listener : onWorkplaceSelectedListeners) {
       if (listener.get() != null) listener.get().onSelected(selectedPrediction);
     }

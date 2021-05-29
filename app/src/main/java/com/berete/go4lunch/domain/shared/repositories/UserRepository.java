@@ -50,4 +50,16 @@ public class UserRepository {
   public User getCurrentUser() {
     return userProvider.getCurrentUser();
   }
+
+  public void addUserLoginCompleteListener(UserProvider.OnUserLoginComplete listener){
+    userProvider.addUserLoginCompleteListener(listener);
+  }
+
+  public void updateUserData(String dataType, Object data){
+    userProvider.updateUserData(dataType, data);
+  }
+
+  public void resetCurrentUserChosenRestaurant(){
+    userProvider.resetCurrentUserChosenRestaurant();
+  }
 }

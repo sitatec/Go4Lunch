@@ -46,7 +46,7 @@
     <fragment
         android:id="@+id/settingsFragment"
         android:name="com.berete.go4lunch.ui.settings.SettingsFragment"
-        android:label="SettingsFragment" />
+        android:label="@string/settings_txt" />
 
 
 </navigation>

@@ -30,8 +30,6 @@ import com.bumptech.glide.request.target.Target;
 
 import java.util.List;
 
-import javax.inject.Inject;
-
 import dagger.hilt.android.AndroidEntryPoint;
 
 @AndroidEntryPoint
@@ -40,8 +38,7 @@ public class RestaurantDetailsActivity extends AppCompatActivity {
   ActivityRestaurantDetailsBinding binding;
   private RestaurantDetailViewModel viewModel;
   private Restaurant restaurant;
-
-  @Inject UserProvider userProvider;
+  private User currentUser;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -52,6 +49,8 @@ public class RestaurantDetailsActivity extends AppCompatActivity {
     getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     stylizeTheCollapsingToolbar();
     viewModel = new ViewModelProvider(this).get(RestaurantDetailViewModel.class);
+    currentUser = viewModel.getCurrentUser().getValue();
+    viewModel.getCurrentUser().observe(this, user -> currentUser = user);
     getRestaurantDetails();
   }
 
@@ -101,8 +100,7 @@ public class RestaurantDetailsActivity extends AppCompatActivity {
   }
 
   private void updateRestaurantChoiceButton() {
-    final String currentUserChosenRestaurantId =
-        userProvider.getCurrentUser().getChosenRestaurantId();
+    final String currentUserChosenRestaurantId =currentUser.getChosenRestaurantId();
     if (currentUserChosenRestaurantId != null
         && currentUserChosenRestaurantId.equals(restaurant.getId())) {
       binding.actionChooseRestaurant.setImageResource(R.drawable.ic_checked_box_24);
@@ -113,8 +111,7 @@ public class RestaurantDetailsActivity extends AppCompatActivity {
 
   private void updateRestaurantLikeButton() {
     final Drawable starIcon;
-    final List<String> currentUserLikedRestaurantsIds =
-        userProvider.getCurrentUser().getLikedRestaurantsIds();
+    final List<String> currentUserLikedRestaurantsIds = currentUser.getLikedRestaurantsIds();
     if (currentUserLikedRestaurantsIds != null
         && currentUserLikedRestaurantsIds.contains(restaurant.getId())) {
       starIcon = ResourcesCompat.getDrawable(getResources(), R.drawable.ic_one_star_24, null);
@@ -177,33 +174,31 @@ public class RestaurantDetailsActivity extends AppCompatActivity {
   }
 
   private void toggleLikeButtonState(View likeButton) {
-    final List<String> currentUserLikedRestaurants =
-        userProvider.getCurrentUser().getLikedRestaurantsIds();
+    final List<String> currentUserLikedRestaurants = currentUser.getLikedRestaurantsIds();
     if (currentUserLikedRestaurants.contains(restaurant.getId())) {
       currentUserLikedRestaurants.remove(restaurant.getId());
     } else {
       currentUserLikedRestaurants.add(restaurant.getId());
     }
-    userProvider.updateUserData(UserProvider.LIKED_RESTAURANTS, currentUserLikedRestaurants);
+    viewModel.updateUserData(UserProvider.LIKED_RESTAURANTS, currentUserLikedRestaurants);
     updateRestaurantLikeButton();
   }
 
   private void toggleRestaurantChoiceButton(View restaurantChoiceButton) {
-    final User currentUser = userProvider.getCurrentUser();
     if (currentUser.getChosenRestaurantId().equals(restaurant.getId())) {
-      userProvider.resetCurrentUserChosenRestaurant();
+      viewModel.resetCurrentUserChosenRestaurant();
       binding.actionChooseRestaurant.setImageResource(R.drawable.ic_indeterminate_check_box_24);
     } else {
       currentUser.setChosenRestaurantId(restaurant.getId());
       currentUser.setChosenRestaurantName(restaurant.getName());
       binding.actionChooseRestaurant.setImageResource(R.drawable.ic_checked_box_24);
-      userProvider.updateUserData(
+      viewModel.updateUserData(
           UserProvider.CHOSEN_RESTAURANT_ID, currentUser.getChosenRestaurantId());
     }
   }
 
   private void setUpClientList() {
-    final String currentUserWorkplaceId = userProvider.getCurrentUser().getWorkplaceId();
+    final String currentUserWorkplaceId = currentUser.getWorkplaceId();
     if (currentUserWorkplaceId == null || currentUserWorkplaceId.isEmpty()) {
       binding.workplaceRequiredMessage.setVisibility(View.VISIBLE);
       binding.selectMyWorkplaceAction.setOnClickListener(__ -> finish());

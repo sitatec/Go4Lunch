@@ -21,7 +21,7 @@ import com.berete.go4lunch.domain.restaurants.models.GeoCoordinates;
 import com.berete.go4lunch.domain.restaurants.models.Place;
 import com.berete.go4lunch.domain.restaurants.models.Restaurant;
 import com.berete.go4lunch.domain.restaurants.services.CurrentLocationProvider;
-import com.berete.go4lunch.domain.shared.UserProvider;
+import com.berete.go4lunch.domain.shared.models.User;
 import com.berete.go4lunch.domain.utils.Callback;
 import com.berete.go4lunch.domain.utils.DistanceUtils;
 import com.berete.go4lunch.ui.core.view_models.shared.RestaurantRelatedViewModel;
@@ -43,14 +43,14 @@ import dagger.hilt.android.internal.lifecycle.HiltViewModelFactory;
 public class RestaurantListFragment extends Fragment {
 
   @Inject public CurrentLocationProvider currentLocationProvider;
-  @Inject public UserProvider userProvider;
-  public RestaurantRelatedViewModel restaurantRelatedViewModel;
+  public RestaurantRelatedViewModel viewModel;
   private FragmentRestaurantsListBinding binding;
   private GeoCoordinates currentLocation;
   private Map<String, Integer> workmatesCountByRestaurant = new HashMap<>();
   private List<Restaurant> restaurants = new ArrayList<>();
   private final RestaurantListAdapter listAdapter =
       new RestaurantListAdapter(new Restaurant[0], null, this::startRestaurantDetailActivity);
+  public User currentUser;
 
   public RestaurantListFragment() {}
 
@@ -65,6 +65,8 @@ public class RestaurantListFragment extends Fragment {
       LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
     binding = FragmentRestaurantsListBinding.inflate(inflater, container, false);
     initializeViewModel(container);
+    currentUser = viewModel.getCurrentUser().getValue();
+    viewModel.getCurrentUser().observe(getViewLifecycleOwner(), user -> currentUser = user);
     binding.restaurantsList.setAdapter(listAdapter);
     binding.restaurantsList.setLayoutManager(new LinearLayoutManager(getContext()));
     currentLocationProvider.getCurrentCoordinates(this::onCurrentLocationGot);
@@ -73,7 +75,7 @@ public class RestaurantListFragment extends Fragment {
 
   private void onCurrentLocationGot(GeoCoordinates currentLocation){
     if(currentLocation != null){
-      restaurantRelatedViewModel
+      viewModel
           .getNearbyRestaurants(currentLocation, onNearbyRestaurantReceived(currentLocation));
     } else
       showLocationUnavailableMessage();
@@ -149,8 +151,8 @@ public class RestaurantListFragment extends Fragment {
 
 
   private void fetchWorkmatesCountByRestaurant() {
-    restaurantRelatedViewModel.getWorkmatesCountByRestaurant(
-        userProvider.getCurrentUser().getWorkplaceId(),
+    viewModel.getWorkmatesCountByRestaurant(
+        currentUser.getWorkplaceId(),
         new Callback<Map<String, Integer>>() {
           @Override
           public void onSuccess(Map<String, Integer> result) {
@@ -171,7 +173,7 @@ public class RestaurantListFragment extends Fragment {
     final NavBackStackEntry backStackEntry =
         Navigation.findNavController(fragmentViewContainer)
             .getBackStackEntry(R.id.navigation_graph);
-    restaurantRelatedViewModel =
+    viewModel =
         new ViewModelProvider(
                 backStackEntry,
                 HiltViewModelFactory.createInternal(getActivity(), backStackEntry, null, null))

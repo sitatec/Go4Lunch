@@ -1,5 +1,7 @@
 package com.berete.go4lunch.ui.restaurant.details;
 
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.berete.go4lunch.domain.restaurants.models.Place;
@@ -30,12 +32,15 @@ public class RestaurantDetailViewModel extends ViewModel {
 
   private final RestaurantDetailsRepository restaurantDetailsRepository;
   private final UserRepository userRepository;
+  private final MutableLiveData<User> currentUser = new MutableLiveData<>();
 
   @Inject
   public RestaurantDetailViewModel(
       RestaurantDetailsRepository restaurantDetailsRepository, UserRepository userRepository) {
     this.restaurantDetailsRepository = restaurantDetailsRepository;
     this.userRepository = userRepository;
+    userRepository.addUserLoginCompleteListener(currentUser::setValue);
+    currentUser.setValue(userRepository.getCurrentUser());
   }
 
   public void getRestaurantDetails(String restaurantId, Callback<Place> listener) {
@@ -48,21 +53,34 @@ public class RestaurantDetailViewModel extends ViewModel {
     if (currentUserWorkplaceId == null) {
       callback.onSuccess(new User[0]);
     }
-    userRepository.getUsersByChosenRestaurant(restaurantId, currentUserWorkplaceId, new Callback<User[]>() {
-      @Override
-      public void onSuccess(User[] users) {
-        // The method should provide only the current user workmates, so the current user must
-        // be removed.
-        final Stream<User> filteredUsers =
-            Arrays.stream(users)
-                .filter(user -> !user.getId().equals(userRepository.getCurrentUser().getId()));
-        callback.onSuccess(filteredUsers.toArray(User[]::new));
-      }
+    userRepository.getUsersByChosenRestaurant(
+        restaurantId,
+        currentUserWorkplaceId,
+        new Callback<User[]>() {
+          @Override
+          public void onSuccess(User[] users) {
+            // The method should provide only the current user workmates, so the current user must
+            // be removed.
+            final Stream<User> filteredUsers =
+                Arrays.stream(users)
+                    .filter(user -> !user.getId().equals(userRepository.getCurrentUser().getId()));
+            callback.onSuccess(filteredUsers.toArray(User[]::new));
+          }
 
-      @Override
-      public void onFailure() {
+          @Override
+          public void onFailure() {}
+        });
+  }
 
-      }
-    });
+  public LiveData<User> getCurrentUser() {
+    return currentUser;
+  }
+
+  public void resetCurrentUserChosenRestaurant() {
+    userRepository.resetCurrentUserChosenRestaurant();
+  }
+
+  public void updateUserData(String dataType, Object data) {
+    userRepository.updateUserData(dataType, data);
   }
 }

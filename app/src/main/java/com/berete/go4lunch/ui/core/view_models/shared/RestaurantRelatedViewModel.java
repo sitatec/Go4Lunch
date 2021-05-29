@@ -1,5 +1,7 @@
 package com.berete.go4lunch.ui.core.view_models.shared;
 
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.berete.go4lunch.domain.restaurants.models.GeoCoordinates;
@@ -7,6 +9,8 @@ import com.berete.go4lunch.domain.restaurants.models.Place;
 import com.berete.go4lunch.domain.restaurants.models.Restaurant;
 import com.berete.go4lunch.domain.restaurants.repositories.NearbyRestaurantRepository;
 import com.berete.go4lunch.domain.restaurants.services.RestaurantSpecificDataProvider;
+import com.berete.go4lunch.domain.shared.models.User;
+import com.berete.go4lunch.domain.shared.repositories.UserRepository;
 import com.berete.go4lunch.domain.utils.Callback;
 import com.berete.go4lunch.domain.utils.DistanceUtils;
 
@@ -25,16 +29,19 @@ public class RestaurantRelatedViewModel extends ViewModel {
   private Restaurant[] lastRequestResult;
   private LocalDateTime lastRequestTime;
   private final RestaurantSpecificDataProvider restaurantSpecificDataProvider;
-
+  private final MutableLiveData<User> currentUser = new MutableLiveData<>();
 
   @Inject
-  public RestaurantRelatedViewModel(NearbyRestaurantRepository nearbyRestaurantRepository, RestaurantSpecificDataProvider restaurantSpecificDataProvider) {
+  public RestaurantRelatedViewModel(
+      NearbyRestaurantRepository nearbyRestaurantRepository,
+      RestaurantSpecificDataProvider restaurantSpecificDataProvider,
+      UserRepository userRepository) {
     this.nearbyRestaurantRepository = nearbyRestaurantRepository;
     this.restaurantSpecificDataProvider = restaurantSpecificDataProvider;
+    userRepository.addUserLoginCompleteListener(currentUser::setValue);
   }
 
-  public void getNearbyRestaurants(
-      GeoCoordinates currentLocation, Callback<Place[]> callback) {
+  public void getNearbyRestaurants(GeoCoordinates currentLocation, Callback<Place[]> callback) {
     if (cacheUpToDate(currentLocation)) {
       callback.onSuccess(lastRequestResult);
     } else {
@@ -45,11 +52,20 @@ public class RestaurantRelatedViewModel extends ViewModel {
     }
   }
 
-  public void getWorkmatesCountByRestaurant(String workplaceId, Callback<Map<String, Integer>> callback) {
+  public void getWorkmatesCountByRestaurant(
+      String workplaceId, Callback<Map<String, Integer>> callback) {
     restaurantSpecificDataProvider.getRestaurantClientCountByWorkplace(workplaceId, callback);
   }
 
-  public boolean cacheUpToDate(GeoCoordinates currentLocation) {
+  /**
+   * This method determines if the view model needs to fetch new data or just return the cached
+   * data. To achieve that it checks if 15 minutes are elapsed or the user has moved 50 meters since
+   * the last data fetch.
+   *
+   * @param currentLocation The current location of the device
+   * @return true if the cache is up to data, false otherwise
+   */
+  private boolean cacheUpToDate(GeoCoordinates currentLocation) {
     return lastUserLocation != null
         && DistanceUtils.getDistanceBetween(lastUserLocation, currentLocation) < 50 // meter
         && lastRequestTime.plusMinutes(15).isAfter(LocalDateTime.now());
@@ -69,5 +85,9 @@ public class RestaurantRelatedViewModel extends ViewModel {
         callback.onFailure();
       }
     };
+  }
+
+  public LiveData<User> getCurrentUser() {
+    return currentUser;
   }
 }

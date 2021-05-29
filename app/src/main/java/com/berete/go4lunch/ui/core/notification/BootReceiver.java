@@ -10,6 +10,10 @@ import com.berete.go4lunch.ui.settings.TimePreference;
 
 import java.util.Calendar;
 
+/**
+ * The receiver which will be triggered on every restart of the device and will
+ * reschedule the notification alarm as the alarm is reset after every restart.
+ */
 public class BootReceiver extends BroadcastReceiver {
 
   @Override

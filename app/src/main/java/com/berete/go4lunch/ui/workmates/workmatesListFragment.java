@@ -16,7 +16,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.berete.go4lunch.R;
 import com.berete.go4lunch.databinding.FragmentWorkmatesBinding;
-import com.berete.go4lunch.domain.shared.UserProvider;
 import com.berete.go4lunch.domain.shared.models.User;
 import com.berete.go4lunch.domain.utils.Callback;
 import com.berete.go4lunch.ui.core.activities.MainActivity;
@@ -27,16 +26,14 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Arrays;
 
-import javax.inject.Inject;
-
 import dagger.hilt.android.AndroidEntryPoint;
 import dagger.hilt.android.internal.lifecycle.HiltViewModelFactory;
 
 @AndroidEntryPoint
 public class workmatesListFragment extends Fragment {
 
-  UserRelatedViewModel viewModel;
-  @Inject UserProvider userProvider;
+  private UserRelatedViewModel viewModel;
+  private User currentUser;
   final WorkmatesListAdapter workmatesListAdapter =
       new WorkmatesListAdapter(
           restaurantId -> RestaurantDetailsActivity.navigate(restaurantId, getActivity()));
@@ -55,8 +52,10 @@ public class workmatesListFragment extends Fragment {
             LayoutInflater.from(container.getContext()), container, false);
     binding.workmatesList.setLayoutManager(new LinearLayoutManager(binding.getRoot().getContext()));
     binding.workmatesList.setAdapter(workmatesListAdapter);
-    handleWorkplaceRequiredMessageVisibility(binding);
     intiViewMode(container);
+    currentUser = viewModel.getCurrentUser().getValue();
+    viewModel.getCurrentUser().observe(getViewLifecycleOwner(), user -> currentUser = user);
+    handleWorkplaceRequiredMessageVisibility(binding);
     viewModel.getCurrentUserWorkmates(getWorkmatesRequestCallback());
     return binding.getRoot();
   }
@@ -68,7 +67,6 @@ public class workmatesListFragment extends Fragment {
   }
 
   private void handleWorkplaceRequiredMessageVisibility(FragmentWorkmatesBinding binding) {
-    final User currentUser = userProvider.getCurrentUser();
     if (currentUser.getWorkplaceId() == null || currentUser.getWorkplaceId().isEmpty()) {
       binding.workplaceRequiredMessage.setVisibility(View.VISIBLE);
       binding.selectMyWorkplaceAction.setOnClickListener(

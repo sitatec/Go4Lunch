@@ -18,7 +18,7 @@ import com.berete.go4lunch.domain.restaurants.models.GeoCoordinates;
 import com.berete.go4lunch.domain.restaurants.models.Place;
 import com.berete.go4lunch.domain.restaurants.models.Restaurant;
 import com.berete.go4lunch.domain.restaurants.services.CurrentLocationProvider;
-import com.berete.go4lunch.domain.shared.UserProvider;
+import com.berete.go4lunch.domain.shared.models.User;
 import com.berete.go4lunch.domain.utils.Callback;
 import com.berete.go4lunch.ui.core.view_models.shared.RestaurantRelatedViewModel;
 import com.berete.go4lunch.ui.restaurant.details.RestaurantDetailsActivity;
@@ -42,12 +42,12 @@ import dagger.hilt.android.internal.lifecycle.HiltViewModelFactory;
 public class MapFragment extends Fragment {
 
   private static final String LOG_TAG = MapFragment.class.getSimpleName();
+  @Inject
+  public CurrentLocationProvider currentLocationProvider;
   private GoogleMap map;
   private RestaurantRelatedViewModel viewModel;
-
-  @Inject public UserProvider userProvider;
-  @Inject public CurrentLocationProvider currentLocationProvider;
   private Map<String, Integer> workmatesCountByRestaurant = new HashMap<>();
+  private User currentUser;
 
   public MapFragment() {}
 
@@ -56,15 +56,18 @@ public class MapFragment extends Fragment {
       LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
     final View fragmentView = inflater.inflate(R.layout.fragment_map, container, false);
     initViewModel(container);
+    viewModel.getCurrentUser().observe(getViewLifecycleOwner(), user -> {
+      currentUser = user;
+      fetchWorkmatesCountByRestaurant();
+    });
     final SupportMapFragment mapFragment =
         (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
     mapFragment.getMapAsync(this::onMapReady);
-    fetchWorkmatesCountByRestaurant();
     return fragmentView;
   }
 
   private void fetchWorkmatesCountByRestaurant() {
-    final String currentUserWorkplace = userProvider.getCurrentUser().getWorkplaceId();
+    final String currentUserWorkplace = currentUser.getWorkplaceId();
     if (currentUserWorkplace != null) {
       viewModel.getWorkmatesCountByRestaurant(
           currentUserWorkplace,

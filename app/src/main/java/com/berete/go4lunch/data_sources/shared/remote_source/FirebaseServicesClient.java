@@ -14,8 +14,10 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 // TODO REFACTORING
 public class FirebaseServicesClient implements UserProvider, RestaurantSpecificDataProvider {
@@ -23,7 +25,7 @@ public class FirebaseServicesClient implements UserProvider, RestaurantSpecificD
   private final FirebaseAuth firebaseAuth;
   private User currentUser;
 
-  private OnUserLoginComplete authStateChangesListener;
+  private final Set<OnUserLoginComplete> loginCompleteListeners = new HashSet<>();
   private boolean userCompletelySignedIn = false;
 
   public FirebaseServicesClient(FirebaseFirestore firestoreDb, FirebaseAuth firebaseAuth) {
@@ -61,10 +63,14 @@ public class FirebaseServicesClient implements UserProvider, RestaurantSpecificD
     currentUser.setChosenRestaurantName(userDocument.getString(CHOSEN_RESTAURANT_NAME));
     currentUser.setConversationsIds((List<String>) userDocument.get(CONVERSATIONS));
     currentUser.setLikedRestaurantsIds((List<String>) userDocument.get(LIKED_RESTAURANTS));
-    if (authStateChangesListener != null) {
-      authStateChangesListener.onComplete(currentUser);
-      authStateChangesListener = null;
-    } else userCompletelySignedIn = true;
+    if (loginCompleteListeners.isEmpty()) {
+      userCompletelySignedIn = true;
+    } else{
+      for (OnUserLoginComplete listener: loginCompleteListeners){
+        listener.onComplete(currentUser);
+      }
+      loginCompleteListeners.clear();
+    }
   }
 
   @Override
@@ -170,7 +176,7 @@ public class FirebaseServicesClient implements UserProvider, RestaurantSpecificD
   public void addUserLoginCompleteListener(OnUserLoginComplete listener) {
     if (userCompletelySignedIn) {
       listener.onComplete(currentUser);
-    } else authStateChangesListener = listener;
+    } else loginCompleteListeners.add(listener);
   }
 
   @Override
