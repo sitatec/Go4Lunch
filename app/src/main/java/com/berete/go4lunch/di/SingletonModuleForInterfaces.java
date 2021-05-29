@@ -1,6 +1,6 @@
 package com.berete.go4lunch.di;
 
-import com.berete.go4lunch.data_souces.shared.remote_source.FirebaseServicesClient;
+import com.berete.go4lunch.data_sources.shared.remote_source.FirebaseServicesClient;
 import com.berete.go4lunch.domain.shared.UserProvider;
 
 import javax.inject.Singleton;

@@ -1,8 +1,8 @@
 package com.berete.go4lunch.di;
 
-import com.berete.go4lunch.data_souces.restaurants.remote_source.GooglePlacesAPIClient;
-import com.berete.go4lunch.data_souces.restaurants.remote_source.PlaceHttpClient;
-import com.berete.go4lunch.data_souces.shared.remote_source.FirebaseServicesClient;
+import com.berete.go4lunch.data_sources.restaurants.remote_source.GooglePlacesAPIClient;
+import com.berete.go4lunch.data_sources.restaurants.remote_source.PlaceHttpClient;
+import com.berete.go4lunch.data_sources.shared.remote_source.FirebaseServicesClient;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 

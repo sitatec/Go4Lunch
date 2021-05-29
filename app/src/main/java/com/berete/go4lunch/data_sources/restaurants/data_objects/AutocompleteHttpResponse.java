@@ -1,4 +1,4 @@
-package com.berete.go4lunch.data_souces.restaurants.data_objects;
+package com.berete.go4lunch.data_sources.restaurants.data_objects;
 
 import android.util.Log;
 
