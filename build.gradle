@@ -5,7 +5,7 @@ buildscript {
         mavenCentral()
     }
 
-    ext.hilt_version = '2.35'
+    ext.hilt_version = '2.36'
     dependencies {
         classpath 'com.android.tools.build:gradle:4.2.1'
         classpath 'com.google.gms:google-services:4.3.5'

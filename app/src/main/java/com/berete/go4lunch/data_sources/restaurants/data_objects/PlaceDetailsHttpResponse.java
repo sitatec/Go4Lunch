@@ -1,6 +1,6 @@
-package com.berete.go4lunch.data_souces.restaurants.data_objects;
+package com.berete.go4lunch.data_sources.restaurants.data_objects;
 
-import com.berete.go4lunch.data_souces.restaurants.remote_source.GooglePlacesAPIClient.Utils;
+import com.berete.go4lunch.data_sources.restaurants.remote_source.GooglePlacesAPIClient.Utils;
 import com.berete.go4lunch.domain.restaurants.models.Place;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;

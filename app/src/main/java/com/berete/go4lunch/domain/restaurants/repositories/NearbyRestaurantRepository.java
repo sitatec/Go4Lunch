@@ -22,12 +22,15 @@ public class NearbyRestaurantRepository {
   }
 
   public void getNearbyRestaurants(
-      Callback<Place[]> callback,
-      Place.LangCode langCode,
-      GeoCoordinates currentLocation) {
+      Callback<Place[]> callback, Place.LangCode langCode, GeoCoordinates currentLocation) {
     final Place.Type[] types = {Place.Type.RESTAURANT};
-    nearbyPlaceProvider.setQueryParameters(
-        types, getFields(), currentLocation, langCode, NearbyPlaceProvider.DEFAULT_SEARCH_RADIUS);
+    nearbyPlaceProvider.setNearbySearchQueryParams(
+        types,
+        NearbyPlaceProvider.DEFAULT_FIELDS,
+        currentLocation,
+        langCode,
+        NearbyPlaceProvider.DEFAULT_SEARCH_RADIUS);
+
     nearbyPlaceProvider.getPlaceData(
         new Callback<Place[]>() {
           @Override
@@ -41,14 +44,5 @@ public class NearbyRestaurantRepository {
             callback.onFailure();
           }
         });
-  }
-
-  private Place.Field[] getFields() {
-    return new Place.Field[] {
-      Place.Field.ADDRESS, Place.Field.GEO_COORDINATES,
-      Place.Field.NAME, Place.Field.OPENING_HOURS,
-      Place.Field.PHONE_NUMBER, Place.Field.PHOTO_URL,
-      Place.Field.WEBSITE_URL, Place.Field.RATE
-    };
   }
 }

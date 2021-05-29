@@ -1,11 +1,9 @@
-package com.berete.go4lunch.data_souces.restaurants.remote_source;
-
-import android.util.Log;
+package com.berete.go4lunch.data_sources.restaurants.remote_source;
 
 import com.berete.go4lunch.BuildConfig;
-import com.berete.go4lunch.data_souces.restaurants.data_objects.AutocompleteHttpResponse;
-import com.berete.go4lunch.data_souces.restaurants.data_objects.NearbySearchHttpResponse;
-import com.berete.go4lunch.data_souces.restaurants.data_objects.PlaceDetailsHttpResponse;
+import com.berete.go4lunch.data_sources.restaurants.data_objects.AutocompleteHttpResponse;
+import com.berete.go4lunch.data_sources.restaurants.data_objects.NearbySearchHttpResponse;
+import com.berete.go4lunch.data_sources.restaurants.data_objects.PlaceDetailsHttpResponse;
 import com.berete.go4lunch.domain.restaurants.models.GeoCoordinates;
 import com.berete.go4lunch.domain.restaurants.models.Place;
 import com.berete.go4lunch.domain.restaurants.models.Prediction;
@@ -48,7 +46,7 @@ public class GooglePlacesAPIClient
   // ############################################################ //
 
   @Override
-  public void setQueryParameters(
+  public void setNearbySearchQueryParams(
       Place.Type[] placeTypes,
       Place.Field[] placeFields,
       GeoCoordinates searchArea,
@@ -63,12 +61,12 @@ public class GooglePlacesAPIClient
   }
 
   @Override
-  public void setQueryParameters(
+  public void setNearbySearchQueryParams(
       Place.Type[] placeTypes,
       Place.Field[] placeFields,
       GeoCoordinates searchArea,
       Place.LangCode langCode) {
-    setQueryParameters(placeTypes, placeFields, searchArea, langCode, DEFAULT_SEARCH_RADIUS);
+    setNearbySearchQueryParams(placeTypes, placeFields, searchArea, langCode, DEFAULT_SEARCH_RADIUS);
   }
 
   @Override
@@ -174,7 +172,7 @@ public class GooglePlacesAPIClient
         else {
           if(filter != null) listener.onSuccess(responseBody.getFilteredPredictions(filter));
           else listener.onSuccess(responseBody.getPredictions());
-          Log.i("HTTP_RESPONSE", "onResponseCallback");
+//          Log.i("HTTP_RESPONSE", "onResponseCallback");
         }
       }
 
@@ -199,7 +197,7 @@ public class GooglePlacesAPIClient
     placeDetailsQueryParams.put("key", BuildConfig.GOOGLE_PLACE_API_KEY);
     placeDetailsQueryParams.put("place_id", placeId);
     placeDetailsQueryParams.put("language", langCode.name());
-    placeDetailsQueryParams.put("fields", joinAndSeparatesByComma(fieldsToReturn));
+    placeDetailsQueryParams.put("fields", convertToGoogleApiFields(fieldsToReturn));
     placeDetailsQueryParams.put("sessiontoken", autocompleteSessionTokenHandler.getAndResetToken());
     placeHttpClient
         .getPlaceDetails(placeDetailsQueryParams)
@@ -228,11 +226,11 @@ public class GooglePlacesAPIClient
     };
   }
 
-  private String joinAndSeparatesByComma(Place.Field[] entries) {
+  public static String convertToGoogleApiFields(Place.Field[] entries) {
     final StringBuilder stringBuilder = new StringBuilder();
     String currentField;
     for (int i = 0; i < entries.length; i++) {
-      currentField = convertToGoogleApiField(entries[i]);
+      currentField = convertField(entries[i]);
       if (currentField != null) {
         stringBuilder.append(currentField);
         if (i < entries.length - 1) stringBuilder.append(",");
@@ -241,7 +239,7 @@ public class GooglePlacesAPIClient
     return stringBuilder.toString();
   }
 
-  private String convertToGoogleApiField(Place.Field input) {
+  private static String convertField(Place.Field input) {
     switch (input) {
       case ID:
         return "place_id";
