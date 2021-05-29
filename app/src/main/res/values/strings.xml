@@ -1,21 +1,20 @@
 <resources>
     <string name="app_name">Go4Lunch</string>
     <string name="logo_subtitle">Find a nice restaurant and invite your co-workers for lunch</string>
-    <string name="facebook_application_id" translatable="false">2955815731344333</string>
     <string name="facebook_login_protocol_scheme" translatable="false">fb2955815731344333</string>
 
-    <string name="login_canceled">Login Canceled \n\n You must sign in to access the app content</string>
-    <string name="login_failed_network_error">Login Failed \n\n Your device is not connected to internet, please connect it and retry.</string>
-    <string name="login_failed_unknown_error">Login Failed \n\n An error occurred while authentication process, please retry.</string>
+    <string name="login_canceled">Login Canceled \n You must sign in to access the app content</string>
+    <string name="login_failed_network_error">Login Failed \n Your device is not connected to internet, please connect it and retry.</string>
+    <string name="login_failed_unknown_error">Login Failed \n An error occurred while authentication process, please retry.</string>
 
     <string name="retry_login_btn_txt">Retry</string>
     <string name="facebook_login_btn_txt">Sign in with Facebook</string>
     <string name="google_login_btn_txt">Sign in with Google</string>
 
     <string name="map_string">Map</string>
-    <string name="restaurants_list">Restaurants</string>
+    <string name="restaurants_list" translatable="false">Restaurants</string>
     <string name="workmates_string">Workmates</string>
-    <string name="conversations_string">Conversations</string>
+    <string name="conversations_string" translatable="false">Conversations</string>
     <string name="search_a_restaurant_btn_txt">Search a restaurant</string>
     <string name="drawer_your_lunch_txt">Your lunch</string>
     <string name="settings_txt">Settings</string>
@@ -23,13 +22,10 @@
     <string name="find_a_restaurant_title">Find a restaurant</string>
     <string name="available_workmates_title">Available workmates</string>
     <string name="my_conversations_title">My conversations</string>
-    <string name="chat_title">Chat</string>
+    <string name="chat_title" translatable="false">Chat</string>
 
     <string name="rational_location_request_msg">To display nearby restaurants, allow Go4Lunch to access your Location.</string>
-    <string name="when_location_permission_denied">
-        If you continue without allowing the location permission,
-        nearby restaurants will not be displayed neither on the map nor in the restaurants list.
-    </string>
+    <string name="when_location_permission_denied">"         If you continue without allowing the location permission,         nearby restaurants will not be displayed neither on the map nor in the restaurants list.     "</string>
     <string name="allow_location_permission">continue</string>
     <string name="not_now_txt">not now</string>
     <string name="continue_without_permission">continue without permission</string>
@@ -38,7 +34,7 @@
     <string name="meter">meter</string>
     <string name="restaurant_status_open">Open</string>
     <string name="restaurant_status_closed">Closed</string>
-    <string name="search_restaurants_hint">Search restaurants</string>
+    <string name="search_restaurants_hint">Search restaurant</string>
     <string name="user_choice_state">User choice for this restaurant state</string>
     <string name="call_text">CALL</string>
     <string name="like_text">LIKE</string>
@@ -56,27 +52,13 @@
     <string name="order_by_stars">Sort By Stars</string>
     <string name="order_by_nearest">Sort by nearest</string>
     <string name="order_by_workmate">Sort by workmates count</string>
-    <string name="in_brackets">(%1$d)</string>
+    <string name="in_brackets" translatable="false">(%1$d)</string>
     <string name="restaurant_not_chosen_yet">You have not chosen your restaurant yet!</string>
-    <!-- Preference Titles -->
-    <string name="messages_header">Messages</string>
-    <string name="sync_header">Sync</string>
-
-    <!-- Messages Preferences -->
-    <string name="signature_title">Your signature</string>
-    <string name="reply_title">Default reply action</string>
-
-    <!-- Sync Preferences -->
-    <string name="sync_title">Sync email periodically</string>
-    <string name="attachment_title">Download incoming attachments</string>
-    <string name="attachment_summary_on">Automatically download attachments for incoming emails
-    </string>
-    <string name="attachment_summary_off">Only download attachments when manually requested</string>
     <string name="lunch_reminder_time">Lunch reminder time</string>
     <string name="delete_account_btn_txt">Delete my account</string>
     <string name="delete_account_desc">This action will permanently delete your account and all data related to it.</string>
     <string name="account_deletion_confirmation">Your account and all your data have been successfully deleted.</string>
-    <string name="account_deletion_failed_msg">An error occurred when deleting your account please retry. If the problem persist, logout, login and retry.</string>
+    <string name="account_deletion_failed_msg">An error occurred while deleting your account, please try again. If the problem persists, log out, log back in, and try again.</string>
     <string name="lunch_time_notification_title">It\'s lunch time!</string>
     <string name="lunch_time_notification_msg_with_workmates">%1$s, its time for your lunch at %2$s (%3$s) with %4$s.</string>
     <string name="lunch_time_notification_msg">%1$s, its time for your lunch at %2$s (%3$s), you are alone today 😞.</string>
