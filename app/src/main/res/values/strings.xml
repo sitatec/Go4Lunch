@@ -56,9 +56,9 @@
     <string name="restaurant_not_chosen_yet">You have not chosen your restaurant yet!</string>
     <string name="lunch_reminder_time">Lunch reminder time</string>
     <string name="delete_account_btn_txt">Delete my account</string>
-    <string name="delete_account_desc">This action will permanently delete your account and all data related to it.</string>
+    <string name="ask_account_deletion_confirmation">This action will permanently delete your account and all data related to it.\nDo you want to continue?</string>
     <string name="account_deletion_confirmation">Your account and all your data have been successfully deleted.</string>
-    <string name="account_deletion_failed_msg">An error occurred while deleting your account, please try again. If the problem persists, log out, log back in, and try again.</string>
+    <string name="account_deletion_failed_msg">An error occurred while deleting your account, please log out, log back in, and try again.</string>
     <string name="lunch_time_notification_title">It\'s lunch time!</string>
     <string name="lunch_time_notification_msg_with_workmates">%1$s, its time for your lunch at %2$s (%3$s) with %4$s.</string>
     <string name="lunch_time_notification_msg">%1$s, its time for your lunch at %2$s (%3$s), unfortunately you go alone today 😞.</string>
@@ -67,4 +67,9 @@
     <string name="account_txt">Account</string>
     <string name="my_workplace_txt">My workplace</string>
     <string name="enable_notification">Enable notification</string>
+    <string name="delete_confirmation_dialog_TAG" translatable="false">Account deletion confirmation dialog</string>
+    <string name="time_preference_dialog_TAG" translatable="false">The time preference picker dialog</string>
+    <string name="delete_confirmation_dialogue_title">Are you sure?</string>
+    <string name="cancel_txt">Cancel</string>
+    <string name="delete_txt">Delete</string>
 </resources>

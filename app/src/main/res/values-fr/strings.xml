@@ -28,7 +28,7 @@
     <string name="restaurant_status_open">Ouvert</string>
     <string name="restaurant_status_closed">Fermé</string>
     <string name="search_restaurants_hint">Chercher un restaurant</string>
-    <string name="user_choice_state">Etat du choix de l\'utilisateur pour ce restaurant</string>
+    <string name="user_choice_state">État du choix de l\'utilisateur pour ce restaurant</string>
     <string name="call_text">Apeller</string>
     <string name="like_text">Aimer</string>
     <string name="website_text">Site Web</string>
@@ -48,9 +48,9 @@
     <string name="restaurant_not_chosen_yet">Tu n\'a pas choisi to restaurant pour l\'instant</string>
     <string name="lunch_reminder_time">Heure de rappel du déjeuner</string>
     <string name="delete_account_btn_txt">Supprimer mon compte</string>
-    <string name="delete_account_desc">Cette action supprimera définitivement votre compte et toutes les données qui y sont liées.</string>
+    <string name="ask_account_deletion_confirmation">Cette action supprimera définitivement votre compte et toutes les données qui y sont liées. \n Voulez-vous poursuivre cette action?</string>
     <string name="account_deletion_confirmation">Votre compte et toutes vos données ont été supprimés avec succès.</string>
-    <string name="account_deletion_failed_msg">Une erreur s\'est produite lors de la suppression de votre compte, veuillez réessayer. Si le problème persiste, déconnectez-vous, reconnectez-vous et réessayez.</string>
+    <string name="account_deletion_failed_msg">Une erreur s\'est produite lors de la suppression de votre compte, veuillez vous déconnectez, puis vous reconnectez et réessayez.</string>
     <string name="lunch_time_notification_title">C\'est l\'heure du déjeuner!</string>
     <string name="lunch_time_notification_msg_with_workmates">%1$s, c\'est l\'heure de ton déjeuner au %2$s (%3$s) avec %4$s.</string>
     <string name="lunch_time_notification_msg">%1$s, c\'est l\'heure de ton déjeuner au %2$s (%3$s), malheureusement tu y vas seul aujourd\'hui 😞.</string>
@@ -59,4 +59,7 @@
     <string name="account_txt">Compte</string>
     <string name="my_workplace_txt">Mon lieu de travail</string>
     <string name="enable_notification">Activer la notification</string>
+    <string name="delete_confirmation_dialogue_title">Êtes-vous sûr.</string>
+    <string name="cancel_txt">Annuler</string>
+    <string name="delete_txt">Supprimer</string>
 </resources>
