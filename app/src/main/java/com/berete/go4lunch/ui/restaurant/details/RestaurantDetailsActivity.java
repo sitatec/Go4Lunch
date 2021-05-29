@@ -84,7 +84,6 @@ public class RestaurantDetailsActivity extends AppCompatActivity {
         });
   }
 
-
   private void setViewsData() {
     binding.restaurantStars.setImageResource(
         RestaurantUtils.getStarsDrawableId(restaurant.getStarsBoundedTo3()));
@@ -102,16 +101,22 @@ public class RestaurantDetailsActivity extends AppCompatActivity {
   }
 
   private void updateRestaurantChoiceButton() {
-    if (userProvider.getCurrentUser().getChosenRestaurantId().equals(restaurant.getId())) {
+    final String currentUserChosenRestaurantId =
+        userProvider.getCurrentUser().getChosenRestaurantId();
+    if (currentUserChosenRestaurantId != null
+        && currentUserChosenRestaurantId.equals(restaurant.getId())) {
       binding.actionChooseRestaurant.setImageResource(R.drawable.ic_checked_box_24);
     } else {
       binding.actionChooseRestaurant.setImageResource(R.drawable.ic_indeterminate_check_box_24);
     }
   }
 
-  private void updateRestaurantLikeButton(){
+  private void updateRestaurantLikeButton() {
     final Drawable starIcon;
-    if(userProvider.getCurrentUser().getLikedRestaurantsIds().contains(restaurant.getId())){
+    final List<String> currentUserLikedRestaurantsIds =
+        userProvider.getCurrentUser().getLikedRestaurantsIds();
+    if (currentUserLikedRestaurantsIds != null
+        && currentUserLikedRestaurantsIds.contains(restaurant.getId())) {
       starIcon = ResourcesCompat.getDrawable(getResources(), R.drawable.ic_one_star_24, null);
     } else {
       starIcon = ResourcesCompat.getDrawable(getResources(), R.drawable.ic_star_border_24, null);
@@ -192,7 +197,8 @@ public class RestaurantDetailsActivity extends AppCompatActivity {
       currentUser.setChosenRestaurantId(restaurant.getId());
       currentUser.setChosenRestaurantName(restaurant.getName());
       binding.actionChooseRestaurant.setImageResource(R.drawable.ic_checked_box_24);
-      userProvider.updateUserData(UserProvider.CHOSEN_RESTAURANT_ID, currentUser.getChosenRestaurantId());
+      userProvider.updateUserData(
+          UserProvider.CHOSEN_RESTAURANT_ID, currentUser.getChosenRestaurantId());
     }
   }
 
@@ -220,7 +226,6 @@ public class RestaurantDetailsActivity extends AppCompatActivity {
             }
           });
   }
-
 
   private void showWorkmatesDataUnavailableMessage() {}
 

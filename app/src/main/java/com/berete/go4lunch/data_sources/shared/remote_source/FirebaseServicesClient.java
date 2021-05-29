@@ -23,7 +23,7 @@ public class FirebaseServicesClient implements UserProvider, RestaurantSpecificD
   private final FirebaseAuth firebaseAuth;
   private User currentUser;
 
-  private OnAuthStateChangesListener authStateChangesListener;
+  private OnUserLoginComplete authStateChangesListener;
   private boolean userCompletelySignedIn = false;
 
   public FirebaseServicesClient(FirebaseFirestore firestoreDb, FirebaseAuth firebaseAuth) {
@@ -62,7 +62,7 @@ public class FirebaseServicesClient implements UserProvider, RestaurantSpecificD
     currentUser.setConversationsIds((List<String>) userDocument.get(CONVERSATIONS));
     currentUser.setLikedRestaurantsIds((List<String>) userDocument.get(LIKED_RESTAURANTS));
     if (authStateChangesListener != null) {
-      authStateChangesListener.onFetched(currentUser);
+      authStateChangesListener.onComplete(currentUser);
       authStateChangesListener = null;
     } else userCompletelySignedIn = true;
   }
@@ -167,10 +167,9 @@ public class FirebaseServicesClient implements UserProvider, RestaurantSpecificD
   }
 
   @Override
-  public void addAuthStateChangesListener(OnAuthStateChangesListener listener) {
+  public void addUserLoginCompleteListener(OnUserLoginComplete listener) {
     if (userCompletelySignedIn) {
-      listener.onFetched(currentUser);
-      userCompletelySignedIn = false;
+      listener.onComplete(currentUser);
     } else authStateChangesListener = listener;
   }
 

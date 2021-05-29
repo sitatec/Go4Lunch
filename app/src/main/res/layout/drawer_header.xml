@@ -7,13 +7,14 @@
     android:background="@drawable/drawer_header_bg">
 
     <androidx.cardview.widget.CardView
-        android:layout_margin="15dp"
+        android:layout_marginBottom="8dp"
         android:layout_height="wrap_content"
         android:layout_width="wrap_content"
         app:cardCornerRadius="30dp"
         android:id="@+id/user_photo_container"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent">
+        app:layout_constraintBottom_toTopOf="@id/credentials"
+        app:layout_constraintLeft_toLeftOf="@id/credentials"
+        >
 
         <ImageView
             android:id="@+id/user_photo"
@@ -26,13 +27,17 @@
 
 
     <LinearLayout
+        android:id="@+id/credentials"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:layout_marginStart="14dp"
-        app:layout_constraintBottom_toBottomOf="@id/user_photo_container"
-        app:layout_constraintLeft_toRightOf="@id/user_photo_container"
-        app:layout_constraintTop_toTopOf="@id/user_photo_container">
+        android:layout_marginHorizontal="13dp"
+        app:layout_constrainedWidth="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_marginBottom="16dp"
+        android:layout_marginLeft="16dp"
+        >
 
         <TextView
             android:id="@+id/username"

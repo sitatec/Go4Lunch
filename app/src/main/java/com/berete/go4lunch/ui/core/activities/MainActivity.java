@@ -76,7 +76,7 @@ public class MainActivity extends AppCompatActivity {
     setContentView(binding.getRoot());
     setupNavigation();
     initViewModel();
-    userProvider.addAuthStateChangesListener(this::onAuthStateChanges);
+    userProvider.addUserLoginCompleteListener(this::onAuthStateChanges);
     scheduleAlarmIfNeeded();
   }
 

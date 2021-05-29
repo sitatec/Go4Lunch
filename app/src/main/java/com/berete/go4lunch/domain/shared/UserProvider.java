@@ -21,10 +21,10 @@ public interface UserProvider {
   boolean isCurrentUserNew();
   void logout(Runnable onLogout);
   void deleteCurrentUserAccount(Callback<Boolean> callback);
-  void addAuthStateChangesListener(OnAuthStateChangesListener listener);
+  void addUserLoginCompleteListener(OnUserLoginComplete listener);
   User getCurrentUser();
 
-  interface OnAuthStateChangesListener {
-    void onFetched(User currentUser);
+  interface OnUserLoginComplete {
+    void onComplete(User currentUser);
   }
 }

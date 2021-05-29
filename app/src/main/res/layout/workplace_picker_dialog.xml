@@ -11,10 +11,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="@string/workplace_search_field_hint"
-        android:drawableStart="@drawable/ic_search_24"
-        app:drawableTint="@android:color/darker_gray"
-        android:drawablePadding="5dp"
-        android:shadowColor="?attr/colorPrimary"
         />
 
     <androidx.recyclerview.widget.RecyclerView
