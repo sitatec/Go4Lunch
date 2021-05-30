@@ -6,16 +6,16 @@ import com.berete.go4lunch.domain.utils.Callback;
 
 import javax.inject.Inject;
 
-public class RestaurantDetailsRepository {
+public class PlaceDetailsRepository {
 
   private final PlaceDetailsProvider placeDetailsProvider;
 
   @Inject
-  public RestaurantDetailsRepository(PlaceDetailsProvider placeDetailsProvider){
+  public PlaceDetailsRepository(PlaceDetailsProvider placeDetailsProvider){
     this.placeDetailsProvider = placeDetailsProvider;
   }
 
-  public void getRestaurantDetails(
+  public void getPlaceDetails(
       String restaurantId,
       Place.Field[] fieldsToReturn,
       Place.LangCode langCode,

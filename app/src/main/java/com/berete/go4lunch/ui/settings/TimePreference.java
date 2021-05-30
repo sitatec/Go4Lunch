@@ -30,7 +30,6 @@ public class TimePreference extends DialogPreference {
 
   public Calendar getPersistedTimeAsCalendar(){
     final Calendar calendar = Calendar.getInstance();
-    calendar.setTimeInMillis(System.currentTimeMillis());
     calendar.set(Calendar.HOUR_OF_DAY, getPersistedMinutesFromMidnight() / 60);
     calendar.set(Calendar.MINUTE, getPersistedMinutesFromMidnight() % 60);
     return calendar;

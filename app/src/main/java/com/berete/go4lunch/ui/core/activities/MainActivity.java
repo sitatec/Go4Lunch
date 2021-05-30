@@ -31,7 +31,7 @@ import com.berete.go4lunch.domain.shared.UserProvider;
 import com.berete.go4lunch.domain.shared.models.User;
 import com.berete.go4lunch.domain.utils.Callback;
 import com.berete.go4lunch.ui.core.adapters.PredictionListAdapter;
-import com.berete.go4lunch.ui.core.fragments.WorkplacePickerDialogFragment;
+import com.berete.go4lunch.ui.core.dialogs.WorkplacePickerDialogFragment;
 import com.berete.go4lunch.ui.core.notification.LunchAlarmManager;
 import com.berete.go4lunch.ui.core.notification.LunchAlarmReceiver;
 import com.berete.go4lunch.ui.core.services.location.LocationPermissionHandler;
@@ -78,22 +78,6 @@ public class MainActivity extends AppCompatActivity {
     initViewModel();
     currentUser = viewModel.getCurrentUser().getValue();
     viewModel.getCurrentUser().observe(this, this::onAuthStateChanges);
-    scheduleAlarmIfNeeded();
-  }
-
-  private void scheduleAlarmIfNeeded() {
-    final SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-    final boolean isFirstLaunch = sharedPreferences.getBoolean("isFirstLaunch", true);
-    if (isFirstLaunch) {
-      Calendar defaultLunchTime = new TimePreference(this).getPersistedTimeAsCalendar();
-      if (defaultLunchTime.before(Calendar.getInstance())) {
-        // The alarm time must not be in the past otherwise the alarm manager will trigger
-        // immediately
-        defaultLunchTime.add(Calendar.DAY_OF_MONTH, 1);
-      }
-      new LunchAlarmManager(this).scheduleAlarm(defaultLunchTime, LunchAlarmReceiver.class);
-      sharedPreferences.edit().putBoolean("isFirstLaunch", false).apply();
-    }
   }
 
   private void onAuthStateChanges(User currentUser) {
@@ -102,6 +86,7 @@ public class MainActivity extends AppCompatActivity {
       throw new IllegalStateException();
     } else {
       setNavDrawerHeaderData(currentUser);
+      managePreferences();
       if (currentUser.getWorkplaceId() == null || currentUser.getWorkplaceId().isEmpty()) {
         showWorkplacePikerInternal();
       }
@@ -184,6 +169,32 @@ public class MainActivity extends AppCompatActivity {
             getString(R.string.workplace_selection_success_msg, selectedPrediction.getBestMatch()),
             Snackbar.LENGTH_LONG)
         .show();
+  }
+
+  private void managePreferences() {
+    // TODO refactoring
+    final SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+    final SharedPreferences.Editor sharedPreferencesEditor = sharedPreferences.edit();
+
+    final String preferencesOwner = sharedPreferences.getString("owner", "");
+    if (!preferencesOwner.equals(currentUser.getId())) sharedPreferencesEditor.clear();
+
+    final boolean isFirstLaunch = sharedPreferences.getBoolean("isFirstLaunch", true);
+    if (isFirstLaunch) {
+      Calendar defaultLunchTime = new TimePreference(this).getPersistedTimeAsCalendar();
+      new LunchAlarmManager(this).scheduleAlarm(defaultLunchTime, LunchAlarmReceiver.class);
+      sharedPreferencesEditor.putBoolean("isFirstLaunch", false);
+
+      viewModel.getCurrentUserWorkplaceInfo(
+          currentUserWorkplace -> {
+            if (currentUserWorkplace != null) {
+              sharedPreferencesEditor.putString(
+                  "workplace", SettingsUtils.toFormattedWorkplaceSummary(currentUserWorkplace));
+            }
+            sharedPreferencesEditor.apply();
+            return null;
+          });
+    }
   }
 
   private void updateUserPreferences(Prediction selectedWorkplacePrediction) {

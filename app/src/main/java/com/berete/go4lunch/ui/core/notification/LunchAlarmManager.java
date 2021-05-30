@@ -19,6 +19,10 @@ public class LunchAlarmManager {
   }
 
   public void scheduleAlarm(Calendar calendar, Class<?> alarmReceiverClass) {
+    if (calendar.before(Calendar.getInstance())) {
+      // The alarm time must not be in the past otherwise the alarm manager will trigger immediately
+      calendar.add(Calendar.DAY_OF_MONTH, 1);
+    }
     final PendingIntent pendingIntent =
         getPendingIntent(alarmReceiverClass, PendingIntent.FLAG_UPDATE_CURRENT);
     alarmManager.setRepeating(
@@ -31,7 +35,7 @@ public class LunchAlarmManager {
   public void cancelAlarm(Class<?> alarmReceiverClass) {
     final PendingIntent pendingIntent =
         getPendingIntent(alarmReceiverClass, PendingIntent.FLAG_NO_CREATE);
-    if(pendingIntent != null) alarmManager.cancel(pendingIntent);
+    if (pendingIntent != null) alarmManager.cancel(pendingIntent);
   }
 
   private PendingIntent getPendingIntent(Class<?> alarmReceiverClass, int flag) {

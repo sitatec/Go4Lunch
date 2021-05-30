@@ -100,7 +100,7 @@ public class RestaurantDetailsActivity extends AppCompatActivity {
   }
 
   private void updateRestaurantChoiceButton() {
-    final String currentUserChosenRestaurantId =currentUser.getChosenRestaurantId();
+    final String currentUserChosenRestaurantId = currentUser.getChosenRestaurantId();
     if (currentUserChosenRestaurantId != null
         && currentUserChosenRestaurantId.equals(restaurant.getId())) {
       binding.actionChooseRestaurant.setImageResource(R.drawable.ic_checked_box_24);
@@ -185,7 +185,9 @@ public class RestaurantDetailsActivity extends AppCompatActivity {
   }
 
   private void toggleRestaurantChoiceButton(View restaurantChoiceButton) {
-    if (currentUser.getChosenRestaurantId().equals(restaurant.getId())) {
+    final String currentUserChosenRestaurantId = currentUser.getChosenRestaurantId();
+    if (currentUserChosenRestaurantId != null
+        && currentUserChosenRestaurantId.equals(restaurant.getId())) {
       viewModel.resetCurrentUserChosenRestaurant();
       binding.actionChooseRestaurant.setImageResource(R.drawable.ic_indeterminate_check_box_24);
     } else {

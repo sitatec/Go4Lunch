@@ -1,6 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
     <item android:drawable="?colorPrimary"/>
-    <item android:drawable="@drawable/logo_for_old_api"
-        android:gravity="center"/>
 </layer-list>

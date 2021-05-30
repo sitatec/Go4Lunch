@@ -73,16 +73,10 @@ public class RestaurantListFragment extends Fragment {
     return binding.getRoot();
   }
 
-  private void onCurrentLocationGot(GeoCoordinates currentLocation){
-    if(currentLocation != null){
-      viewModel
-          .getNearbyRestaurants(currentLocation, onNearbyRestaurantReceived(currentLocation));
-    } else
-      showLocationUnavailableMessage();
-  }
-
-  private void showLocationUnavailableMessage(){
-    // TODO
+  private void onCurrentLocationGot(GeoCoordinates currentLocation) {
+    if (currentLocation != null) {
+      viewModel.getNearbyRestaurants(currentLocation, onNearbyRestaurantReceived(currentLocation));
+    } else showLocationUnavailableMessage();
   }
 
   @Override
@@ -109,7 +103,6 @@ public class RestaurantListFragment extends Fragment {
     return true;
   }
 
-
   public int sortByDistance(Restaurant restaurant1, Restaurant restaurant2) {
     final double restaurant1Distance =
         DistanceUtils.getDistanceBetween(restaurant1.getCoordinates(), currentLocation);
@@ -125,8 +118,8 @@ public class RestaurantListFragment extends Fragment {
   public int sortByWorkmatesCount(Restaurant restaurant1, Restaurant restaurant2) {
     Integer workmateCountInRestaurant1 = workmatesCountByRestaurant.get(restaurant1.getId());
     Integer workmateCountInRestaurant2 = workmatesCountByRestaurant.get(restaurant2.getId());
-    if(workmateCountInRestaurant1 == null) workmateCountInRestaurant1 = 0;
-    if(workmateCountInRestaurant2 == null) workmateCountInRestaurant2 = 0;
+    if (workmateCountInRestaurant1 == null) workmateCountInRestaurant1 = 0;
+    if (workmateCountInRestaurant2 == null) workmateCountInRestaurant2 = 0;
     return workmateCountInRestaurant2 - workmateCountInRestaurant1;
   }
 
@@ -148,7 +141,6 @@ public class RestaurantListFragment extends Fragment {
       public void onFailure() {}
     };
   }
-
 
   private void fetchWorkmatesCountByRestaurant() {
     viewModel.getWorkmatesCountByRestaurant(
@@ -178,5 +170,9 @@ public class RestaurantListFragment extends Fragment {
                 backStackEntry,
                 HiltViewModelFactory.createInternal(getActivity(), backStackEntry, null, null))
             .get(RestaurantRelatedViewModel.class);
+  }
+
+  private void showLocationUnavailableMessage() {
+    // TODO
   }
 }

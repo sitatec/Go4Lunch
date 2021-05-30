@@ -66,7 +66,8 @@ public class GooglePlacesAPIClient
       Place.Field[] placeFields,
       GeoCoordinates searchArea,
       Place.LangCode langCode) {
-    setNearbySearchQueryParams(placeTypes, placeFields, searchArea, langCode, DEFAULT_SEARCH_RADIUS);
+    setNearbySearchQueryParams(
+        placeTypes, placeFields, searchArea, langCode, DEFAULT_SEARCH_RADIUS);
   }
 
   @Override
@@ -153,7 +154,7 @@ public class GooglePlacesAPIClient
     autocompleteQueryParams.put("input", input);
     autocompleteQueryParams.put("language", langCode.name());
     autocompleteQueryParams.put("sessiontoken", autocompleteSessionTokenHandler.getToken());
-    if(currentLocation != null) {
+    if (currentLocation != null) {
       autocompleteQueryParams.put("origin", currentLocation.toString());
       autocompleteQueryParams.put("location", currentLocation.toString());
       autocompleteQueryParams.put("radius", radiusInMeter.toString());
@@ -170,9 +171,9 @@ public class GooglePlacesAPIClient
         final AutocompleteHttpResponse responseBody = response.body();
         if (responseBody == null) listener.onFailure();
         else {
-          if(filter != null) listener.onSuccess(responseBody.getFilteredPredictions(filter));
+          if (filter != null) listener.onSuccess(responseBody.getFilteredPredictions(filter));
           else listener.onSuccess(responseBody.getPredictions());
-//          Log.i("HTTP_RESPONSE", "onResponseCallback");
+          //          Log.i("HTTP_RESPONSE", "onResponseCallback");
         }
       }
 
@@ -291,13 +292,12 @@ public class GooglePlacesAPIClient
       return token;
     }
 
-    public String getAndResetToken(){
-      if(token == null) return "null_token";
+    public String getAndResetToken() {
+      if (token == null) return "null_token";
       final String tokenCopy = new String(token);
       resetToken();
       return tokenCopy;
     }
-
   }
 
   public interface Utils {

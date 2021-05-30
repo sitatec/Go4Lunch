@@ -15,15 +15,15 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
 @RunWith(JUnit4.class)
-public class RestaurantDetailsRepositoryTest {
+public class PlaceDetailsRepositoryTest {
 
   PlaceDetailsProvider placeDetailsProvider;
-  RestaurantDetailsRepository restaurantDetailsRepository;
+  PlaceDetailsRepository placeDetailsRepository;
 
   @Before
   public void setUp() {
     placeDetailsProvider = mock(PlaceDetailsProvider.class);
-    restaurantDetailsRepository = new RestaurantDetailsRepository(placeDetailsProvider);
+    placeDetailsRepository = new PlaceDetailsRepository(placeDetailsProvider);
   }
 
   @Test

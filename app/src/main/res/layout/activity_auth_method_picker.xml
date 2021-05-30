@@ -26,7 +26,7 @@
             android:layout_height="wrap_content"
             android:text="@string/facebook_login_btn_txt"
             app:backgroundTint="@color/com_facebook_button_background_color"
-            android:padding="14dp"
+            android:paddingVertical="14dp"
             android:layout_marginVertical="10dp"
             android:maxWidth="30dp"
             app:icon="@drawable/ic_facebook"
@@ -38,7 +38,7 @@
             android:layout_height="wrap_content"
             android:text="@string/google_login_btn_txt"
             app:backgroundTint="@color/red_bg"
-            android:padding="14dp"
+            android:paddingVertical="14dp"
             app:icon="@drawable/ic_google"/>
     </LinearLayout>
 

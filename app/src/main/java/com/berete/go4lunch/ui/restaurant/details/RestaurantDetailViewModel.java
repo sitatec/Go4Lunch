@@ -5,7 +5,7 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.berete.go4lunch.domain.restaurants.models.Place;
-import com.berete.go4lunch.domain.restaurants.repositories.RestaurantDetailsRepository;
+import com.berete.go4lunch.domain.restaurants.repositories.PlaceDetailsRepository;
 import com.berete.go4lunch.domain.shared.models.User;
 import com.berete.go4lunch.domain.shared.repositories.UserRepository;
 import com.berete.go4lunch.domain.utils.Callback;
@@ -30,21 +30,21 @@ public class RestaurantDetailViewModel extends ViewModel {
     Place.Field.PHOTO_URL
   };
 
-  private final RestaurantDetailsRepository restaurantDetailsRepository;
+  private final PlaceDetailsRepository placeDetailsRepository;
   private final UserRepository userRepository;
   private final MutableLiveData<User> currentUser = new MutableLiveData<>();
 
   @Inject
   public RestaurantDetailViewModel(
-      RestaurantDetailsRepository restaurantDetailsRepository, UserRepository userRepository) {
-    this.restaurantDetailsRepository = restaurantDetailsRepository;
+      PlaceDetailsRepository placeDetailsRepository, UserRepository userRepository) {
+    this.placeDetailsRepository = placeDetailsRepository;
     this.userRepository = userRepository;
     userRepository.addUserLoginCompleteListener(currentUser::setValue);
     currentUser.setValue(userRepository.getCurrentUser());
   }
 
   public void getRestaurantDetails(String restaurantId, Callback<Place> listener) {
-    restaurantDetailsRepository.getRestaurantDetails(
+    placeDetailsRepository.getPlaceDetails(
         restaurantId, DEFAULT_FIELDS, Place.LangCode.getSystemLanguage(), listener);
   }
 

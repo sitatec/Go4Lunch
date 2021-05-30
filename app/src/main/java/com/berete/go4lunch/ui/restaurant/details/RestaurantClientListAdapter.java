@@ -42,7 +42,7 @@ public class RestaurantClientListAdapter
 
   // ##########  INNER_CLASSES  ######### //
 
-  public class ClientViewHolder extends RecyclerView.ViewHolder {
+  public static class ClientViewHolder extends RecyclerView.ViewHolder {
 
     final RestaurantClientItemBinding binding;
 

@@ -21,7 +21,7 @@ public class LunchTimeNotification {
 
   private final Context context;
   private String restaurantAddress;
-  private User userToReminder;
+  private User currentUser;
   private final StringBuilder otherParticipantsListBuilder = new StringBuilder();
 
   private static final String NOTIFICATION_CHANNEL_ID =
@@ -31,22 +31,23 @@ public class LunchTimeNotification {
     this.context = context;
   }
 
-  public LunchTimeNotification setUserToReminder(User userToReminder) {
-    this.userToReminder = userToReminder;
+  public LunchTimeNotification setCurrentUser(User currentUser) {
+    this.currentUser = currentUser;
     return this;
   }
 
-  public LunchTimeNotification setLunchParticipants(User[] otherParticipants) {
-    assert userToReminder != null;
-    if(otherParticipants.length < 1) return this;
-    for (int i = 0; i < otherParticipants.length; i++) {
-      if (otherParticipants[i].getId().equals(userToReminder.getId())) {
+  public LunchTimeNotification setLunchParticipants(User[] participants) {
+    assert currentUser != null;
+    final boolean theCurrentUserIsAlone = participants.length < 2;
+    if (theCurrentUserIsAlone) return this;
+    for (int i = 0; i < participants.length; i++) {
+      if (participants[i].getId().equals(currentUser.getId())) {
         continue;
       }
-      otherParticipantsListBuilder.append(otherParticipants[i].getUsername()).append(", ");
+      otherParticipantsListBuilder.append(participants[i].getUsername()).append(", ");
     }
     final int builderLength = otherParticipantsListBuilder.length();
-    otherParticipantsListBuilder.delete(builderLength - 2, builderLength);// remove the last comma
+    otherParticipantsListBuilder.delete(builderLength - 2, builderLength); // remove the last comma
     return this;
   }
 
@@ -81,7 +82,7 @@ public class LunchTimeNotification {
         .build();
   }
 
-  public PendingIntent getPendingIntent(){
+  public PendingIntent getPendingIntent() {
     final Intent intent = new Intent(context, RestaurantDetailsActivity.class);
     return PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
   }
@@ -91,14 +92,14 @@ public class LunchTimeNotification {
     if (otherParticipantsNames.isEmpty()) {
       return context.getString(
           R.string.lunch_time_notification_msg,
-          userToReminder.getUsername(),
-          userToReminder.getChosenRestaurantName(),
+          currentUser.getUsername(),
+          currentUser.getChosenRestaurantName(),
           restaurantAddress);
     }
     return context.getString(
         R.string.lunch_time_notification_msg_with_workmates,
-        userToReminder.getUsername(),
-        userToReminder.getChosenRestaurantName(),
+        currentUser.getUsername(),
+        currentUser.getChosenRestaurantName(),
         restaurantAddress,
         otherParticipantsNames);
   }

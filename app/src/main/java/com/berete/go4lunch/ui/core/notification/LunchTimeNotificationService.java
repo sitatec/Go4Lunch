@@ -10,7 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.core.app.JobIntentService;
 
 import com.berete.go4lunch.domain.restaurants.models.Place;
-import com.berete.go4lunch.domain.restaurants.repositories.RestaurantDetailsRepository;
+import com.berete.go4lunch.domain.restaurants.repositories.PlaceDetailsRepository;
 import com.berete.go4lunch.domain.shared.models.User;
 import com.berete.go4lunch.domain.shared.repositories.UserRepository;
 import com.berete.go4lunch.domain.utils.Callback;
@@ -28,9 +28,10 @@ public class LunchTimeNotificationService extends JobIntentService {
   private static final int JOB_ID = 22;
 
   @Inject UserRepository userRepository;
-  @Inject RestaurantDetailsRepository restaurantDetailsRepository;
+  @Inject
+  PlaceDetailsRepository placeDetailsRepository;
   User currentUser;
-  User[] workmatesWhoAreJoiningMyRestaurant;
+  User[] peapleWhoAreJoiningMyRestaurant;
   String restaurantAddress;
   private int dataFetchSuccessesCount = 0;
   // ^ must be 2 to display the notification (+1 for the restaurant address and +1 for the user
@@ -48,7 +49,7 @@ public class LunchTimeNotificationService extends JobIntentService {
         userRepository.getUsersByChosenRestaurant(
             currentUser.getChosenRestaurantId(), currentUser.getWorkplaceId(), getUsersCallback());
       }
-      restaurantDetailsRepository.getRestaurantDetails(
+      placeDetailsRepository.getPlaceDetails(
           currentUser.getChosenRestaurantId(),
           new Place.Field[] {Place.Field.ADDRESS},
           Place.LangCode.getSystemLanguage(),
@@ -65,8 +66,8 @@ public class LunchTimeNotificationService extends JobIntentService {
     final NotificationManager notificationManager =
         (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
     final Notification notification = new LunchTimeNotification(getApplicationContext())
-        .setUserToReminder(currentUser)
-        .setLunchParticipants(workmatesWhoAreJoiningMyRestaurant)
+        .setCurrentUser(currentUser)
+        .setLunchParticipants(peapleWhoAreJoiningMyRestaurant)
         .setRestaurantAddress(restaurantAddress)
         .createNotificationChanelIfNeeded(notificationManager)
         .build();
@@ -91,7 +92,7 @@ public class LunchTimeNotificationService extends JobIntentService {
       @Override
       public void onSuccess(User[] users) {
         Log.d("LunchTimeNotifService", "Users fetched : " + Arrays.toString(users));
-        workmatesWhoAreJoiningMyRestaurant = users;
+        peapleWhoAreJoiningMyRestaurant = users;
         notifySuccessfulDataFetch();
       }
 

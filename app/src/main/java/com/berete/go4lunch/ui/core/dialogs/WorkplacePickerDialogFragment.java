@@ -1,4 +1,4 @@
-package com.berete.go4lunch.ui.core.fragments;
+package com.berete.go4lunch.ui.core.dialogs;
 
 import android.app.AlertDialog;
 import android.app.Dialog;

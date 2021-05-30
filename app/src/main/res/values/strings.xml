@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">Go4Lunch</string>
     <string name="logo_subtitle">Find a nice restaurant and invite your co-workers for lunch</string>
+    <string name="facebook_application_id" translatable="false">2955815731344333</string>
     <string name="facebook_login_protocol_scheme" translatable="false">fb2955815731344333</string>
 
     <string name="login_canceled">Login Canceled \n You must sign in to access the app content</string>
