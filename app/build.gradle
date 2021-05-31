@@ -26,6 +26,9 @@ android {
         manifestPlaceholders = [GOOGLE_MAP_API_KEY: "${properties.getProperty('GOOGLE_MAP_API_KEY')}"]
         buildConfigField "String", "GOOGLE_PLACE_API_KEY", "\"${properties.getProperty('GOOGLE_PLACE_API_KEY')}\""
 
+        // If you store your key the gradle.properties, uncomment the lines below and comments or remove
+        // the ones above.
+
 //        manifestPlaceholders = [GOOGLE_MAP_API_KEY: "${GOOGLE_MAP_API_KEY}"]
 //        buildConfigField "String", "GOOGLE_PLACE_API_KEY", "\"${GOOGLE_PLACE_API_KEY}\""
     }
@@ -67,10 +70,10 @@ dependencies {
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
-    testImplementation 'org.mockito:mockito-core:2.26.0'
-        // - for mock of static/final methods and classes
+    testImplementation 'org.mockito:mockito-core:3.10.0'
+    // - for mock of static/final methods and classes
     testImplementation 'org.mockito:mockito-inline:2.13.0'
-    implementation 'net.bytebuddy:byte-buddy:1.9.10'
+    implementation 'net.bytebuddy:byte-buddy:1.11.0'
     testImplementation 'net.bytebuddy:byte-buddy-agent:1.11.0'
     testImplementation 'org.objenesis:objenesis:3.2'
 

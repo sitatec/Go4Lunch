@@ -82,7 +82,6 @@ public class RestaurantListFragment extends Fragment {
   @Override
   public void onPrepareOptionsMenu(@NonNull Menu menu) {
     menu.findItem(R.id.orderRestaurants).setVisible(true);
-    menu.findItem(R.id.searchAction).setVisible(false);
     super.onPrepareOptionsMenu(menu);
   }
 

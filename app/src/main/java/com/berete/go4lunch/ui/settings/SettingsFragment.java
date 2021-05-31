@@ -102,6 +102,7 @@ public class SettingsFragment extends PreferenceFragmentCompat {
   }
 
   @Override
+  @SuppressWarnings("deprecation")
   public void onDisplayPreferenceDialog(Preference preference) {
     if (preference instanceof TimePreference) {
       final TimePreferencePickerDialog dialog =

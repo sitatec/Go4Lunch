@@ -1,9 +1,9 @@
 package com.berete.go4lunch.data_sources.restaurants.remote_source;
 
 import com.berete.go4lunch.BuildConfig;
-import com.berete.go4lunch.data_sources.restaurants.data_objects.AutocompleteHttpResponse;
-import com.berete.go4lunch.data_sources.restaurants.data_objects.NearbySearchHttpResponse;
-import com.berete.go4lunch.data_sources.restaurants.data_objects.PlaceDetailsHttpResponse;
+import com.berete.go4lunch.data_sources.restaurants.dto.AutocompleteHttpResponse;
+import com.berete.go4lunch.data_sources.restaurants.dto.NearbySearchHttpResponse;
+import com.berete.go4lunch.data_sources.restaurants.dto.PlaceDetailsHttpResponse;
 import com.berete.go4lunch.domain.restaurants.models.GeoCoordinates;
 import com.berete.go4lunch.domain.restaurants.models.Place;
 import com.berete.go4lunch.domain.restaurants.models.Prediction;
@@ -71,12 +71,12 @@ public class GooglePlacesAPIClient
   }
 
   @Override
-  public void getPlaceData(Callback callback) {
+  public void getPlaceData(Callback<Place[]> callback) {
     assert placeQueryParams != null;
     placeHttpClient.getPlaces(placeQueryParams).enqueue(getPlaceResponseCallback(callback));
   }
 
-  private retrofit2.Callback<NearbySearchHttpResponse> getPlaceResponseCallback(Callback callback) {
+  private retrofit2.Callback<NearbySearchHttpResponse> getPlaceResponseCallback(Callback<Place[]> callback) {
     return new retrofit2.Callback<NearbySearchHttpResponse>() {
       @Override
       public void onResponse(

@@ -1,8 +1,6 @@
 package com.berete.go4lunch.ui.restaurant.list;
 
-import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
-import android.os.Build;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +8,7 @@ import android.view.ViewGroup;
 import androidx.annotation.ColorRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.res.ResourcesCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.berete.go4lunch.R;
@@ -124,11 +123,7 @@ public class RestaurantListAdapter
     }
 
     private int getSupportColor(@ColorRes int colorId) {
-      final Resources resources = binding.getRoot().getResources();
-      if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
-        return resources.getColor(colorId);
-      }
-      return resources.getColor(colorId, null);
+      return ResourcesCompat.getColor(binding.getRoot().getResources(), colorId, null);
     }
 
     private void loadRestaurantPhoto(Restaurant restaurant) {

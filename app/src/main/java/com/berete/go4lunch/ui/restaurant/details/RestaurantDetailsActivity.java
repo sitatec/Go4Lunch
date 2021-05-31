@@ -55,7 +55,7 @@ public class RestaurantDetailsActivity extends AppCompatActivity {
   }
 
   private void stylizeTheCollapsingToolbar() {
-    final int toolbarTitleColor = getResources().getColor(R.color.white);
+    final int toolbarTitleColor = ResourcesCompat.getColor(getResources(), R.color.white, null);
     binding.collapsingToolbarLayout.setExpandedTitleColor(toolbarTitleColor);
     binding.collapsingToolbarLayout.setCollapsedTitleTextColor(toolbarTitleColor);
     binding.collapsingToolbarLayout.setExpandedTitleMarginStart(36);

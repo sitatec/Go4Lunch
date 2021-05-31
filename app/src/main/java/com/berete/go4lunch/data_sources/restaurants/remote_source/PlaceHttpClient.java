@@ -1,8 +1,8 @@
 package com.berete.go4lunch.data_sources.restaurants.remote_source;
 
-import com.berete.go4lunch.data_sources.restaurants.data_objects.AutocompleteHttpResponse;
-import com.berete.go4lunch.data_sources.restaurants.data_objects.NearbySearchHttpResponse;
-import com.berete.go4lunch.data_sources.restaurants.data_objects.PlaceDetailsHttpResponse;
+import com.berete.go4lunch.data_sources.restaurants.dto.AutocompleteHttpResponse;
+import com.berete.go4lunch.data_sources.restaurants.dto.NearbySearchHttpResponse;
+import com.berete.go4lunch.data_sources.restaurants.dto.PlaceDetailsHttpResponse;
 
 import java.util.Map;
 

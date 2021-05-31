@@ -57,6 +57,7 @@ public class FirebaseServicesClient implements UserProvider, RestaurantSpecificD
         .addOnSuccessListener(this::onUserAdditionalDataFetched);
   }
 
+  @SuppressWarnings("unchecked")
   private void onUserAdditionalDataFetched(DocumentSnapshot userDocument) {
     currentUser.setChosenRestaurantId(userDocument.getString(CHOSEN_RESTAURANT_ID));
     currentUser.setWorkplaceId(userDocument.getString(WORKPLACE));
@@ -89,6 +90,7 @@ public class FirebaseServicesClient implements UserProvider, RestaurantSpecificD
         .addOnFailureListener(__ -> callback.onFailure());
   }
 
+  @SuppressWarnings("unchecked")
   private User[] usersDocumentsToArray(List<DocumentSnapshot> usersDocuments) {
     final List<User> userList = new ArrayList<>();
     for (DocumentSnapshot userDoc : usersDocuments) {

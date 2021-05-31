@@ -42,8 +42,7 @@ import dagger.hilt.android.internal.lifecycle.HiltViewModelFactory;
 public class MapFragment extends Fragment {
 
   private static final String LOG_TAG = MapFragment.class.getSimpleName();
-  @Inject
-  public CurrentLocationProvider currentLocationProvider;
+  @Inject public CurrentLocationProvider currentLocationProvider;
   private GoogleMap map;
   private RestaurantRelatedViewModel viewModel;
   private Map<String, Integer> workmatesCountByRestaurant = new HashMap<>();
@@ -56,10 +55,14 @@ public class MapFragment extends Fragment {
       LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
     final View fragmentView = inflater.inflate(R.layout.fragment_map, container, false);
     initViewModel(container);
-    viewModel.getCurrentUser().observe(getViewLifecycleOwner(), user -> {
-      currentUser = user;
-      fetchWorkmatesCountByRestaurant();
-    });
+    viewModel
+        .getCurrentUser()
+        .observe(
+            getViewLifecycleOwner(),
+            user -> {
+              currentUser = user;
+              fetchWorkmatesCountByRestaurant();
+            });
     final SupportMapFragment mapFragment =
         (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
     mapFragment.getMapAsync(this::onMapReady);
@@ -116,6 +119,7 @@ public class MapFragment extends Fragment {
       showErrorMessage();
     }
   }
+
   private void showNearbyRestaurants(GeoCoordinates currentLocation) {
     viewModel.getNearbyRestaurants(
         currentLocation,
@@ -123,7 +127,7 @@ public class MapFragment extends Fragment {
           @Override
           public void onSuccess(Place[] places) {
             final Restaurant[] restaurants = (Restaurant[]) places;
-            if(restaurants != null) showRestaurantsMarkers(restaurants);
+            if (restaurants != null) showRestaurantsMarkers(restaurants);
           }
 
           @Override
@@ -134,19 +138,30 @@ public class MapFragment extends Fragment {
   private void showRestaurantsMarkers(Restaurant[] restaurants) {
     map.clear();
     int currentMarkerDrawable;
+    String markerTitle;
     for (Restaurant restaurant : restaurants) {
       if (workmatesCountByRestaurant.containsKey(restaurant.getId())) {
         currentMarkerDrawable = R.drawable.green_restaurant_pointer;
-      } else
+        markerTitle = getMarkerTitle(restaurant);
+      } else {
         currentMarkerDrawable = R.drawable.restaurant_pointer;
+        markerTitle = restaurant.getName();
+      }
       map.addMarker(
               new MarkerOptions()
                   .position(coordToLatLog(restaurant.getCoordinates()))
-                  .title(restaurant.getName())
+                  .title(markerTitle)
                   .snippet(restaurant.getAddress())
                   .icon(BitmapDescriptorFactory.fromResource(currentMarkerDrawable)))
           .setTag(restaurant.getId());
     }
+  }
+
+  private String getMarkerTitle(Restaurant restaurant) {
+    return restaurant.getName()
+        + " \uD83D\uDC64("
+        + workmatesCountByRestaurant.get(restaurant.getId())
+        + ")";
   }
 
   private LatLng coordToLatLog(GeoCoordinates geoCoordinates) {
@@ -162,5 +177,4 @@ public class MapFragment extends Fragment {
     //  view will show a button that will trigger the location request
     //  `currentLocationProvider.getCurrentCoordinates(this::updateMapUI);`
   }
-
 }
