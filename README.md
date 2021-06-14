@@ -22,6 +22,7 @@ I have also created and deployed two functions on Firebase functions, one to ini
   - Firebase firestore
 #### Tests
   - Espresso
+  - UI Automator (for some specifics cases that espresso doesn't support, i.e. clicking on google maps markers)
   - Junit4
   - Mockito
 
