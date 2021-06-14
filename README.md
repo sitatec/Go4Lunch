@@ -1,5 +1,8 @@
 # Go4Lunch
-Go4Lunch is an application that brings you and your colleagues together for lunch. (A demo video is available at the end of the page).
+A demo video is available at the [end of the page](#demo).
+
+Go4Lunch is an application that brings you and your colleagues together for lunch. Go4Luch allows you to see all the restaurants near you on a map or a list. On the map, if at least one of your workmates go to a restaurant, the color of the marker of that restaurant will be green, and if you click on the marker you will see in the window info the number of the workmates who go there if you click on the window info you will be redirected in a new screen that shows the restaurant details and all of your workmates who to that restaurant. You can search a restaurant by its name or address... to see all the features the app, watch the [demo video](#demo).
+
 
 ![Go4Lunch](https://github.com/sitatec/Go4Lunch/blob/master/assets/Go4Lunch_banner.png)
 # Architecture
@@ -18,12 +21,13 @@ I have also created and deployed two functions on Firebase functions, one to ini
   - Firebase auth
   - Firebase firestore
 #### Tests
-  - Junit4
   - Espresso
+  - Junit4
+  - Mockito
 
 # Build
 To be able to build the project you need google maps and google place API key(s), and store them in your local.properties file like this:
-```groovi
+```
 GOOGLE_PLACE_API_KEY=YOUR-API-KEY
 GOOGLE_MAP_API_KEY=YOUR-API-KEY
 ```
