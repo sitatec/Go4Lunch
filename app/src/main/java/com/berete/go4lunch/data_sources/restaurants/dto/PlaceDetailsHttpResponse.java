@@ -22,8 +22,9 @@ public class PlaceDetailsHttpResponse {
   public String status;
 
   public Place getPlaceDetails() {
+    Place result = null;
     if (status.equals("OK")) {
-      return new Place(
+      result = new Place(
           placeDetailsDataObject.place_id,
           placeDetailsDataObject.name,
           placeDetailsDataObject.rating,
@@ -32,19 +33,23 @@ public class PlaceDetailsHttpResponse {
           placeDetailsDataObject.website,
           placeDetailsDataObject.formatted_phone_number);
     }
-    return null;
+    return result;
   }
 
   private Place.Photo[] getPhotos() {
-    if(placeDetailsDataObject.photos == null) return new Place.Photo[0];
-    final List<Place.Photo> photoList = new ArrayList<>();
-    for (Photo currentPhoto : placeDetailsDataObject.photos) {
-      photoList.add(
-          new Place.Photo(
-              Utils.photoReferenceToUrl(currentPhoto.photo_reference),
-              currentPhoto.html_attributions));
+    Place.Photo[] photosResult = new Place.Photo[0];
+
+    if(placeDetailsDataObject.photos != null){
+      final List<Place.Photo> photoList = new ArrayList<>();
+      for (Photo currentPhoto : placeDetailsDataObject.photos) {
+        photoList.add(
+            new Place.Photo(
+                Utils.photoReferenceToUrl(currentPhoto.photo_reference),
+                currentPhoto.html_attributions));
+      }
+      photosResult = photoList.toArray(new Place.Photo[0]);
     }
-    return photoList.toArray(new Place.Photo[0]);
+    return photosResult;
   }
 
   private static class PlaceDetailsDataObject {

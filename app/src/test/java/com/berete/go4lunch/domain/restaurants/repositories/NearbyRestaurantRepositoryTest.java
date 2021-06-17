@@ -3,6 +3,7 @@ package com.berete.go4lunch.domain.restaurants.repositories;
 import com.berete.go4lunch.FakeData;
 import com.berete.go4lunch.domain.restaurants.models.Place;
 import com.berete.go4lunch.domain.restaurants.services.NearbyPlaceProvider;
+import com.berete.go4lunch.domain.utils.Callback;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -37,6 +38,6 @@ public class NearbyRestaurantRepositoryTest {
             FakeData.fakeGeoCoordinates,
             FakeData.fakeLangCode,
             NearbyPlaceProvider.DEFAULT_SEARCH_RADIUS);
-    inOrder.verify(nearbyPlaceProvider).getPlaceData(any(FakeData.fakePlaceCallback.getClass()));
+    inOrder.verify(nearbyPlaceProvider).getPlaceData(any(Callback.class));
   }
 }

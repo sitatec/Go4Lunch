@@ -1,6 +1,7 @@
 package com.berete.go4lunch.domain.shared.repositories;
 
 import com.berete.go4lunch.domain.shared.UserProvider;
+import com.berete.go4lunch.domain.utils.Callback;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -38,7 +39,7 @@ public class UserRepositoryTest {
   public void should_get_the_current_user_workmates() {
     userRepository.getCurrentUserWorkmates(fakeUserCallback);
     verify(userProvider)
-        .getUsersByWorkplace(eq(fakeCurrentUser.getWorkplaceId()), any(fakeUserCallback.getClass()));
+        .getUsersByWorkplace(eq(fakeCurrentUser.getWorkplaceId()), any(Callback.class));
   }
 
   @Test

@@ -3,10 +3,14 @@ buildscript {
     repositories {
         google()
         mavenCentral()
+        maven {
+            url "https://plugins.gradle.org/m2/"
+        }
     }
 
     ext.hilt_version = '2.36'
     dependencies {
+        classpath "com.hiya:jacoco-android:0.2"
         classpath 'com.android.tools.build:gradle:4.2.1'
         classpath 'com.google.gms:google-services:4.3.5'
         classpath "com.google.dagger:hilt-android-gradle-plugin:$hilt_version"
@@ -19,11 +23,6 @@ allprojects {
     repositories {
         google()
         mavenCentral()
-    }
-    gradle.projectsEvaluated {
-        tasks.withType(JavaCompile) {
-            options.compilerArgs << "-Xlint:unchecked"
-        }
     }
 }
 

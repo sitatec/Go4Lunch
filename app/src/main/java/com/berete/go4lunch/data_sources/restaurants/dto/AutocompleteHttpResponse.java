@@ -28,12 +28,15 @@ public class AutocompleteHttpResponse {
   }
 
   public Prediction[] getFilteredPredictions(Place.Type[] filter){
-    if(!status.equals("OK")) return new Prediction[0];
-    final List<Place.Type> placeList = Arrays.asList(filter);
-    if(placeList.contains(Place.Type.RESTAURANT)){
-      return convertResult(PredictionDataObject::toRestaurantPrediction);
+    Prediction[] predictionsResult = new Prediction[0];
+
+    if (status.equals("OK")) {
+      final List<Place.Type> placeList = Arrays.asList(filter);
+      if(placeList.contains(Place.Type.RESTAURANT)){
+        predictionsResult = convertResult(PredictionDataObject::toRestaurantPrediction);
+      }
     }
-    return new Prediction[0];// Only the restaurant Type is available yet.
+    return predictionsResult;
   }
 
   private Prediction[] convertResult(Function<PredictionDataObject, Prediction> convertToPrediction){

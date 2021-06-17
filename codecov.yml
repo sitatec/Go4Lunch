@@ -1,0 +1,33 @@
+codecov:
+  require_ci_to_pass: no
+
+coverage:
+  precision: 2
+  round: down
+  range: "70...100"
+
+parsers:
+  gcov:
+    branch_detection:
+      conditional: yes
+      loop: yes
+      method: no
+      macro: no
+
+comment:
+  layout: "reach,diff,flags,files,footer"
+  behavior: default
+  require_changes: no
+
+ignore:
+  - "**/go4lunch/databinding/**/*"
+  - "**/go4lunch/archives/**/*"
+  - "**/*_MembersInjector.class"
+  - "**/Dagger*Component*.class"
+  - "**/Dagger*Subcomponent*.class"
+  - "**/*Hilt*.class"
+  - "**/Go4LunchApplication_ComponentTreeDeps"
+  - "**/go4lunch/Go4LunchApplication.class"
+  - "**/*Subcomponent$Builder.class"
+  - "**/*Module_*Factory.class"
+  - "**/ui/core/notification/**/*"

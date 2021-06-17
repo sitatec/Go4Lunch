@@ -19,11 +19,14 @@ public class NearbySearchHttpResponse {
   public String status;
 
   public Place[] getPlaces() {
-    if (!status.equals("OK")) return new Place[0];
-    return result.stream()
-        .map(PlaceDataObject::toPlace)
-        .filter(Objects::nonNull)
-        .toArray(Place[]::new);
+    Place[] places = new Place[0];
+    if (status.equals("OK")) {
+      places = result.stream()
+          .map(PlaceDataObject::toPlace)
+          .filter(Objects::nonNull)
+          .toArray(Place[]::new);
+    }
+    return places;
   }
 }
 
@@ -81,39 +84,6 @@ class PlaceDataObject {
   @Expose
   public String vicinity;
 
-  public PlaceDataObject(
-      String business_status,
-      Geometry geometry,
-      String icon,
-      String name,
-      Opening_hours opening_hours,
-      List<Photo> photos,
-      String place_id,
-      Plus_code plus_code,
-      Integer price_level,
-      Double rating,
-      String reference,
-      String scope,
-      List<String> types,
-      Integer user_ratings_total,
-      String vicinity) {
-    this.business_status = business_status;
-    this.geometry = geometry;
-    this.icon = icon;
-    this.name = name;
-    this.opening_hours = opening_hours;
-    this.photos = photos;
-    this.place_id = place_id;
-    this.plus_code = plus_code;
-    this.price_level = price_level;
-    this.rating = rating;
-    this.reference = reference;
-    this.scope = scope;
-    this.types = types;
-    this.user_ratings_total = user_ratings_total;
-    this.vicinity = vicinity;
-  }
-
   public Place toPlace() {
     Place place;
     try {
@@ -141,11 +111,6 @@ class Southwest {
   @SerializedName("lng")
   @Expose
   public Double lng;
-
-  public Southwest(Double lat, Double lng) {
-    this.lat = lat;
-    this.lng = lng;
-  }
 }
 
 class Plus_code {
@@ -157,10 +122,6 @@ class Plus_code {
   @Expose
   public String global_code;
 
-  public Plus_code(String compound_code, String global_code) {
-    this.compound_code = compound_code;
-    this.global_code = global_code;
-  }
 }
 
 class Viewport {
@@ -172,10 +133,6 @@ class Viewport {
   @Expose
   public Southwest southwest;
 
-  public Viewport(Northeast northeast, Southwest southwest) {
-    this.northeast = northeast;
-    this.southwest = southwest;
-  }
 }
 
 class Geometry {
@@ -187,10 +144,6 @@ class Geometry {
   @Expose
   public Viewport viewport;
 
-  public Geometry(Location location, Viewport viewport) {
-    this.location = location;
-    this.viewport = viewport;
-  }
 }
 
 class Opening_hours {
@@ -198,9 +151,6 @@ class Opening_hours {
   @Expose
   public Boolean open_now;
 
-  public Opening_hours(Boolean open_now) {
-    this.open_now = open_now;
-  }
 }
 
 class Photo {
@@ -220,13 +170,6 @@ class Photo {
   @Expose
   public Integer width;
 
-  public Photo(
-      Integer height, List<String> html_attributions, String photo_reference, Integer width) {
-    this.height = height;
-    this.html_attributions = html_attributions;
-    this.photo_reference = photo_reference;
-    this.width = width;
-  }
 }
 
 class Northeast {
@@ -238,10 +181,6 @@ class Northeast {
   @Expose
   public Double lng;
 
-  public Northeast(Double lat, Double lng) {
-    this.lat = lat;
-    this.lng = lng;
-  }
 }
 
 class Location {
@@ -253,10 +192,6 @@ class Location {
   @Expose
   public Double lng;
 
-  public Location(Double lat, Double lng) {
-    this.lat = lat;
-    this.lng = lng;
-  }
 
   public GeoCoordinates toGeoCoordinates() {
     return new GeoCoordinates(lat, lng);

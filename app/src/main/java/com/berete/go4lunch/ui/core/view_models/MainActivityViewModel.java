@@ -74,7 +74,7 @@ public class MainActivityViewModel extends ViewModel {
     if (currentUserWorkplaceId == null || currentUserWorkplaceId.isEmpty()) {
       callback.apply(null);
     } else {
-      final Place.Field[] fields = new Place.Field[] {Place.Field.NAME, Place.Field.NAME};
+      final Place.Field[] fields = new Place.Field[] {Place.Field.NAME, Place.Field.ADDRESS};
       final Place.LangCode langCode = Place.LangCode.getSystemLanguage();
       placeDetailsRepository.getPlaceDetails(
           currentUserWorkplaceId,

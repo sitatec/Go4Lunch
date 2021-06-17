@@ -16,6 +16,7 @@ import androidx.test.uiautomator.UiSelector;
 
 import com.berete.go4lunch.domain.restaurants.models.Place;
 import com.berete.go4lunch.ui.settings.TimePreference;
+import com.google.firebase.auth.FirebaseAuth;
 
 import org.hamcrest.Matcher;
 import org.junit.Assert;
@@ -28,6 +29,7 @@ import dagger.hilt.android.testing.HiltAndroidTest;
 
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
+import static androidx.test.espresso.action.ViewActions.typeText;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.matcher.ViewMatchers.isAssignableFrom;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
@@ -45,7 +47,10 @@ import static org.junit.Assert.assertTrue;
 public class SettingsTest extends BaseTest {
 
   @Before
-  public void setUp() {
+  public void setUp() throws UiObjectNotFoundException {
+    if (FirebaseAuth.getInstance().getCurrentUser() == null) {
+      loginUser();
+    }
 
     onView(withId(R.id.main_activity_root)).perform(DrawerActions.open());
     onView(withId(R.id.navigation_view))
@@ -88,6 +93,21 @@ public class SettingsTest extends BaseTest {
   public void should_show_confirmation_dialog_when_trying_to_delete_the_user_account() {
     onView(withText(R.string.delete_account_btn_txt)).perform(click());
     onView(withText(R.string.ask_account_deletion_confirmation)).check(matches(isDisplayed()));
+  }
+
+  @Test
+  public void should_change_the_current_user_workplace()
+      throws UiObjectNotFoundException, InterruptedException {
+    onView(withText(R.string.my_workplace_txt)).perform(click());
+    uiDevice
+        .findObject(
+            new UiSelector().resourceId(BuildConfig.APPLICATION_ID + ":id/workplace_search_field"))
+        .setText("google");
+    Thread.sleep(1000); // Wait for autocomplete result
+    uiDevice.findObject(new UiSelector().text("Google")).click();
+    Thread.sleep(1000);
+    // The Google place id is ChIJ81QWXL9ZwokRXT045fycD8g. TODO use place autocomplete to get the id
+    assertEquals(userRepository.getCurrentUser().getWorkplaceId(), "ChIJ81QWXL9ZwokRXT045fycD8g");
   }
 
   // -------------------- UTILS ---------------------- //
