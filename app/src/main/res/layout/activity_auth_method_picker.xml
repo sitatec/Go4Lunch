@@ -1,17 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:padding="43dp"
-    android:orientation="vertical"
+    android:background="@drawable/auth_bg"
     android:gravity="center"
-    android:background="@drawable/auth_bg">
+    android:orientation="vertical"
+    android:id="@+id/login_view_root"
+    android:padding="43dp">
 
-    <include layout="@layout/brand"
+    <include
+        layout="@layout/brand"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1"/>
+        android:layout_weight="1" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -24,22 +26,21 @@
             android:id="@+id/fb_login_btn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/facebook_login_btn_txt"
-            app:backgroundTint="@color/com_facebook_button_background_color"
-            android:paddingVertical="14dp"
             android:layout_marginVertical="10dp"
             android:maxWidth="30dp"
-            app:icon="@drawable/ic_facebook"
-            />
+            android:paddingVertical="14dp"
+            android:text="@string/facebook_login_btn_txt"
+            app:backgroundTint="@color/com_facebook_button_background_color"
+            app:icon="@drawable/ic_facebook" />
 
         <Button
             android:id="@+id/google_login_btn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:paddingVertical="14dp"
             android:text="@string/google_login_btn_txt"
             app:backgroundTint="@color/red_bg"
-            android:paddingVertical="14dp"
-            app:icon="@drawable/ic_google"/>
+            app:icon="@drawable/ic_google" />
     </LinearLayout>
 
 </LinearLayout>

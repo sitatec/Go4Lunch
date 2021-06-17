@@ -84,6 +84,7 @@ public class RestaurantListAdapter
     }
 
     public void updateView(Restaurant restaurant) {
+      binding.getRoot().setTag(restaurant); // helpful for the tests
       binding.restaurantName.setText(restaurant.getName());
       binding.restaurantAddress.setText(restaurant.getAddress());
       binding.distanceFromCurrentLoc.setText(getDistanceAsString(restaurant));
@@ -98,12 +99,11 @@ public class RestaurantListAdapter
     private void setWorkmatesCount(Restaurant restaurant) {
       if (workmatesCountByRestaurant != null) {
         final Integer workmatesCount = workmatesCountByRestaurant.get(restaurant.getId());
-        String formattedWorkmateCount = "";
         if (workmatesCount != null && workmatesCount != 0) {
-          formattedWorkmateCount =
+          final String formattedWorkmateCount =
               binding.getRoot().getResources().getString(R.string.in_brackets, workmatesCount);
+          binding.numberOfWorkmatesThere.setText(formattedWorkmateCount);
         }
-        binding.numberOfFriendsThere.setText(formattedWorkmateCount);
       }
     }
 

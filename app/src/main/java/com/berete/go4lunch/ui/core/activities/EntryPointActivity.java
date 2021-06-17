@@ -61,6 +61,7 @@ public class EntryPointActivity extends AppCompatActivity {
             .createSignInIntentBuilder()
             .setAvailableProviders(getAuthProviders())
             .setLogo(R.drawable.logo)
+            .setIsSmartLockEnabled(false)
             .setAuthMethodPickerLayout(getCustomAuthLayout())
             .setTheme(R.style.NoActionBarSysUITransparentTheme)
             .build());

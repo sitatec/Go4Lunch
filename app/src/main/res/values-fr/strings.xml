@@ -44,7 +44,7 @@
     <string name="order_restaurant_list">Trier les restaurants</string>
     <string name="order_by_stars">Trier par nombre d\'étoiles</string>
     <string name="order_by_nearest">Trier par distance</string>
-    <string name="order_by_workmate">Trier par nombre de collègues</string>
+    <string name="order_by_workmates_count">Trier par nombre de collègues</string>
     <string name="restaurant_not_chosen_yet">Tu n\'a pas choisi to restaurant pour l\'instant</string>
     <string name="lunch_reminder_time">Heure de rappel du déjeuner</string>
     <string name="delete_account_btn_txt">Supprimer mon compte</string>
@@ -58,7 +58,7 @@
     <string name="workplace_selection_success_msg">Ton lieu de travail est désormais %1$s.</string>
     <string name="account_txt">Compte</string>
     <string name="my_workplace_txt">Mon lieu de travail</string>
-    <string name="enable_notification">Activer la notification</string>
+    <string name="toggle_notification">Activer la notification</string>
     <string name="delete_confirmation_dialogue_title">Êtes-vous sûr.</string>
     <string name="cancel_txt">Annuler</string>
     <string name="delete_txt">Supprimer</string>

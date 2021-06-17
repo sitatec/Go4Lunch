@@ -1,5 +1,6 @@
 package com.berete.go4lunch.ui.core.view_models.shared;
 
+import androidx.annotation.VisibleForTesting;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
@@ -26,7 +27,7 @@ public class RestaurantRelatedViewModel extends ViewModel {
 
   private final NearbyRestaurantRepository nearbyRestaurantRepository;
   private GeoCoordinates lastUserLocation;
-  private Restaurant[] lastRequestResult;
+  static private Restaurant[] lastRequestResult;
   private LocalDateTime lastRequestTime;
   private final RestaurantSpecificDataProvider restaurantSpecificDataProvider;
   private final MutableLiveData<User> currentUser = new MutableLiveData<>();
@@ -46,7 +47,7 @@ public class RestaurantRelatedViewModel extends ViewModel {
       callback.onSuccess(lastRequestResult);
     } else {
       nearbyRestaurantRepository.getNearbyRestaurants(
-          transformCallback(callback), Place.LangCode.fr, currentLocation);
+          transformCallback(callback), Place.LangCode.getSystemLanguage(), currentLocation);
       lastUserLocation = currentLocation;
       lastRequestTime = LocalDateTime.now();
     }
@@ -89,5 +90,10 @@ public class RestaurantRelatedViewModel extends ViewModel {
 
   public LiveData<User> getCurrentUser() {
     return currentUser;
+  }
+
+  @VisibleForTesting
+  public static Restaurant[] getLastRequestResult() {
+    return lastRequestResult;
   }
 }

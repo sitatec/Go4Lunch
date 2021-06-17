@@ -136,6 +136,7 @@ public class FirebaseServicesClient implements UserProvider, RestaurantSpecificD
   @Override
   public void resetCurrentUserChosenRestaurant() {
     currentUser.setChosenRestaurantName("");
+    currentUser.setChosenRestaurantId("");
     updateUserData(CHOSEN_RESTAURANT_ID, "");
   }
 

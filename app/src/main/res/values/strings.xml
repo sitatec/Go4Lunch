@@ -50,9 +50,9 @@
     <string name="select_my_workplace_btn">Select my workplace</string>
     <string name="workplace_required_message">Select your workplace to see you workmates</string>
     <string name="order_restaurant_list">Sort Restaurant list</string>
-    <string name="order_by_stars">Sort By Stars</string>
+    <string name="order_by_stars">Sort by stars</string>
     <string name="order_by_nearest">Sort by nearest</string>
-    <string name="order_by_workmate">Sort by workmates count</string>
+    <string name="order_by_workmates_count">Sort by workmates count</string>
     <string name="in_brackets" translatable="false">(%1$d)</string>
     <string name="restaurant_not_chosen_yet">You have not chosen your restaurant yet!</string>
     <string name="lunch_reminder_time">Lunch reminder time</string>
@@ -67,7 +67,7 @@
     <string name="workplace_selection_success_msg">Your workplace is now %1$s.</string>
     <string name="account_txt">Account</string>
     <string name="my_workplace_txt">My workplace</string>
-    <string name="enable_notification">Enable notification</string>
+    <string name="toggle_notification">Enable notification</string>
     <string name="delete_confirmation_dialog_TAG" translatable="false">Account deletion confirmation dialog</string>
     <string name="time_preference_dialog_TAG" translatable="false">The time preference picker dialog</string>
     <string name="delete_confirmation_dialogue_title">Are you sure?</string>

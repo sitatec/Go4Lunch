@@ -15,20 +15,29 @@ public class TimePreference extends DialogPreference {
 
   public TimePreference(Context context, AttributeSet attrs) {
     super(context, attrs);
-    setPositiveButtonText("Set");
-    setNegativeButtonText("Cancel");
-    setSummary(getFormattedTime(Locale.getDefault()));
+    initializes();
   }
 
-  public TimePreference(Context context){
+  public TimePreference(Context context) {
     super(context);
+    initializes();
+  }
+
+  private void setDialogButtonsText() {
+    setPositiveButtonText("Set");
+    setNegativeButtonText("Cancel");
+  }
+
+  private void initializes() {
+    setDialogButtonsText();
+    setSummary(getFormattedTime(Locale.getDefault()));
   }
 
   public int getPersistedMinutesFromMidnight() {
     return getPersistedInt(DEFAULT_TIME_PREFERENCE_IN_MINUTES_FROM_MIDNIGHT);
   }
 
-  public Calendar getPersistedTimeAsCalendar(){
+  public Calendar getPersistedTimeAsCalendar() {
     final Calendar calendar = Calendar.getInstance();
     calendar.set(Calendar.HOUR_OF_DAY, getPersistedMinutesFromMidnight() / 60);
     calendar.set(Calendar.MINUTE, getPersistedMinutesFromMidnight() % 60);
@@ -42,23 +51,26 @@ public class TimePreference extends DialogPreference {
   }
 
   private String getFormattedTime(Locale locale) {
-    if (locale.getLanguage().equals("fr")) return getPersistedMinutesAs24HourTimeFormat();
+    if (locale.getLanguage().equals("fr")) {
+      return getPersistedMinutesAs24HourTimeFormat();
+    }
     return getPersistedMinutesAs12HourTimeFormat();
   }
 
   private String getPersistedMinutesAs24HourTimeFormat() {
     final int minutesFromMidnight = getPersistedMinutesFromMidnight();
     return String.format(
-        Locale.getDefault(), "%1$d:%2$02d", minutesFromMidnight / 60, minutesFromMidnight % 60);
+        Locale.getDefault(), "%1$02d:%2$02d", minutesFromMidnight / 60, minutesFromMidnight % 60);
   }
 
   private String getPersistedMinutesAs12HourTimeFormat() {
     final int minutesFromMidnight = getPersistedMinutesFromMidnight();
     int hours = minutesFromMidnight / 60;
-    if (hours > 12)
+    if (hours > 12) {
       return String.format(
-          Locale.getDefault(), "%1$d:%2$02d PM", hours - 12, minutesFromMidnight % 60);
-    return String.format(Locale.getDefault(), "%1$d:%2$02d AM", hours, minutesFromMidnight % 60);
+          Locale.getDefault(), "%1$02d:%2$02d PM", hours - 12, minutesFromMidnight % 60);
+    }
+    return String.format(Locale.getDefault(), "%1$02d:%2$02d AM", hours, minutesFromMidnight % 60);
   }
 
   @Override

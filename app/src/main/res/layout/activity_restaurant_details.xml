@@ -3,6 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:id="@+id/restaurantDetailsRootLayout"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
         <com.google.android.material.appbar.AppBarLayout
@@ -83,7 +84,7 @@
 
 
         <LinearLayout
-            android:id="@+id/restaurantDetailsRootLayout"
+            android:id="@+id/restaurantDetailsLayout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">

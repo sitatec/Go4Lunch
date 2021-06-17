@@ -9,7 +9,7 @@
             android:defaultValue="true"
             android:order="0"
             app:key="notification_enabled"
-            app:title="@string/enable_notification" />
+            app:title="@string/toggle_notification" />
 
         <com.berete.go4lunch.ui.settings.TimePreference
             android:order="1"

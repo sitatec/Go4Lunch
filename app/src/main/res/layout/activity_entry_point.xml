@@ -1,19 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <!--#### CHANGE THE ROOT LAYOUT TO VISIBLE TO SEE IT IN THE PREVIEW WINDOW ####-->
-    <!--#### DON'T FORGET TO CHANGE IT TO "GONE" WHEN YOU HAVE FINISHED ####-->
+<!--#### DON'T FORGET TO CHANGE IT TO "GONE" WHEN YOU HAVE FINISHED ####-->
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/entry_point_root"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:tools="http://schemas.android.com/tools"
     android:background="@drawable/auth_bg"
     android:fitsSystemWindows="true"
     android:gravity="center"
     android:orientation="vertical"
-    tools:context=".ui.core.activities.EntryPointActivity"
-    android:visibility="gone">
+    android:visibility="gone"
+    tools:context=".ui.core.activities.EntryPointActivity">
 
     <include
         layout="@layout/brand"

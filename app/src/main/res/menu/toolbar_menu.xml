@@ -13,7 +13,7 @@
         android:id="@+id/orderRestaurants"
         android:title="@string/order_restaurant_list"
         android:icon="@drawable/ic_filter_list_24"
-        app:showAsAction="ifRoom">
+        app:showAsAction="always">
 
         <menu>
             <item
@@ -25,7 +25,7 @@
                 android:title="@string/order_by_nearest"/>
 
             <item android:id="@+id/orderByNumberOfWorkmates"
-                android:title="@string/order_by_workmate"/>
+                android:title="@string/order_by_workmates_count"/>
         </menu>
 
     </item>

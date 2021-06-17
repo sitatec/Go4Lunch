@@ -43,7 +43,7 @@
             app:layout_constraintHorizontal_bias="0"
             app:layout_constraintTop_toBottomOf="@id/restaurantName"
             app:layout_constraintLeft_toLeftOf="@id/restaurantName"
-            app:layout_constraintRight_toLeftOf="@id/numberOfFriendsThere"
+            app:layout_constraintRight_toLeftOf="@id/numberOfWorkmatesThere"
             app:layout_constraintBottom_toTopOf="@id/restaurantOpeningHours"
             tool:text="264 Rue The Restaurant address" />
 
@@ -68,7 +68,7 @@
             tool:text="160m" />
 
         <TextView
-            android:id="@+id/numberOfFriendsThere"
+            android:id="@+id/numberOfWorkmatesThere"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:drawableLeftCompat="@drawable/ic_person_24"
@@ -86,7 +86,7 @@
             android:orientation="horizontal"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintRight_toRightOf="@id/distanceFromCurrentLoc"
-            app:layout_constraintTop_toBottomOf="@id/numberOfFriendsThere" />
+            app:layout_constraintTop_toBottomOf="@id/numberOfWorkmatesThere" />
 
         <androidx.cardview.widget.CardView
             android:id="@+id/restaurantPhotoRoot"
