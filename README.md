@@ -6,6 +6,8 @@ Go4Lunch is an application that brings you and your colleagues together for lunc
 
 ![Go4Lunch](https://github.com/sitatec/Go4Lunch/blob/master/assets/Go4Lunch_banner.png)
 
+> ⚠️ This image <img src="https://www.aaronsrubbishremoval.com.au/wp-content/uploads/2021/06/powered-google.png" alt="Powered by Google" width="120px" /> in the app doesn't mean that the app is a google product, but to show data from google place api in your app, you must show the _Powered by google_ image wherever the data are displayed.
+
 # Architecture
 ![Go4Lunch architecture](https://github.com/sitatec/Go4Lunch/blob/master/assets/Go4Lunch_Architecture.png)
 
@@ -14,6 +16,12 @@ To prevent the repositories (in the [domain](https://github.com/sitatec/Go4Lunch
 Now, assuming that I no longer want to use firebase, because I have created my own server and I want to use it to store the user's data, all I have to do is to delete the firebase adapter and all its dependencies, create a client for my server and implement one or more interfaces (depending on the data the server provides), without touching either the domain layer or the UI layer `-> maintainability++ && testability++`. 
 
 I have also created and deployed two functions (written in TypeScrip) on Firebase functions, one to initialize the user data on cloud firestore when his account is created, another to delete all the user's data when his account is deleted (the functions will be triggered by firebase auth).
+
+# Services
+  - Google Place API (the real APIs i.e. accessible through HTTPS, not the android SDKs)
+    - Nearby Search
+    - Place Autocomplete
+    - Place Details
 
 # Dependencies
 #### Prod
