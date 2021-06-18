@@ -1,15 +1,19 @@
+[![Build Status](https://travis-ci.com/sitatec/Go4Lunch.svg?branch=master)](https://travis-ci.com/sitatec/Go4Lunch) [![codecov](https://codecov.io/gh/sitatec/Go4Lunch/branch/master/graph/badge.svg?token=2FDERQBVYZ)](https://codecov.io/gh/sitatec/Go4Lunch) [![Maintainability](https://api.codeclimate.com/v1/badges/8ef2025945b92db2af7c/maintainability)](https://codeclimate.com/github/sitatec/Go4Lunch/maintainability)
 # Go4Lunch
 A demo video is available at the [end of the page](#demo).
 
-Go4Lunch is an application that brings you and your colleagues together for lunch. Go4Luch allows you to see all the restaurants near you on a map or a list. On the map, if at least one of your workmates go to a restaurant, the color of the marker of that restaurant will be green, and if you click on the marker you will see in the window info the number of the workmates who go there if you click on the window info you will be redirected in a new screen that shows the restaurant details and all of your workmates who to that restaurant. You can search a restaurant by its name or address... to see all the features the app, watch the [demo video](#demo).
-
+Go4Lunch is an application that brings you and your colleagues together for lunch. Go4Luch allows you to see all the restaurants near you on a map or a list. On the map, if at least one of your workmates go to a restaurant, the color of the marker of that restaurant will be green, and if you click on the marker you will see in the window info the number of the workmates who go there if you click on the window info you will be redirected in a new screen that shows the restaurant details and all of your workmates who go to that restaurant. To be able to interact with you workmates, you must select a workplace either when you lunch the app for the first time (the app will show a pop up) or in the settings. You can schedule a notification that will remind you every day for lunch time, you can search a restaurant by its name or address... to see all the features of the app, watch the [demo video](#demo).
 
 ![Go4Lunch](https://github.com/sitatec/Go4Lunch/blob/master/assets/Go4Lunch_banner.png)
+
 # Architecture
 ![Go4Lunch architecture](https://github.com/sitatec/Go4Lunch/blob/master/assets/Go4Lunch_Architecture.png)
 
-To prevent the repositories (in the [domain](https://github.com/sitatec/Go4Lunch/tree/master/app/src/main/java/com/berete/go4lunch/domain/)) depending on the data sources, i have created [interfaces](https://github.com/sitatec/Go4Lunch/tree/master/app/src/main/java/com/berete/go4lunch/domain/restaurants/services) that represent the data sources, the repositories depend on them because there are inside the domain. Then I use the Adapter design pattern to adapt the data sources. Now, assuming that I no longer want to use firebase, because I have created my own server and I want to use it to store the user's data, all I have to do is to delete the firebase adapter and all its dependencies, create a client for my server and implement one or more interfaces (depending on the data the server provides), without touching either the domain layer or the UI layer. 
-I have also created and deployed two functions on Firebase functions, one to initialize the user data on cloud firestore when its account is just created, another to delete all the user's data when its account is deleted (the functions will be triggered by firebase auth).
+To prevent the repositories (in the [domain](https://github.com/sitatec/Go4Lunch/tree/master/app/src/main/java/com/berete/go4lunch/domain/)) depending on the data sources, I have created [interfaces](https://github.com/sitatec/Go4Lunch/tree/master/app/src/main/java/com/berete/go4lunch/domain/restaurants/services) that represent the data sources. The repositories depend on them because there are inside the domain. Then I use the [Adapter design pattern](https://en.wikipedia.org/wiki/Adapter_pattern) to adapt the data sources. 
+
+Now, assuming that I no longer want to use firebase, because I have created my own server and I want to use it to store the user's data, all I have to do is to delete the firebase adapter and all its dependencies, create a client for my server and implement one or more interfaces (depending on the data the server provides), without touching either the domain layer or the UI layer `-> maintainability++ && testability++`. 
+
+I have also created and deployed two functions (written in TypeScrip) on Firebase functions, one to initialize the user data on cloud firestore when his account is created, another to delete all the user's data when his account is deleted (the functions will be triggered by firebase auth).
 
 # Dependencies
 #### Prod
@@ -22,9 +26,15 @@ I have also created and deployed two functions on Firebase functions, one to ini
   - Firebase firestore
 #### Tests
   - Espresso
-  - UI Automator (for some specifics cases that espresso doesn't support, i.e. clicking on google maps markers)
+  - UI Automator (for some specifics cases that espresso doesn't support, i.g. clicking on google maps markers)
   - Junit4
   - Mockito
+
+# Tools
+  - Travis CI
+  - Jacoco
+  - Codecov
+  - Codeclimate
 
 # Build
 To be able to build the project you need google maps and google place API key(s), and store them in your local.properties file like this:
