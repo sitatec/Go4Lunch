@@ -23,16 +23,16 @@ before_install:
 
 script:
   - chmod +x gradlew
-  - echo no | android create avd --force -n test -t $EMULATOR_API_LEVEL --abi $ANDROID_ABI --device 'Nexus 6'
-  - emulator -avd test -skin 1440x2560 -no-audio -no-window &
-  - android-wait-for-emulator
-  - adb shell input keyevent 82 &
+
+#  - echo no | android create avd --force -n test -t $EMULATOR_API_LEVEL --abi $ANDROID_ABI --device 'Nexus 6'
+#  - emulator -avd test -skin 1440x2560 -no-audio -no-window &
+#  - android-wait-for-emulator
+#  - adb shell input keyevent 82 &
+
   # The api keys are stored in the local.properties in my local env. So i have to create Fake key
   # because I can't store my keys in a public repo, that means only the unit test will be executed
   # in the ci env because the ui tests need the keys. I will find a better solution .
-  - echo '
-GOOGLE_PLACE_API_KEY=API_KEY_HERE
-GOOGLE_MAP_API_KEY=SECRET' > local.properties
+  - printf "\nGOOGLE_PLACE_API_KEY=SECRET_0 \nGOOGLE_MAP_API_KEY=SECRET_1" > local.properties
   - ./gradlew test
 
 before_cache:
