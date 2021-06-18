@@ -17,12 +17,6 @@ Now, assuming that I no longer want to use firebase, because I have created my o
 
 I have also created and deployed two functions (written in TypeScrip) on Firebase functions, one to initialize the user data on cloud firestore when his account is created, another to delete all the user's data when his account is deleted (the functions will be triggered by firebase auth).
 
-# Services
-  - Google Place API (the real APIs i.e. accessible through HTTPS, not the android SDKs)
-    - Nearby Search
-    - Place Autocomplete
-    - Place Details
-
 # Dependencies
 #### Prod
   - Navigation component
@@ -37,6 +31,12 @@ I have also created and deployed two functions (written in TypeScrip) on Firebas
   - UI Automator (for some specifics cases that espresso doesn't support, i.g. clicking on google maps markers)
   - Junit4
   - Mockito
+
+# Services
+  - Google Place APIs (the real APIs i.e. accessible through HTTPS, not the android SDKs)
+    - Nearby Search
+    - Place Autocomplete
+    - Place Details
 
 # Tools
   - Travis CI
