@@ -22,6 +22,8 @@ I have also created and deployed two functions (written in TypeScrip) on Firebas
   - Navigation component
   - View binding
   - Hilt
+  - View Model
+  - Live Data
   - Retrofit
   - Gson
   - Firebase auth
