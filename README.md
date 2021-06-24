@@ -55,6 +55,6 @@ GOOGLE_MAP_API_KEY=YOUR-API-KEY
 If you don't want to store your keys in the local.properties, you will have to edit the [build.gradle](https://github.com/sitatec/Go4Lunch/blob/8b39e3783cdba66c6950c1f85ef74a43b99bbe3a/app/build.gradle#L23) inside the app module.
 
 # Demo
-__Watch the video in full screen for better quality__
-[![Go4Lunch](https://github.com/sitatec/Go4Lunch/blob/master/assets/Screen%20Shot%202021-06-13%20at%209.42.35%20PM.png)](https://drive.google.com/file/d/1Av9_EWN-zYBSTeaSVVuNugZ5bxDoSevR/view?usp=sharing)
+
+[![Go4Lunch](https://github.com/sitatec/Go4Lunch/blob/master/assets/Screen%20Shot%202021-06-13%20at%209.42.35%20PM.png)](https://drive.google.com/file/d/1Av9_EWN-zYBSTeaSVVuNugZ5bxDoSevR/preview)
 
