@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.com/sitatec/Go4Lunch.svg?branch=master)](https://travis-ci.com/sitatec/Go4Lunch) [![codecov](https://codecov.io/gh/sitatec/Go4Lunch/branch/master/graph/badge.svg?token=2FDERQBVYZ)](https://codecov.io/gh/sitatec/Go4Lunch) [![Maintainability](https://api.codeclimate.com/v1/badges/8ef2025945b92db2af7c/maintainability)](https://codeclimate.com/github/sitatec/Go4Lunch/maintainability)
+[![Build Status](https://app.travis-ci.com/sitatec/Go4Lunch.svg?branch=master)](https://app.travis-ci.com/sitatec/Go4Lunch) [![codecov](https://codecov.io/gh/sitatec/Go4Lunch/branch/master/graph/badge.svg?token=2FDERQBVYZ)](https://codecov.io/gh/sitatec/Go4Lunch) [![Maintainability](https://api.codeclimate.com/v1/badges/8ef2025945b92db2af7c/maintainability)](https://codeclimate.com/github/sitatec/Go4Lunch/maintainability)
 # Go4Lunch
 A demo video is available at the [end of the page](#demo).
 
